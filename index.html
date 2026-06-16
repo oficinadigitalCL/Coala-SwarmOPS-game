@@ -4,464 +4,347 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="COALA-SwarmOps Game — Aprende automatización con agentes IA. Juego didáctico interactivo.">
-<meta name="keywords" content="COALA, SwarmOps, automatización, agentes IA, juego didáctico, enjambre, Thot, koalas">
-<meta name="author" content="Oficina Digital CL">
-<meta name="robots" content="index, follow">
 <meta property="og:title" content="COALA-SwarmOps Game — Aprende automatización jugando">
 <meta property="og:description" content="🐨🏛️ Entrena en el Templo de Thot y domina el arte de coordinar enjambres de agentes IA.">
-<meta property="og:url" content="https://oficinadigitalcl.github.io/Coala-SwarmOPS-game">
-<meta property="og:site_name" content="COALA-SwarmOps Game">
-<meta property="og:locale" content="es_CL">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="COALA-SwarmOps Game — Aprende automatización jugando">
-<meta name="twitter:description" content="🐨🏛️ Entrena en el Templo de Thot y domina el arte de coordinar enjambres de agentes IA.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐨</text></svg>">
 <title>🐨 COALA-SwarmOps Game | El Templo de Thot</title>
 <style>
-/* ============================================================
-   CSS CUSTOM PROPERTIES
-   ============================================================ */
-:root {
-  --gold: #D4A843; --gold-bright: #F4C542; --sand: #E8D5A3; --sand-dark: #C2A870;
-  --nile: #1A3A5C; --nile-light: #2B5A8C; --papyrus: #F5E6C8;
-  --shadow: #3D2B1F; --night: #1A1A2E; --night-light: #252545;
-  --success: #2ECC71; --error: #E74C3C; --text-light: #F5E6C8;
-  --font-title: 'Georgia', 'Times New Roman', serif;
-  --font-body: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --radius: 12px; --radius-sm: 8px;
-  --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
+:root{--gold:#D4A843;--gold-bright:#F4C542;--sand:#E8D5A3;--sand-dark:#C2A870;--nile:#1A3A5C;--night:#1A1A2E;--night-light:#252545;--success:#2ECC71;--error:#E74C3C;--text-light:#F5E6C8;--font-title:Georgia,'Times New Roman',serif;--font-body:'Segoe UI','Helvetica Neue',Arial,sans-serif;--radius:12px;--radius-sm:8px;--transition:0.3s ease}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:16px;scroll-behavior:smooth}
-body{
-  font-family:var(--font-body);background:var(--night);color:var(--text-light);
-  min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;
-  background-image:radial-gradient(ellipse at 50% 0%,rgba(212,168,67,0.08) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(26,58,92,0.15) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(244,197,66,0.06) 0%,transparent 50%);
-  transition:background 0.6s ease;
-}
+body{font-family:var(--font-body);background:var(--night);color:var(--text-light);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;background-image:radial-gradient(ellipse at 50% 0%,rgba(212,168,67,0.08) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(26,58,92,0.15) 0%,transparent 50%);transition:background 0.6s}
 
-/* ===== JEROGLÍFICOS BASE ===== */
 .bg-glyphs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.glyph{position:absolute;font-size:2rem;opacity:0.06;animation:floatGlyph 12s infinite ease-in-out;color:var(--gold)}
-.glyph:nth-child(1){top:8%;left:5%;animation-delay:0s;font-size:2.8rem}
-.glyph:nth-child(2){top:15%;right:8%;animation-delay:-3s;font-size:2.2rem}
-.glyph:nth-child(3){top:35%;left:12%;animation-delay:-6s;font-size:3rem}
-.glyph:nth-child(4){top:55%;right:5%;animation-delay:-2s;font-size:2.5rem}
-.glyph:nth-child(5){top:72%;left:8%;animation-delay:-8s;font-size:2rem}
-.glyph:nth-child(6){top:85%;right:15%;animation-delay:-5s;font-size:2.7rem}
-.glyph:nth-child(7){top:22%;left:50%;animation-delay:-1s;font-size:1.8rem}
-.glyph:nth-child(8){top:65%;left:70%;animation-delay:-7s;font-size:2.4rem}
-.glyph:nth-child(9){top:90%;left:35%;animation-delay:-4s;font-size:2.1rem}
-.glyph:nth-child(10){top:45%;left:90%;animation-delay:-9s;font-size:1.6rem}
-@keyframes floatGlyph{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-15px) rotate(3deg)}50%{transform:translateY(-8px) rotate(-2deg)}75%{transform:translateY(-20px) rotate(1deg)}}
+.glyph{position:absolute;font-size:2rem;opacity:0.05;animation:floatGlyph 12s infinite ease-in-out;color:var(--gold)}
+.glyph:nth-child(1){top:8%;left:5%;font-size:2.8rem}.glyph:nth-child(2){top:15%;right:8%;animation-delay:-3s;font-size:2.2rem}.glyph:nth-child(3){top:35%;left:12%;animation-delay:-6s;font-size:3rem}.glyph:nth-child(4){top:55%;right:5%;animation-delay:-2s}.glyph:nth-child(5){top:72%;left:8%;animation-delay:-8s}.glyph:nth-child(6){top:85%;right:15%;animation-delay:-5s;font-size:2.7rem}.glyph:nth-child(7){top:22%;left:50%;animation-delay:-1s;font-size:1.8rem}.glyph:nth-child(8){top:65%;left:70%;animation-delay:-7s;font-size:2.4rem}.glyph:nth-child(9){top:90%;left:35%;animation-delay:-4s}.glyph:nth-child(10){top:45%;left:90%;animation-delay:-9s;font-size:1.6rem}
+@keyframes floatGlyph{0%,100%{transform:translateY(0)rotate(0deg)}25%{transform:translateY(-15px)rotate(3deg)}50%{transform:translateY(-8px)rotate(-2deg)}75%{transform:translateY(-20px)rotate(1deg)}}
 
-/* ===== PIRÁMIDE (Nivel 2) ===== */
 .pyramid-scene{display:none;position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 body.level2-active .pyramid-scene{display:block}
-.pyramid-sky{position:absolute;inset:0;background:linear-gradient(180deg,#060D18 0%,#0D1528 25%,#1A0E30 45%,#3A1E35 60%,#6B3828 75%,#8A5520 90%,#B07020 100%);opacity:0.92}
-.pyramid-sun{position:absolute;top:6%;right:12%;width:60px;height:60px;background:radial-gradient(circle,#F4C542 0%,#D4903A 40%,transparent 70%);border-radius:50%;box-shadow:0 0 50px rgba(244,197,66,0.4),0 0 100px rgba(244,197,66,0.2);animation:sunGlow 3s infinite ease-in-out}
-@keyframes sunGlow{0%,100%{box-shadow:0 0 50px rgba(244,197,66,0.4),0 0 100px rgba(244,197,66,0.2)}50%{box-shadow:0 0 70px rgba(244,197,66,0.6),0 0 130px rgba(244,197,66,0.3)}}
-.pyramid{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:280px;height:200px;background:linear-gradient(135deg,#8A6D3B 0%,#A08045 20%,#B89055 40%,#9A7035 55%,#8A6028 70%,#7A5520 85%,#6A4818 100%);clip-path:polygon(50% 0%,5% 100%,95% 100%);box-shadow:0 0 30px rgba(160,128,60,0.12);animation:pyramidGlow 4s infinite ease-in-out}
-.pyramid::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(200,160,80,0.12) 0%,transparent 50%);clip-path:polygon(50% 0%,5% 100%,95% 100%)}
-@keyframes pyramidGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.05)}}
-.pyramid-far{position:absolute;bottom:0;right:6%;width:100px;height:75px;background:linear-gradient(135deg,#5A4020 0%,#6B4D28 50%,#4A3018 100%);clip-path:polygon(50% 0%,0% 100%,100% 100%);opacity:0.4;animation:pyramidGlow 5s infinite ease-in-out;animation-delay:-2s}
-.desert-sand{position:absolute;bottom:0;left:0;right:0;height:50px;background:linear-gradient(180deg,rgba(120,100,60,0.3) 0%,rgba(100,80,40,0.55) 40%,rgba(80,60,30,0.8) 100%)}
-.glyph-l2{position:absolute;font-size:1.6rem;opacity:0.10;color:var(--gold);animation:floatGlyphL2 8s infinite ease-in-out}
-@keyframes floatGlyphL2{0%,100%{transform:translateY(0) rotate(0deg);opacity:0.06}33%{transform:translateY(-8px) rotate(4deg);opacity:0.12}66%{transform:translateY(-4px) rotate(-2deg);opacity:0.08}}
+.pyramid-sky{position:absolute;inset:0;background:linear-gradient(180deg,#060D18,#0D1528 25%,#1A0E30 45%,#3A1E35 60%,#6B3828 75%,#8A5520 90%,#B07020);opacity:0.92}
+.pyramid-sun{position:absolute;top:6%;right:12%;width:60px;height:60px;background:radial-gradient(circle,#F4C542,#D4903A 40%,transparent 70%);border-radius:50%;box-shadow:0 0 50px rgba(244,197,66,0.4);animation:sunGlow 3s infinite}
+@keyframes sunGlow{50%{box-shadow:0 0 70px rgba(244,197,66,0.6)}}
+.pyramid{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:280px;height:200px;background:linear-gradient(135deg,#8A6D3B,#A08045 20%,#B89055 40%,#9A7035 55%,#8A6028 70%,#6A4818);clip-path:polygon(50% 0%,5% 100%,95% 100%);box-shadow:0 0 30px rgba(160,128,60,0.12);animation:pyramidGlow 4s infinite}
+@keyframes pyramidGlow{50%{filter:brightness(1.05)}}
+.pyramid-far{position:absolute;bottom:0;right:6%;width:100px;height:75px;background:linear-gradient(135deg,#5A4020,#6B4D28 50%,#4A3018);clip-path:polygon(50% 0%,0% 100%,100% 100%);opacity:0.4}
+.desert-sand{position:absolute;bottom:0;left:0;right:0;height:50px;background:linear-gradient(180deg,rgba(120,100,60,0.3),rgba(100,80,40,0.55) 40%,rgba(80,60,30,0.8))}
+.glyph-l2{position:absolute;font-size:1.6rem;opacity:0.08;color:var(--gold);animation:floatGlyphL2 8s infinite}
+@keyframes floatGlyphL2{33%{transform:translateY(-8px)rotate(4deg);opacity:0.12}66%{transform:translateY(-4px)rotate(-2deg);opacity:0.06}}
 
-/* ===== FONDO NIVEL 3 ===== */
-body.level3-active{background:linear-gradient(180deg,#060E1A 0%,#0F1F38 40%,#0A1830 100%)}
+body.level3-active,body.level4-active,body.level5-active{background:linear-gradient(180deg,#060E1A,#0F1F38 40%,#0A1830)}
 
-/* ===== MAIN CONTAINER ===== */
-.app-container{position:relative;z-index:1;width:100%;max-width:720px;min-height:100vh;display:flex;flex-direction:column;padding:1rem}
+.app-container{position:relative;z-index:1;width:100%;max-width:720px;min-height:100vh;display:flex;flex-direction:column;padding:1rem;gap:0.5rem}
 
-/* ===== HEADER, TOPBAR, FOOTER ===== */
-.game-header{text-align:center;padding:0.4rem 0 0.15rem}
-.game-header .logo-icon{font-size:2.8rem;display:block;animation:bounceLogo 2s infinite ease-in-out}
-@keyframes bounceLogo{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.game-header h1{font-family:var(--font-title);font-size:clamp(1.1rem,4vw,1.6rem);color:var(--gold-bright);text-shadow:0 0 18px rgba(244,197,66,0.35);letter-spacing:1px;margin-top:0.05rem}
-.game-header .subtitle{font-size:0.8rem;color:var(--sand);opacity:0.75;font-style:italic}
-.site-topbar{text-align:center;padding:0.3rem 0 0.1rem;font-size:0.68rem;opacity:0.45}
-.site-topbar a{color:var(--sand);text-decoration:none;letter-spacing:0.5px}
-.site-topbar a:hover{color:var(--gold-bright);opacity:0.8}
-.site-footer{text-align:center;padding:0.5rem 0 0.8rem;font-size:0.65rem;opacity:0.4;z-index:1;position:relative}
-.site-footer a{color:var(--sand);text-decoration:none;transition:var(--transition)}
-.site-footer a:hover{color:var(--gold-bright);text-decoration:underline}
-.site-footer .footer-divider{margin:0 0.4rem;opacity:0.3}
+.game-header{text-align:center;padding:0.3rem 0 0}.game-header .logo-icon{font-size:2.5rem;display:block;animation:bounceLogo 2s infinite}@keyframes bounceLogo{50%{transform:translateY(-6px)}}
+.game-header h1{font-family:var(--font-title);font-size:clamp(1.1rem,4vw,1.5rem);color:var(--gold-bright);text-shadow:0 0 18px rgba(244,197,66,0.35)}
+.game-header .subtitle{font-size:0.75rem;color:var(--sand);opacity:0.7;font-style:italic}
+.site-topbar{text-align:center;padding:0.25rem 0 0;font-size:0.65rem;opacity:0.4}.site-topbar a{color:var(--sand);text-decoration:none}.site-topbar a:hover{color:var(--gold-bright)}
+.site-footer{text-align:center;padding:0.5rem 0 0.7rem;font-size:0.62rem;opacity:0.35;z-index:1;position:relative}.site-footer a{color:var(--sand);text-decoration:none}.site-footer a:hover{color:var(--gold-bright)}.site-footer .footer-divider{margin:0 0.35rem;opacity:0.3}
 
-/* ===== PROGRESS BAR ===== */
-.progress-bar-wrap{display:flex;align-items:center;gap:0.35rem;margin:0.6rem 0 0.8rem;padding:0 0.4rem}
-.progress-step{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,0.10);transition:var(--transition);position:relative}
-.progress-step.done{background:var(--gold);box-shadow:0 0 6px rgba(212,168,67,0.4)}
+.progress-bar-wrap{display:flex;align-items:center;gap:0.3rem;margin:0.4rem 0 0.5rem;padding:0 0.3rem}
+.progress-step{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,0.08);transition:var(--transition);position:relative}
+.progress-step.done{background:var(--gold);box-shadow:0 0 6px rgba(212,168,67,0.35)}
 .progress-step.active{background:var(--gold-bright);animation:pulseStep 1.5s infinite}
-.progress-step .step-label{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:0.55rem;white-space:nowrap;color:var(--sand);opacity:0.6}
-@keyframes pulseStep{0%,100%{box-shadow:0 0 3px rgba(244,197,66,0.3)}50%{box-shadow:0 0 12px rgba(244,197,66,0.7)}}
+.progress-step .step-label{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:0.5rem;white-space:nowrap;color:var(--sand);opacity:0.55}
+@keyframes pulseStep{50%{box-shadow:0 0 12px rgba(244,197,66,0.7)}}
 
-/* ===== SCREENS ===== */
-.screen{display:none;flex-direction:column;flex:1;animation:fadeSlideIn 0.5s ease}
+.screen{display:none;flex-direction:column;flex:1;animation:fadeSlideIn 0.4s ease}
 .screen.active{display:flex}
-@keyframes fadeSlideIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.card{background:rgba(255,255,255,0.04);border:1px solid rgba(212,168,67,0.15);border-radius:var(--radius);padding:1.5rem 1.2rem;backdrop-filter:blur(6px)}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card{background:rgba(255,255,255,0.035);border:1px solid rgba(212,168,67,0.12);border-radius:var(--radius);padding:1.2rem 1rem;backdrop-filter:blur(6px);margin-bottom:0.4rem}
 
-/* ===== BUTTONS ===== */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.4rem;padding:0.7rem 1.6rem;font-family:var(--font-title);font-size:0.95rem;font-weight:bold;border:2px solid var(--gold);border-radius:50px;cursor:pointer;transition:var(--transition);text-decoration:none;letter-spacing:0.5px}
-.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:var(--night);border-color:transparent;box-shadow:0 4px 18px rgba(212,168,67,0.3)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(244,197,66,0.45)}
-.btn-primary:active{transform:translateY(0)}
-.btn-secondary{background:transparent;color:var(--gold)}
-.btn-secondary:hover{background:rgba(212,168,67,0.08)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.35rem;padding:0.65rem 1.4rem;font-family:var(--font-title);font-size:0.9rem;font-weight:bold;border:2px solid var(--gold);border-radius:50px;cursor:pointer;transition:var(--transition);text-decoration:none;letter-spacing:0.5px}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:var(--night);border-color:transparent;box-shadow:0 4px 16px rgba(212,168,67,0.25)}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(244,197,66,0.4)}.btn-primary:active{transform:translateY(0)}
+.btn-secondary{background:transparent;color:var(--gold)}.btn-secondary:hover{background:rgba(212,168,67,0.07)}
 
-/* ===== WELCOME ===== */
-.welcome-content{text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;gap:1rem}
-.welcome-content .thot-icon{font-size:4.5rem;animation:thotGlow 2.5s infinite ease-in-out}
-@keyframes thotGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(244,197,66,0.3))}50%{filter:drop-shadow(0 0 22px rgba(244,197,66,0.6))}}
-.welcome-content .welcome-title{font-family:var(--font-title);font-size:clamp(1.3rem,5vw,1.8rem);color:var(--gold-bright)}
-.welcome-content .welcome-text{color:var(--sand);font-size:0.9rem;line-height:1.5;max-width:480px;margin:0 auto}
-.koala-row{display:flex;justify-content:center;gap:0.4rem;font-size:2rem;flex-wrap:wrap}
+.welcome-content{text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;gap:0.8rem}
+.welcome-content .thot-icon{font-size:4rem;animation:thotGlow 2.5s infinite}@keyframes thotGlow{50%{filter:drop-shadow(0 0 20px rgba(244,197,66,0.55))}}
+.welcome-content .welcome-title{font-family:var(--font-title);font-size:clamp(1.2rem,5vw,1.6rem);color:var(--gold-bright)}
+.welcome-content .welcome-text{color:var(--sand);font-size:0.85rem;line-height:1.45;max-width:460px;margin:0 auto}
+.koala-row{display:flex;justify-content:center;gap:0.35rem;font-size:1.8rem;flex-wrap:wrap}
 
-.level-index{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:0.2rem}
-.level-index .li-btn{display:inline-flex;align-items:center;gap:0.3rem;padding:0.5rem 1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(212,168,67,0.2);border-radius:50px;cursor:pointer;font-size:0.76rem;color:var(--sand);transition:var(--transition);font-family:var(--font-body)}
-.level-index .li-btn:hover:not(.locked){border-color:var(--gold);background:rgba(212,168,67,0.08);color:var(--gold-bright)}
-.level-index .li-btn.locked{opacity:0.35;cursor:not-allowed}
-.level-index .li-btn.unlocked{border-color:rgba(46,204,113,0.4)}
+.level-index{display:flex;gap:0.4rem;justify-content:center;flex-wrap:wrap;margin:0.2rem 0}
+.level-index .li-btn{display:inline-flex;align-items:center;gap:0.25rem;padding:0.45rem 0.8rem;background:rgba(255,255,255,0.035);border:1px solid rgba(212,168,67,0.18);border-radius:50px;cursor:pointer;font-size:0.7rem;color:var(--sand);transition:var(--transition);font-family:var(--font-body)}.level-index .li-btn:hover:not(.locked){border-color:var(--gold);background:rgba(212,168,67,0.06);color:var(--gold-bright)}.level-index .li-btn.locked{opacity:0.3;cursor:not-allowed}.level-index .li-btn.unlocked{border-color:rgba(46,204,113,0.35)}
 
-/* ===== NIVEL 1: KOALA MATCHING ===== */
-.level-title{text-align:center;font-family:var(--font-title);color:var(--gold-bright);font-size:1.2rem;margin-bottom:0.25rem}
-.level-desc{text-align:center;color:var(--sand);font-size:0.82rem;margin-bottom:0.8rem;opacity:0.85}
-.level-hint{text-align:center;font-size:0.75rem;color:var(--sand);opacity:0.55;margin-top:0.5rem;font-style:italic}
+.level-title{text-align:center;font-family:var(--font-title);color:var(--gold-bright);font-size:1.1rem;margin-bottom:0.2rem}
+.level-desc{text-align:center;color:var(--sand);font-size:0.78rem;margin-bottom:0.6rem;opacity:0.8}
+.level-hint{text-align:center;font-size:0.7rem;color:var(--sand);opacity:0.5;margin-top:0.4rem;font-style:italic}
 
-.tree-area{position:relative;min-height:360px;background:rgba(26,58,92,0.15);border-radius:var(--radius);border:1px dashed rgba(212,168,67,0.2);padding:0.8rem;display:flex;flex-direction:column;align-items:center;gap:0.4rem;margin-bottom:0.8rem}
-.tree-trunk{font-size:1.6rem;color:var(--sand-dark);text-align:center}
-.tree-branches{display:flex;flex-wrap:wrap;justify-content:center;gap:0.4rem;width:100%}
-.branch-slot{display:flex;flex-direction:column;align-items:center;gap:0.2rem;padding:0.4rem 0.5rem;min-width:85px;background:rgba(255,255,255,0.03);border:2px dashed rgba(212,168,67,0.25);border-radius:var(--radius-sm);transition:var(--transition);cursor:pointer}
-.branch-slot.highlight{border-color:var(--gold-bright);background:rgba(244,197,66,0.08)}
-.branch-slot.matched{border-color:var(--success);border-style:solid;background:rgba(46,204,113,0.06)}
-.branch-slot .branch-emoji{font-size:1.4rem}
-.branch-slot .branch-name{font-size:0.65rem;color:var(--sand);text-align:center}
-.branch-slot .branch-occupant{font-size:1.6rem;min-height:1.8rem}
+.tree-area{position:relative;min-height:340px;background:rgba(26,58,92,0.12);border-radius:var(--radius);border:1px dashed rgba(212,168,67,0.18);padding:0.7rem;display:flex;flex-direction:column;align-items:center;gap:0.4rem;margin-bottom:0.6rem}
+.tree-trunk{font-size:1.5rem;color:var(--sand-dark);text-align:center}
+.tree-branches{display:flex;flex-wrap:wrap;justify-content:center;gap:0.35rem;width:100%}
+.branch-slot{display:flex;flex-direction:column;align-items:center;gap:0.15rem;padding:0.35rem 0.45rem;min-width:80px;background:rgba(255,255,255,0.025);border:2px dashed rgba(212,168,67,0.2);border-radius:var(--radius-sm);transition:var(--transition);cursor:pointer}.branch-slot.highlight{border-color:var(--gold-bright);background:rgba(244,197,66,0.07)}.branch-slot.matched{border-color:var(--success);border-style:solid;background:rgba(46,204,113,0.05)}.branch-slot .branch-emoji{font-size:1.3rem}.branch-slot .branch-name{font-size:0.6rem;color:var(--sand)}.branch-slot .branch-occupant{font-size:1.4rem;min-height:1.6rem}
+.koala-pool{display:flex;flex-wrap:wrap;justify-content:center;gap:0.4rem;margin-top:0.3rem}
+.koala-card{display:flex;flex-direction:column;align-items:center;gap:0.1rem;padding:0.35rem 0.5rem;background:rgba(255,255,255,0.04);border:2px solid rgba(212,168,67,0.25);border-radius:var(--radius-sm);cursor:grab;transition:var(--transition);user-select:none;min-width:70px}.koala-card:hover{border-color:var(--gold-bright);transform:translateY(-2px)}.koala-card.selected{border-color:var(--gold-bright);background:rgba(244,197,66,0.1);box-shadow:0 0 12px rgba(244,197,66,0.3)}.koala-card.matched{opacity:0.35;pointer-events:none;border-color:var(--success)}.koala-card .koala-emoji{font-size:1.6rem}.koala-card .koala-role{font-size:0.6rem;color:var(--sand)}
 
-.koala-pool{display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;margin-top:0.4rem}
-.koala-card{display:flex;flex-direction:column;align-items:center;gap:0.1rem;padding:0.4rem 0.6rem;background:rgba(255,255,255,0.05);border:2px solid rgba(212,168,67,0.3);border-radius:var(--radius-sm);cursor:grab;transition:var(--transition);user-select:none;min-width:75px}
-.koala-card:hover{border-color:var(--gold-bright);transform:translateY(-3px)}
-.koala-card.selected{border-color:var(--gold-bright);background:rgba(244,197,66,0.12);box-shadow:0 0 14px rgba(244,197,66,0.35)}
-.koala-card.matched{opacity:0.4;pointer-events:none;border-color:var(--success)}
-.koala-card .koala-emoji{font-size:1.8rem}
-.koala-card .koala-role{font-size:0.65rem;color:var(--sand);text-align:center}
+.quiz-area{display:flex;flex-direction:column;gap:0.8rem}
+.quiz-question-card{background:rgba(26,58,92,0.18);border:1px solid rgba(212,168,67,0.18);border-radius:var(--radius);padding:0.9rem 1rem;text-align:center}
+.quiz-question-card .q-label{font-size:0.65rem;color:var(--sand);text-transform:uppercase;letter-spacing:2px;margin-bottom:0.3rem}
+.quiz-question-card .q-text{font-family:var(--font-title);font-size:0.95rem;color:var(--gold-bright);line-height:1.35}
+.quiz-options{display:flex;flex-direction:column;gap:0.4rem}
+.quiz-option{padding:0.7rem 0.9rem;background:rgba(255,255,255,0.035);border:2px solid rgba(212,168,67,0.18);border-radius:var(--radius-sm);cursor:pointer;transition:var(--transition);font-size:0.8rem;color:var(--text-light);text-align:left;font-family:var(--font-body)}.quiz-option:hover{border-color:var(--gold);background:rgba(212,168,67,0.05)}.quiz-option.correct{border-color:var(--success);background:rgba(46,204,113,0.08);animation:correctPulse 0.6s}.quiz-option.wrong{border-color:var(--error);background:rgba(231,76,60,0.08);animation:shake 0.5s}.quiz-option.disabled{pointer-events:none;opacity:0.65}
+@keyframes correctPulse{50%{transform:scale(1.02)}}@keyframes shake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.quiz-koala-feedback{text-align:center;font-size:1.8rem;min-height:2.2rem;transition:var(--transition)}
 
-/* ===== NIVEL 1B: QUIZ ===== */
-.quiz-area{display:flex;flex-direction:column;gap:1rem}
-.quiz-question-card{background:rgba(26,58,92,0.2);border:1px solid rgba(212,168,67,0.2);border-radius:var(--radius);padding:1rem;text-align:center}
-.quiz-question-card .q-label{font-size:0.7rem;color:var(--sand);text-transform:uppercase;letter-spacing:2px;margin-bottom:0.4rem}
-.quiz-question-card .q-text{font-family:var(--font-title);font-size:1rem;color:var(--gold-bright);line-height:1.4}
-.quiz-options{display:flex;flex-direction:column;gap:0.5rem}
-.quiz-option{padding:0.8rem 1rem;background:rgba(255,255,255,0.04);border:2px solid rgba(212,168,67,0.2);border-radius:var(--radius-sm);cursor:pointer;transition:var(--transition);font-size:0.85rem;color:var(--text-light);text-align:left;font-family:var(--font-body)}
-.quiz-option:hover{border-color:var(--gold);background:rgba(212,168,67,0.06)}
-.quiz-option.correct{border-color:var(--success);background:rgba(46,204,113,0.10);animation:correctPulse 0.6s}
-.quiz-option.wrong{border-color:var(--error);background:rgba(231,76,60,0.10);animation:shake 0.5s}
-.quiz-option.disabled{pointer-events:none;opacity:0.7}
-@keyframes correctPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-.quiz-koala-feedback{text-align:center;font-size:2rem;min-height:2.5rem;transition:var(--transition)}
+.pipeline-area{display:flex;flex-direction:column;gap:0.6rem}
+.pipeline-slots{display:flex;flex-wrap:wrap;gap:0.35rem;justify-content:center;min-height:42px;padding:0.35rem;background:rgba(26,58,92,0.12);border-radius:var(--radius-sm);border:2px dashed rgba(212,168,67,0.18)}.pipeline-slots .slot{width:40px;height:40px;border:2px dashed rgba(255,255,255,0.2);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:rgba(255,255,255,0.2);transition:var(--transition)}.pipeline-slots .slot.filled{border-color:var(--gold);border-style:solid;background:rgba(212,168,67,0.07);font-size:1.3rem}
+.pipeline-options{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center}.pipeline-chip{padding:0.5rem 0.8rem;background:rgba(255,255,255,0.04);border:2px solid rgba(212,168,67,0.25);border-radius:50px;cursor:pointer;transition:var(--transition);font-size:0.75rem;color:var(--sand);display:flex;align-items:center;gap:0.3rem;font-family:var(--font-body)}.pipeline-chip:hover{border-color:var(--gold-bright);transform:translateY(-2px)}.pipeline-chip.used{opacity:0.3;pointer-events:none}
 
-/* ===== NIVEL 1C: PIPELINE ===== */
-.pipeline-area{display:flex;flex-direction:column;gap:0.7rem}
-.pipeline-slots{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;min-height:45px;padding:0.4rem;background:rgba(26,58,92,0.15);border-radius:var(--radius-sm);border:2px dashed rgba(212,168,67,0.2)}
-.pipeline-slots .slot{width:44px;height:44px;border:2px dashed rgba(255,255,255,0.2);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:rgba(255,255,255,0.25);transition:var(--transition)}
-.pipeline-slots .slot.filled{border-color:var(--gold);border-style:solid;background:rgba(212,168,67,0.08);font-size:1.4rem}
-.pipeline-options{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center}
-.pipeline-chip{padding:0.55rem 0.9rem;background:rgba(255,255,255,0.05);border:2px solid rgba(212,168,67,0.3);border-radius:50px;cursor:pointer;transition:var(--transition);font-size:0.8rem;color:var(--sand);display:flex;align-items:center;gap:0.35rem;font-family:var(--font-body)}
-.pipeline-chip:hover{border-color:var(--gold-bright);transform:translateY(-2px)}
-.pipeline-chip.used{opacity:0.3;pointer-events:none}
+.learning-summary{background:linear-gradient(135deg,rgba(26,58,92,0.25),rgba(26,58,92,0.06));border:1px solid rgba(212,168,67,0.2);border-radius:var(--radius);padding:0.7rem 0.9rem;margin-bottom:0.6rem}.learning-summary h4{font-family:var(--font-title);color:var(--gold-bright);font-size:0.85rem;margin-bottom:0.4rem;text-align:center}.learning-summary .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:0.25rem}.learning-summary .summary-item{display:flex;align-items:center;gap:0.25rem;padding:0.2rem 0.35rem;background:rgba(255,255,255,0.025);border-radius:var(--radius-sm);font-size:0.65rem;color:var(--sand);border-left:2px solid var(--success)}
 
-/* ===== NIVEL 2: CONSTRUYE LA PIRÁMIDE (MATCHING) ===== */
-.learning-summary{background:linear-gradient(135deg,rgba(26,58,92,0.3),rgba(26,58,92,0.08));border:1px solid rgba(212,168,67,0.25);border-radius:var(--radius);padding:0.8rem 1rem;margin-bottom:0.5rem}
-.learning-summary h4{font-family:var(--font-title);color:var(--gold-bright);font-size:0.9rem;margin-bottom:0.5rem;text-align:center}
-.learning-summary .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.3rem}
-.learning-summary .summary-item{display:flex;align-items:center;gap:0.3rem;padding:0.25rem 0.4rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);font-size:0.7rem;color:var(--sand);border-left:2px solid var(--success)}
+/* Pasos interactivos (Niveles 3, 4, 5) */
+.step-card{background:rgba(26,58,92,0.15);border:1px solid rgba(212,168,67,0.15);border-radius:var(--radius);padding:0.8rem 0.9rem;margin-bottom:0.55rem;transition:var(--transition)}.step-card.active-step{border-color:var(--gold-bright);box-shadow:0 0 12px rgba(244,197,66,0.1)}.step-card.done-step{border-color:var(--success);opacity:0.75}.step-card .st-header{display:flex;align-items:center;gap:0.4rem;margin-bottom:0.35rem}.step-card .st-icon{font-size:1.2rem;min-width:22px;text-align:center}.step-card .st-title{color:var(--text-light);font-size:0.85rem;font-weight:600}.step-card.done-step .st-title{color:var(--success)}.step-card .st-desc{color:var(--sand);font-size:0.72rem;line-height:1.4;margin-bottom:0.4rem}.step-card .st-desc a{color:var(--gold-bright);text-decoration:underline}.step-card .st-desc code{background:rgba(255,255,255,0.07);padding:0.1rem 0.25rem;border-radius:3px;font-size:0.68rem}.step-card .st-actions{display:flex;flex-wrap:wrap;gap:0.35rem;align-items:center}.step-card .st-btn{padding:0.35rem 0.75rem;background:rgba(212,168,67,0.1);border:1px solid var(--gold);border-radius:16px;cursor:pointer;font-size:0.7rem;color:var(--gold);transition:var(--transition);font-family:var(--font-body)}.step-card .st-btn:hover:not(:disabled){background:rgba(212,168,67,0.2);transform:translateY(-1px)}.step-card .st-btn:disabled{cursor:not-allowed;opacity:0.4}.step-card .st-btn.done-btn{background:rgba(46,204,113,0.1);border-color:var(--success);color:var(--success)}.step-card .st-btn.link-btn{background:rgba(97,175,239,0.08);border-color:#61AFEF;color:#61AFEF}.step-card .st-check{color:var(--success);font-size:1rem;display:none}.step-card .st-check.show{display:inline}
 
-/* ===== NIVEL 3: VS CODE ===== */
-.vscode-step{background:rgba(26,58,92,0.2);border:1px solid rgba(212,168,67,0.18);border-radius:var(--radius);padding:0.8rem 1rem;margin-bottom:0.7rem;transition:var(--transition)}
-.vscode-step.active-step{border-color:var(--gold-bright);box-shadow:0 0 14px rgba(244,197,66,0.12)}
-.vscode-step.completed-step{border-color:var(--success);opacity:0.8}
-.vscode-step .vs-header{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.4rem}
-.vscode-step .vs-num{font-family:var(--font-title);color:var(--gold-bright);font-size:1.1rem;min-width:26px;text-align:center}
-.vscode-step .vs-title{color:var(--text-light);font-size:0.9rem;font-weight:600}
-.vscode-step.completed-step .vs-title{color:var(--success)}
-.vscode-step .vs-desc{color:var(--sand);font-size:0.78rem;line-height:1.5;margin-bottom:0.5rem}
-.vscode-step .vs-desc a{color:var(--gold-bright);text-decoration:underline}
-.vscode-step .vs-desc a:hover{color:#fff}
-.vscode-step .vs-desc code{background:rgba(255,255,255,0.08);padding:0.1rem 0.3rem;border-radius:3px;font-size:0.72rem}
-.vscode-step .vs-action{display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center}
-.vscode-step .vs-btn{padding:0.4rem 0.9rem;background:rgba(212,168,67,0.12);border:1px solid var(--gold);border-radius:18px;cursor:pointer;font-size:0.76rem;color:var(--gold);transition:var(--transition);font-family:var(--font-body)}
-.vscode-step .vs-btn:hover:not(:disabled){background:rgba(212,168,67,0.22);transform:translateY(-1px)}
-.vscode-step .vs-btn:disabled{cursor:not-allowed;opacity:0.45}
-.vscode-step .vs-btn.done-btn{background:rgba(46,204,113,0.12);border-color:var(--success);color:var(--success)}
-.vscode-step .vs-btn.link-btn{background:rgba(97,175,239,0.1);border-color:#61AFEF;color:#61AFEF}
-.vscode-step .vs-check{color:var(--success);font-size:1.2rem;display:none}
-.vscode-step .vs-check.show{display:inline}
+.terminal-mock{background:#0A0A0D;border:1px solid rgba(212,168,67,0.15);border-radius:var(--radius-sm);padding:0.45rem 0.6rem;margin:0.4rem 0;font-family:'Consolas','Courier New',monospace;font-size:0.65rem;color:#BBB;overflow-x:auto;white-space:pre-wrap}.terminal-mock .prompt{color:var(--success)}.terminal-mock .cmd{color:#61AFEF}
 
-.vscode-terminal-mock{background:#0A0A0D;border:1px solid rgba(212,168,67,0.2);border-radius:var(--radius-sm);padding:0.5rem 0.7rem;margin:0.5rem 0;font-family:'Consolas','Courier New',monospace;font-size:0.7rem;color:#BBBBBB;overflow-x:auto;white-space:pre-wrap}
-.vscode-terminal-mock .prompt{color:var(--success)}
-.vscode-terminal-mock .cmd{color:#61AFEF}
+/* Bloque de código YAML para Nivel 4 */
+.yaml-preview{background:#0A0A0D;border:1px solid rgba(212,168,67,0.2);border-radius:var(--radius-sm);padding:0.5rem 0.7rem;margin:0.4rem 0;font-family:'Consolas','Courier New',monospace;font-size:0.62rem;color:#BBB;overflow-x:auto;white-space:pre;line-height:1.5;max-height:180px;overflow-y:auto}
 
-.vscode-video-link{display:inline-flex;align-items:center;gap:0.3rem;padding:0.4rem 0.8rem;background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.4);border-radius:18px;font-size:0.72rem;color:#E74C3C;text-decoration:none;transition:var(--transition);font-family:var(--font-body)}
-.vscode-video-link:hover{background:rgba(231,76,60,0.2);transform:translateY(-1px)}
+.victory-content{text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0.8rem}
+.victory-icon{font-size:4.5rem;animation:victoryBounce 0.8s}@keyframes victoryBounce{0%{transform:scale(0)rotate(-20deg)}60%{transform:scale(1.15)rotate(5deg)}100%{transform:scale(1)rotate(0deg)}}
+.victory-title{font-family:var(--font-title);font-size:clamp(1.3rem,5vw,1.8rem);color:var(--gold-bright);text-shadow:0 0 22px rgba(244,197,66,0.4)}
+.victory-score{font-size:2rem;color:var(--gold);font-weight:bold}
+.victory-text{color:var(--sand);font-size:0.85rem;line-height:1.5;max-width:440px}
+.victory-link-block{margin-top:0.2rem;padding:0.7rem 0.9rem;background:rgba(26,58,92,0.18);border:1px solid rgba(212,168,67,0.18);border-radius:var(--radius-sm)}.victory-link-block p{font-size:0.7rem;color:var(--sand);margin-bottom:0.3rem}.victory-link-block a{color:var(--gold-bright);font-family:var(--font-title);font-size:0.8rem;text-decoration:none}.victory-link-block a:hover{text-decoration:underline}
 
-/* ===== VICTORY ===== */
-.victory-content{text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1rem}
-.victory-icon{font-size:5rem;animation:victoryBounce 0.8s ease-out}
-@keyframes victoryBounce{0%{transform:scale(0) rotate(-20deg)}60%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0deg)}}
-.victory-title{font-family:var(--font-title);font-size:clamp(1.4rem,5vw,2rem);color:var(--gold-bright);text-shadow:0 0 25px rgba(244,197,66,0.45)}
-.victory-score{font-size:2.2rem;color:var(--gold);font-weight:bold}
-.victory-text{color:var(--sand);font-size:0.9rem;line-height:1.6;max-width:460px}
-.victory-link-block{margin-top:0.3rem;padding:0.8rem 1rem;background:rgba(26,58,92,0.2);border:1px solid rgba(212,168,67,0.2);border-radius:var(--radius-sm)}
-.victory-link-block p{font-size:0.75rem;color:var(--sand);margin-bottom:0.4rem}
-.victory-link-block a{color:var(--gold-bright);font-family:var(--font-title);font-size:0.85rem;text-decoration:none;word-break:break-all;transition:var(--transition)}
-.victory-link-block a:hover{text-decoration:underline}
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%)translateY(100px);background:var(--night-light);border:1px solid var(--gold);border-radius:50px;padding:0.6rem 1.2rem;color:var(--gold-bright);font-size:0.8rem;z-index:100;opacity:0;transition:var(--transition);pointer-events:none;text-align:center;max-width:90vw}.toast.show{opacity:1;transform:translateX(-50%)translateY(0)}
 
-/* ===== TOAST ===== */
-.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--night-light);border:1px solid var(--gold);border-radius:50px;padding:0.65rem 1.4rem;color:var(--gold-bright);font-size:0.85rem;z-index:100;opacity:0;transition:var(--transition);pointer-events:none;text-align:center;max-width:90vw}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-@media(max-width:480px){
-  .app-container{padding:0.4rem}.card{padding:0.9rem 0.7rem}.tree-area{min-height:280px}
-  .branch-slot{min-width:65px;padding:0.3rem 0.35rem}.koala-card{min-width:60px;padding:0.3rem 0.4rem}
-  .koala-card .koala-emoji{font-size:1.4rem}.branch-slot .branch-emoji{font-size:1.2rem}
-  .pyramid{width:200px;height:150px}.pyramid-far{width:70px;height:55px}
-  .learning-summary .summary-grid{grid-template-columns:repeat(auto-fit,minmax(100px,1fr))}
-}
-@media(min-width:768px){.tree-area{min-height:400px}.branch-slot{min-width:100px}}
+@media(max-width:480px){.app-container{padding:0.4rem;gap:0.3rem}.card{padding:0.9rem 0.7rem}.tree-area{min-height:260px}.branch-slot{min-width:60px;padding:0.25rem 0.3rem}.koala-card{min-width:55px;padding:0.25rem 0.35rem}.koala-card .koala-emoji{font-size:1.3rem}.pyramid{width:200px;height:150px}.pyramid-far{width:70px;height:55px}.level-index .li-btn{padding:0.35rem 0.6rem;font-size:0.62rem}.step-card{padding:0.6rem 0.7rem}.yaml-preview{font-size:0.55rem}}
+@media(min-width:768px){.tree-area{min-height:380px}.branch-slot{min-width:95px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important}}
 </style>
 </head>
 <body>
 
 <div class="bg-glyphs" aria-hidden="true">
-  <span class="glyph">☥</span><span class="glyph">𓂀</span><span class="glyph">◈</span>
-  <span class="glyph">☥</span><span class="glyph">𓂀</span><span class="glyph">◈</span>
-  <span class="glyph">☥</span><span class="glyph">𓂀</span><span class="glyph">◈</span>
-  <span class="glyph">𓂀</span>
+<span class="glyph">☥</span><span class="glyph">𓂀</span><span class="glyph">◈</span><span class="glyph">☥</span><span class="glyph">𓂀</span><span class="glyph">◈</span><span class="glyph">☥</span><span class="glyph">𓂀</span><span class="glyph">◈</span><span class="glyph">𓂀</span>
 </div>
 
 <div class="pyramid-scene" aria-hidden="true">
-  <div class="pyramid-sky"></div><div class="pyramid-sun"></div>
-  <div class="pyramid"></div><div class="pyramid-far"></div><div class="desert-sand"></div>
-  <span class="glyph-l2" style="top:10%;left:10%;animation-delay:0s;">☥</span>
-  <span class="glyph-l2" style="top:18%;right:12%;animation-delay:-2s;">𓂀</span>
-  <span class="glyph-l2" style="top:42%;left:6%;animation-delay:-4s;">◈</span>
-  <span class="glyph-l2" style="top:58%;right:8%;animation-delay:-1s;">☥</span>
-  <span class="glyph-l2" style="top:72%;left:14%;animation-delay:-5s;">𓂀</span>
-  <span class="glyph-l2" style="top:82%;right:16%;animation-delay:-3s;">◈</span>
+<div class="pyramid-sky"></div><div class="pyramid-sun"></div><div class="pyramid"></div><div class="pyramid-far"></div><div class="desert-sand"></div>
+<span class="glyph-l2" style="top:10%;left:10%">☥</span><span class="glyph-l2" style="top:18%;right:12%;animation-delay:-2s">𓂀</span><span class="glyph-l2" style="top:42%;left:6%;animation-delay:-4s">◈</span><span class="glyph-l2" style="top:58%;right:8%;animation-delay:-1s">☥</span><span class="glyph-l2" style="top:72%;left:14%;animation-delay:-5s">𓂀</span><span class="glyph-l2" style="top:82%;right:16%;animation-delay:-3s">◈</span>
 </div>
 
 <div class="site-topbar"><a href="https://github.com/oficinadigitalcl/COALA-SwarmOps" target="_blank" rel="noopener">🐨 COALA-SwarmOps Game</a></div>
 
 <div class="app-container">
 
-  <header class="game-header">
-    <span class="logo-icon">🐨</span><h1>COALA-SwarmOps</h1>
-    <p class="subtitle">🏛️ El Templo de Thot · Sabiduría Digital</p>
-  </header>
+<header class="game-header"><span class="logo-icon">🐨</span><h1>COALA-SwarmOps</h1><p class="subtitle">🏛️ El Templo de Thot · Sabiduría Digital</p></header>
 
-  <div class="progress-bar-wrap" id="progressBar">
-    <div class="progress-step done" id="step0"><span class="step-label">Inicio</span></div>
-    <div class="progress-step" id="step1"><span class="step-label">Koalas</span></div>
-    <div class="progress-step" id="step2"><span class="step-label">Quiz</span></div>
-    <div class="progress-step" id="step3"><span class="step-label">Flujo</span></div>
-    <div class="progress-step" id="step4"><span class="step-label">Fin</span></div>
-  </div>
-
-  <!-- WELCOME -->
-  <div class="screen active" id="screenWelcome">
-    <div class="card welcome-content">
-      <div class="thot-icon">🏛️</div>
-      <h2 class="welcome-title">📜 Bienvenido, Aprendiz</h2>
-      <p class="welcome-text">Soy <strong>Thot</strong>, dios de la sabiduría. Has llegado al <strong>Templo de la Sabiduría Digital</strong>. Entrena para convertirte en <strong>Arquitecto de Enjambres</strong>.</p>
-      <div class="koala-row"><span>🐨🏗️</span><span>🐨💻</span><span>🐨🧪</span><span>🐨📝</span><span>🐨🧠</span><span>🐨🎯</span></div>
-      <p class="welcome-text" style="font-size:0.75rem;opacity:0.65;">⚡ "Después de que aprendas COALA-SwarmOps entenderás mucho sobre automatización y memoria cognitiva"</p>
-      <div class="level-index">
-        <button class="li-btn unlocked" onclick="jumpToLevel(1)" id="liBtn1">🌳 Nivel 1 · Aprendiz</button>
-        <button class="li-btn locked" onclick="jumpToLevel(2)" id="liBtn2">🏛️ Nivel 2 · Pirámide</button>
-        <button class="li-btn locked" onclick="jumpToLevel(3)" id="liBtn3">💻 Nivel 3 · Código</button>
-      </div>
-      <p style="font-size:0.6rem;opacity:0.45;">Completa cada nivel para desbloquear el siguiente</p>
-      <button class="btn btn-primary" onclick="startGame()">🔮 Comenzar Entrenamiento</button>
-    </div>
-  </div>
-
-  <!-- NIVEL 1A: KOALA MATCHING -->
-  <div class="screen" id="screenL1_Koala">
-    <div class="card" style="flex:1;display:flex;flex-direction:column;">
-      <h3 class="level-title">🌳 Nivel 1 — El Árbol Sagrado</h3>
-      <p class="level-desc">Thot dice: "Cada koala tiene un rol sagrado. Colócalos en la rama correcta del Árbol COALA."</p>
-      <div class="tree-area" id="treeArea"><div class="tree-trunk">🌴 🐨 🌴</div><div class="tree-branches" id="treeBranches"></div></div>
-      <div class="koala-pool" id="koalaPool"></div>
-      <p class="level-hint">💡 Toca un koala → luego toca su rama correcta</p>
-    </div>
-    <button class="btn btn-primary" id="btnL1aNext" style="display:none;margin-top:0.7rem;" onclick="goToL1_Quiz()">✨ Continuar al Quiz</button>
-  </div>
-
-  <!-- NIVEL 1B: QUIZ -->
-  <div class="screen" id="screenL1_Quiz">
-    <div class="card" style="flex:1;display:flex;flex-direction:column;">
-      <h3 class="level-title">🧠 Nivel 1 — La Sabiduría de Thot</h3>
-      <p class="level-desc" id="quizDesc">Responde las preguntas del guardián. Cada acierto hace que un koala suba una rama.</p>
-      <div class="quiz-koala-feedback" id="quizKoala">🐨🌿</div>
-      <div class="quiz-area" id="quizArea"></div>
-      <div id="quizResult" style="text-align:center;margin-top:0.6rem;"></div>
-    </div>
-    <button class="btn btn-primary" id="btnL1bNext" style="display:none;margin-top:0.7rem;" onclick="goToL1_Pipeline()">✨ Avanzar al Flujo Sagrado</button>
-  </div>
-
-  <!-- NIVEL 1C: PIPELINE -->
-  <div class="screen" id="screenL1_Pipeline">
-    <div class="card" style="flex:1;display:flex;flex-direction:column;">
-      <h3 class="level-title">⚡ Nivel 1 — El Flujo Sagrado</h3>
-      <p class="level-desc">Ordena los pasos del pipeline COALA. Toca cada paso en el orden correcto.</p>
-      <div class="pipeline-area" id="pipelineArea"><div class="pipeline-slots" id="pipelineSlots"></div><div class="pipeline-options" id="pipelineOptions"></div></div>
-      <p class="level-hint" id="pipelineHint">💡 Toca el primer paso que ocurre en el flujo COALA</p>
-    </div>
-    <button class="btn btn-primary" id="btnL1cNext" style="display:none;margin-top:0.7rem;" onclick="finishLevel1()">🏆 ¡Nivel 1 Completado!</button>
-  </div>
-
-  <!-- NIVEL 2: LA PIRÁMIDE DE THOT (Quiz) -->
-  <div class="screen" id="screenL2_Pyramid">
-    <div class="card" style="flex:1;display:flex;flex-direction:column;position:relative;z-index:1;">
-      <h3 class="level-title">🏛️ Nivel 2 — La Pirámide de Thot</h3>
-      <p class="level-desc" id="l2Desc">📜 Responde las preguntas de la pirámide. Cada acierto ilumina un bloque de sabiduría.</p>
-      <div class="learning-summary" id="learningSummary"><h4>📋 Lo que aprendiste en el Nivel 1</h4><div class="summary-grid" id="summaryGrid"></div></div>
-      <div class="quiz-koala-feedback" id="quizKoalaL2">🐨🏛️</div>
-      <div class="quiz-area" id="quizAreaL2"></div>
-      <div id="l2Result" style="text-align:center;margin-top:0.6rem;"></div>
-    </div>
-    <button class="btn btn-primary" id="btnL2Next" style="display:none;margin-top:0.7rem;position:relative;z-index:1;" onclick="finishLevel2()">✨ ¡Nivel 2 Completado!</button>
-  </div>
-
-  <!-- NIVEL 3: TEMPLO DEL CÓDIGO -->
-  <div class="screen" id="screenL3_VSCode">
-    <div class="card" style="flex:1;display:flex;flex-direction:column;">
-      <h3 class="level-title">💻 Nivel 3 — El Templo del Código</h3>
-      <p class="level-desc" id="l3Desc">🐨 Thot dice: "Aprende a usar las herramientas de un Arquitecto de Enjambres..."</p>
-      <div id="vscodeSteps"></div>
-      <div id="l3Result" style="text-align:center;margin-top:0.4rem;"></div>
-    </div>
-    <button class="btn btn-primary" id="btnL3Next" style="display:none;margin-top:0.7rem;" onclick="goToVictory()">🏆 Ver Resultado Final</button>
-  </div>
-
-  <!-- VICTORY -->
-  <div class="screen" id="screenVictory">
-    <div class="card victory-content">
-      <div class="victory-icon">🏆</div>
-      <h2 class="victory-title">¡Eres un Arquitecto sin darte cuenta!</h2>
-      <div class="victory-score" id="finalScore">0 pts</div>
-      <p class="victory-text">🔮 <strong>Thot te observa con orgullo.</strong><br>Has dominado el Árbol Sagrado, la Pirámide de Thot y el Templo del Código. Ahora comprendes cómo los agentes koala coordinan sus talentos.</p>
-      <p class="victory-text" style="font-size:0.8rem;">📜 "Cada nivel que dominas te acerca a la Maestría Digital"<br>🐨 "Los koalas del Árbol Sagrado te esperan para futuras misiones..."</p>
-      <div class="victory-link-block">
-        <p>🔮 ¿Quieres más?</p>
-        <a href="https://github.com/oficinadigitalcl/COALA-SwarmOps" target="_blank" rel="noopener">👉 github.com/oficinadigitalcl/COALA-SwarmOps</a>
-        <p style="margin-top:0.2rem;font-size:0.65rem;opacity:0.65;">Visita el repo completo con documentación, guías y más recursos</p>
-      </div>
-      <div style="display:flex;gap:0.7rem;flex-wrap:wrap;justify-content:center;">
-        <button class="btn btn-primary" onclick="resetGame()">🔄 Jugar de Nuevo</button>
-        <button class="btn btn-secondary" id="btnAvanzado" onclick="onAvanzadoClick()">🔮 Modo Avanzado</button>
-      </div>
-      <p style="font-size:0.65rem;opacity:0.45;margin-top:0.6rem;">COALA-SwarmOps Game v2.1 · La Pirámide de Thot 🏛️</p>
-    </div>
-  </div>
+<div class="progress-bar-wrap" id="progressBar">
+<div class="progress-step done" id="step0"><span class="step-label">Inicio</span></div>
+<div class="progress-step" id="step1"><span class="step-label">Koalas</span></div>
+<div class="progress-step" id="step2"><span class="step-label">Quiz</span></div>
+<div class="progress-step" id="step3"><span class="step-label">Flujo</span></div>
+<div class="progress-step" id="step4"><span class="step-label">Fin</span></div>
 </div>
 
-<div class="site-footer">
-  <a href="https://oficinadigitalcl.github.io/Coala-SwarmOPS-game" target="_blank" rel="noopener">🐨 COALA-SwarmOps Game</a><span class="footer-divider">·</span>
-  <a href="https://github.com/oficinadigitalcl/COALA-SwarmOps" target="_blank" rel="noopener">Repo Principal</a><span class="footer-divider">·</span>
-  <span>v2.1 · Pirámide de Thot 🏛️</span>
+<!-- WELCOME -->
+<div class="screen active" id="screenWelcome">
+<div class="card welcome-content">
+<div class="thot-icon">🏛️</div>
+<h2 class="welcome-title">📜 Bienvenido, Aprendiz</h2>
+<p class="welcome-text">Soy <strong>Thot</strong>, dios de la sabiduría. Has llegado al <strong>Templo de la Sabiduría Digital</strong>. Completa los 5 niveles para convertirte en <strong>Arquitecto de Enjambres</strong>.</p>
+<div class="koala-row"><span>🐨🏗️</span><span>🐨💻</span><span>🐨🧪</span><span>🐨📝</span><span>🐨🧠</span><span>🐨🎯</span></div>
+<p class="welcome-text" style="font-size:0.7rem;opacity:0.6">⚡ "Después de que aprendas COALA-SwarmOps entenderás mucho sobre automatización y memoria cognitiva"</p>
+<div class="level-index">
+<button class="li-btn unlocked" onclick="jumpToLevel(1)" id="liBtn1">🌳 N1 · Aprendiz</button>
+<button class="li-btn locked" onclick="jumpToLevel(2)" id="liBtn2">🏛️ N2 · Pirámide</button>
+<button class="li-btn locked" onclick="jumpToLevel(3)" id="liBtn3">🔧 N3 · Taller</button>
+<button class="li-btn locked" onclick="jumpToLevel(4)" id="liBtn4">📜 N4 · Pergamino</button>
+<button class="li-btn locked" onclick="jumpToLevel(5)" id="liBtn5">💻 N5 · Código</button>
 </div>
+<p style="font-size:0.55rem;opacity:0.4">Completa cada nivel para desbloquear el siguiente</p>
+<button class="btn btn-primary" onclick="startGame()">🔮 Comenzar Entrenamiento</button>
+</div>
+</div>
+
+<!-- NIVEL 1A: KOALA MATCHING -->
+<div class="screen" id="screenL1_Koala">
+<div class="card" style="flex:1;display:flex;flex-direction:column">
+<h3 class="level-title">🌳 Nivel 1 — El Árbol Sagrado</h3>
+<p class="level-desc">Thot dice: "Cada koala tiene un rol sagrado. Colócalos en la rama correcta del Árbol COALA."</p>
+<div class="tree-area" id="treeArea"><div class="tree-trunk">🌴 🐨 🌴</div><div class="tree-branches" id="treeBranches"></div></div>
+<div class="koala-pool" id="koalaPool"></div>
+<p class="level-hint">💡 Toca un koala → luego toca su rama correcta</p>
+</div>
+<button class="btn btn-primary" id="btnL1aNext" style="display:none;margin-top:0.5rem" onclick="goToL1_Quiz()">✨ Continuar al Quiz</button>
+</div>
+
+<!-- NIVEL 1B: QUIZ -->
+<div class="screen" id="screenL1_Quiz">
+<div class="card" style="flex:1;display:flex;flex-direction:column">
+<h3 class="level-title">🧠 Nivel 1 — La Sabiduría de Thot</h3>
+<p class="level-desc" id="quizDesc">Responde las preguntas del guardián.</p>
+<div class="quiz-koala-feedback" id="quizKoala">🐨🌿</div>
+<div class="quiz-area" id="quizArea"></div>
+<div id="quizResult" style="text-align:center;margin-top:0.5rem"></div>
+</div>
+<button class="btn btn-primary" id="btnL1bNext" style="display:none;margin-top:0.5rem" onclick="goToL1_Pipeline()">✨ Avanzar al Flujo Sagrado</button>
+</div>
+
+<!-- NIVEL 1C: PIPELINE -->
+<div class="screen" id="screenL1_Pipeline">
+<div class="card" style="flex:1;display:flex;flex-direction:column">
+<h3 class="level-title">⚡ Nivel 1 — El Flujo Sagrado</h3>
+<p class="level-desc">Ordena los pasos del pipeline COALA.</p>
+<div class="pipeline-area" id="pipelineArea"><div class="pipeline-slots" id="pipelineSlots"></div><div class="pipeline-options" id="pipelineOptions"></div></div>
+<p class="level-hint" id="pipelineHint">💡 Toca el primer paso del flujo COALA</p>
+</div>
+<button class="btn btn-primary" id="btnL1cNext" style="display:none;margin-top:0.5rem" onclick="finishLevel1()">🏆 ¡Nivel 1 Completado!</button>
+</div>
+
+<!-- NIVEL 2: QUIZ PIRÁMIDE -->
+<div class="screen" id="screenL2_Pyramid">
+<div class="card" style="flex:1;display:flex;flex-direction:column;position:relative;z-index:1">
+<h3 class="level-title">🏛️ Nivel 2 — La Pirámide de Thot</h3>
+<p class="level-desc" id="l2Desc">📜 Responde las preguntas de la pirámide.</p>
+<div class="learning-summary" id="learningSummary"><h4>📋 Lo que aprendiste en el Nivel 1</h4><div class="summary-grid" id="summaryGrid"></div></div>
+<div class="quiz-koala-feedback" id="quizKoalaL2">🐨🏛️</div>
+<div class="quiz-area" id="quizAreaL2"></div>
+<div id="l2Result" style="text-align:center;margin-top:0.5rem"></div>
+</div>
+<button class="btn btn-primary" id="btnL2Next" style="display:none;margin-top:0.5rem;position:relative;z-index:1" onclick="finishLevel2()">✨ ¡Nivel 2 Completado!</button>
+</div>
+
+<!-- NIVEL 3: TALLER DIGITAL -->
+<div class="screen" id="screenL3_Workshop">
+<div class="card" style="flex:1;display:flex;flex-direction:column">
+<h3 class="level-title">🔧 Nivel 3 — El Taller Digital</h3>
+<p class="level-desc" id="l3Desc">🐨 Thot dice: "Antes de construir, conozcamos nuestras herramientas..."</p>
+<div id="workshopSteps"></div>
+<div id="l3Result" style="text-align:center;margin-top:0.4rem"></div>
+</div>
+<button class="btn btn-primary" id="btnL3Next" style="display:none;margin-top:0.5rem" onclick="finishLevel3()">✨ ¡Nivel 3 Completado!</button>
+</div>
+
+<!-- NIVEL 4: PERGAMINO MÁGICO (custom_modes) -->
+<div class="screen" id="screenL4_Scroll">
+<div class="card" style="flex:1;display:flex;flex-direction:column">
+<h3 class="level-title">📜 Nivel 4 — El Pergamino Mágico</h3>
+<p class="level-desc" id="l4Desc">🐨 Thot dice: "Aprende a escribir el pergamino que guía a tus agentes koala..."</p>
+<div id="scrollSteps"></div>
+<div id="l4Result" style="text-align:center;margin-top:0.4rem"></div>
+</div>
+<button class="btn btn-primary" id="btnL4Next" style="display:none;margin-top:0.5rem" onclick="finishLevel4()">✨ ¡Nivel 4 Completado!</button>
+</div>
+
+<!-- NIVEL 5: TEMPLO DEL CÓDIGO -->
+<div class="screen" id="screenL5_Temple">
+<div class="card" style="flex:1;display:flex;flex-direction:column">
+<h3 class="level-title">💻 Nivel 5 — El Templo del Código</h3>
+<p class="level-desc" id="l5Desc">🐨 Thot dice: "Es hora de instalar las herramientas del Arquitecto..."</p>
+<div id="templeSteps"></div>
+<div id="l5Result" style="text-align:center;margin-top:0.4rem"></div>
+</div>
+<button class="btn btn-primary" id="btnL5Next" style="display:none;margin-top:0.5rem" onclick="goToVictory()">🏆 Ver Resultado Final</button>
+</div>
+
+<!-- VICTORY -->
+<div class="screen" id="screenVictory">
+<div class="card victory-content">
+<div class="victory-icon">🏆</div>
+<h2 class="victory-title">¡Eres un Arquitecto Digital!</h2>
+<div class="victory-score" id="finalScore">0 pts</div>
+<p class="victory-text">🔮 <strong>Thot te observa con orgullo.</strong><br>Has dominado los 5 niveles del Templo. Ahora comprendes COALA, agentes, archivos, custom_modes y tienes tus herramientas instaladas.</p>
+<p class="victory-text" style="font-size:0.75rem">📜 "Cada nivel que dominas te acerca a la Maestría Digital"</p>
+<div class="victory-link-block"><p>🔮 ¿Quieres más?</p><a href="https://github.com/oficinadigitalcl/COALA-SwarmOps" target="_blank" rel="noopener">👉 github.com/oficinadigitalcl/COALA-SwarmOps</a></div>
+<div style="display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center">
+<button class="btn btn-primary" onclick="resetGame()">🔄 Jugar de Nuevo</button>
+<button class="btn btn-secondary" id="btnAvanzado" onclick="onAvanzadoClick()">🔮 Modo Avanzado</button>
+</div>
+<p style="font-size:0.6rem;opacity:0.4;margin-top:0.5rem">COALA-SwarmOps Game v3.0 · Los 5 Niveles del Templo 🏛️</p>
+</div>
+</div>
+</div>
+
+<div class="site-footer"><a href="https://oficinadigitalcl.github.io/Coala-SwarmOPS-game" target="_blank" rel="noopener">🐨 COALA-SwarmOps Game</a><span class="footer-divider">·</span><a href="https://github.com/oficinadigitalcl/COALA-SwarmOps" target="_blank" rel="noopener">Repo Principal</a><span class="footer-divider">·</span><span>v3.0 · 5 Niveles 🏛️</span></div>
 <div class="toast" id="toast"></div>
 
 <script>
 /* =================================================================
-   COALA-SwarmOps Game v2.1 — La Pirámide de Thot
+   COALA-SwarmOps Game v3.0 — Los 5 Niveles del Templo
    ================================================================= */
-
-/* -------------------- DATOS -------------------- */
 const ROLES=[{id:'architect',role:'Arquitecto',emoji:'🏗️',branch:'Diseño',branchEmoji:'📐',desc:'Diseña la estructura del software'},{id:'builder',role:'Constructor',emoji:'💻',branch:'Desarrollo',branchEmoji:'⚡',desc:'Construye el código'},{id:'tester',role:'Probador',emoji:'🧪',branch:'Pruebas',branchEmoji:'🔍',desc:'Verifica que todo funcione'},{id:'documenter',role:'Documentador',emoji:'📝',branch:'Docs',branchEmoji:'📜',desc:'Escribe la documentación'},{id:'guardian',role:'Guardián',emoji:'🧠',branch:'Seguridad',branchEmoji:'🛡️',desc:'Protege la calidad y seguridad'},{id:'coordinator',role:'Coordinador',emoji:'🎯',branch:'Orquesta',branchEmoji:'🌐',desc:'Coordina todo el enjambre'}];
-
-const QUIZ_QUESTIONS=[{q:'¿Qué significa COALA en COALA-SwarmOps?',options:['Coordinación de Operaciones con Agentes de Legado Autónomo','Computer Online Automated Language Analyzer','Cloud Operations And Logistics Architecture'],correct:0,koala:'🎯',feedback:'¡Exacto! COALA = Coordinación de Operaciones con Agentes de Legado Autónomo.'},{q:'¿Por qué koalas?',options:['Porque son animales que trabajan en comunidad en los eucaliptos, como los agentes en el árbol de tareas','Porque son nativos de Egipto','Porque es un acrónimo técnico'],correct:0,koala:'🐨',feedback:'¡Sí! Los koalas viven en comunidad en árboles, igual que los agentes en el árbol COALA.'},{q:'¿Quién es Thot en la mitología egipcia?',options:['El dios de la guerra','El dios de la sabiduría, escritura, ciencia y magia','El dios del sol'],correct:1,koala:'🏛️',feedback:'¡Correcto! Thot es el dios de la sabiduría — el guía perfecto.'},{q:'En un swarm, ¿qué hace el Arquitecto?',options:['Escribe todo el código solo','Diseña la estructura del software y el plan de trabajo','Solo revisa documentación'],correct:1,koala:'🏗️',feedback:'¡Bien! El Arquitecto diseña la estructura. Luego el Constructor implementa.'},{q:'¿Qué es un "swarm" (enjambre) en IA?',options:['Un solo agente muy poderoso que hace todo','Un conjunto de agentes especializados que colaboran','Una base de datos distribuida'],correct:1,koala:'🌐',feedback:'¡Perfecto! Un swarm es un enjambre de agentes especializados que colaboran.'},{q:'¿Cuál es el orden correcto del flujo COALA?',options:['Construir → Probar → Diseñar → Coordinar','Diseñar → Construir → Probar → Documentar → Proteger → Coordinar','Coordinar → Documentar → Construir → Probar'],correct:1,koala:'⚡',feedback:'¡Así es! El flujo sagrado: Diseñar → Construir → Probar → Documentar → Proteger → Coordinar.'}];
-
+const QUIZ_QUESTIONS=[{q:'¿Qué significa COALA?',options:['Coordinación de Operaciones con Agentes de Legado Autónomo','Computer Online Automated Language Analyzer','Cloud Operations And Logistics Architecture'],correct:0,koala:'🎯',feedback:'¡Exacto! COALA = Coordinación de Operaciones con Agentes de Legado Autónomo.'},{q:'¿Por qué koalas?',options:['Trabajan en comunidad en los eucaliptos, como los agentes en el árbol de tareas','Son nativos de Egipto','Es un acrónimo técnico'],correct:0,koala:'🐨',feedback:'¡Sí! Los koalas viven en comunidad en árboles, igual que los agentes COALA.'},{q:'¿Quién es Thot?',options:['Dios de la guerra','Dios de la sabiduría, escritura y ciencia','Dios del sol'],correct:1,koala:'🏛️',feedback:'¡Correcto! Thot es el dios de la sabiduría — nuestro guía digital.'},{q:'¿Qué hace el Arquitecto en un swarm?',options:['Escribe todo el código solo','Diseña la estructura y el plan de trabajo','Solo revisa documentación'],correct:1,koala:'🏗️',feedback:'¡Bien! El Arquitecto diseña. Luego el Constructor implementa.'},{q:'¿Qué es un swarm (enjambre)?',options:['Un agente que hace todo solo','Un conjunto de agentes especializados que colaboran','Una base de datos'],correct:1,koala:'🌐',feedback:'¡Perfecto! Un swarm es un enjambre de agentes que colaboran.'},{q:'Orden correcto del flujo COALA:',options:['Construir→Probar→Diseñar','Diseñar→Construir→Probar→Documentar→Proteger→Coordinar','Coordinar→Documentar→Construir'],correct:1,koala:'⚡',feedback:'¡Así es! Diseñar→Construir→Probar→Documentar→Proteger→Coordinar.'}];
 const PIPELINE_ORDER=[{id:'design',emoji:'🏗️',label:'Arquitecto diseña'},{id:'build',emoji:'💻',label:'Constructor codifica'},{id:'test',emoji:'🧪',label:'Probador verifica'},{id:'docs',emoji:'📝',label:'Documentador escribe'},{id:'secure',emoji:'🧠',label:'Guardián protege'},{id:'orchestrate',emoji:'🎯',label:'Coordinador orquesta'}];
+const L2_QUIZ=[{q:'Si quisieras construir una casa, ¿qué harías PRIMERO?',options:['Comprar ladrillos y cemento','Hacer un plano con medidas','Pintar las paredes'],correct:1,koala:'🏗️',feedback:'🐨🏗️ ¡Exacto! Primero diseñas el plano. El Arquitecto planifica ANTES.'},{q:'En programación, ¿qué es una "variable"?',options:['Un tipo de pantalla','Una caja con etiqueta donde guardas datos','Un cable del teclado'],correct:1,koala:'💻',feedback:'🐨💻 ¡Bien! Una variable es como un frasco etiquetado.'},{q:'¿Para qué sirve un "test"?',options:['Para hacer el programa más bonito','Para verificar que el código funciona','Para borrar archivos viejos'],correct:1,koala:'🧪',feedback:'🐨🧪 ¡Perfecto! Un test revisa cada función.'},{q:'¿Para qué sirve un README?',options:['Para acelerar la computadora','Para explicar qué hace el proyecto','Para guardar contraseñas'],correct:1,koala:'📝',feedback:'🐨📝 ¡Sí! El README explica el proyecto.'},{q:'¿Por qué un equipo necesita "memoria"?',options:['Por poca RAM','Para no repetir errores y recordar qué funcionó','Para guardar contraseñas'],correct:1,koala:'🧠',feedback:'🐨🧠 ¡Correcto! La memoria evita redescubrir soluciones.'},{q:'¿En qué orden trabaja el equipo COALA?',options:['Documentan→diseñan→prueban','Diseñan→Construyen→Prueban→Documentan→Recuerdan','Todos a la vez'],correct:1,koala:'🎯',feedback:'🐨🎯 ¡Así es! Diseñar→Construir→Probar→Documentar→Recordar.'}];
 
-/* Nivel 2: Quiz intermedio (mismo formato que QUIZ_QUESTIONS) */
-const L2_QUIZ=[{q:'Si quisieras construir una casa, ¿qué harías PRIMERO?',options:['Comprar todos los ladrillos y cemento','Hacer un plano con las medidas y habitaciones','Pintar las paredes de colores bonitos'],correct:1,koala:'🏗️',feedback:'🐨🏗️ ¡Exacto! Primero diseñas el plano. El Arquitecto siempre planifica ANTES de construir.'},{q:'En programación, ¿qué es una "variable"?',options:['Un tipo de pantalla','Una caja con etiqueta donde guardas datos como un nombre o número','Un cable del teclado'],correct:1,koala:'💻',feedback:'🐨💻 ¡Bien! Una variable es como un frasco etiquetado donde guardas información.'},{q:'¿Para qué sirve un "test" en programación?',options:['Para hacer el programa más bonito','Para verificar que el código funciona sin errores','Para borrar archivos viejos'],correct:1,koala:'🧪',feedback:'🐨🧪 ¡Perfecto! Un test es un robot inspector que revisa cada función.'},{q:'¿Para qué sirve un README en un proyecto?',options:['Para acelerar la computadora','Para explicar qué hace el proyecto y cómo usarlo','Para guardar contraseñas'],correct:1,koala:'📝',feedback:'🐨📝 ¡Sí! El README explica qué hace el proyecto. ¡Documentar es un regalo a tu yo futuro!'},{q:'¿Por qué un equipo necesita "memoria"?',options:['Porque las computadoras tienen poca RAM','Para no repetir errores y recordar qué funcionó','Para guardar contraseñas'],correct:1,koala:'🧠',feedback:'🐨🧠 ¡Correcto! La memoria evita redescubrir soluciones. Como un cuaderno de recetas.'},{q:'¿En qué orden trabaja el equipo COALA?',options:['Documentan → diseñan → prueban','Diseñan → Construyen → Prueban → Documentan → Recuerdan','Todos trabajan a la vez en lo que quieran'],correct:1,koala:'🎯',feedback:'🐨🎯 ¡Así es! El orden: Diseñar → Construir → Probar → Documentar → Recordar. ¡Como una orquesta!'}];
+/* Nivel 3: Taller Digital */
+const WORKSHOP_STEPS=[{id:'w1',icon:'📄',title:'¿Qué es un archivo?',desc:'Un <strong>archivo</strong> es un documento digital. Puede ser una foto 🖼️, una canción 🎵, o un programa <code>.py</code>. Todo lo que guardas en la computadora es un archivo.',action:'✅ ¡Entendido!',url:null},{id:'w2',icon:'📁',title:'¿Qué es una carpeta?',desc:'Una <strong>carpeta</strong> (o directorio) es donde guardas archivos. Como un cajón organizador 🗄️. Los proyectos de programación viven dentro de carpetas.',action:'✅ ¡Entendido!',url:null},{id:'w3',icon:'📝',title:'¿Qué es el código?',desc:'El <strong>código</strong> son instrucciones que le das a la computadora. Como una receta de cocina 👨‍🍳: "mezcla esto, calienta aquello". En programación escribes: <code>print("Hola")</code> y la computadora muestra "Hola".',action:'✅ ¡Entendido!',url:null},{id:'w4',icon:'🖥️',title:'¿Qué es un IDE?',desc:'Un <strong>IDE</strong> (editor de código) es como un cuaderno digital inteligente 📓. Te ayuda a escribir código sin errores, te muestra colores y te avisa si algo está mal. <strong>VS Code</strong> es el más famoso.',action:'✅ ¡Entendido!',url:null},{id:'w5',icon:'🧩',title:'¿Qué es una extensión?',desc:'Una <strong>extensión</strong> es un "superpoder" 🦸 que agregas a VS Code. Por ejemplo, la extensión de Python te ayuda a escribir código Python más fácil. Se instalan con un clic desde la tienda de extensiones.',action:'✅ ¡Entendido!',url:null},{id:'w6',icon:'⚙️',title:'¿Qué es un archivo de configuración?',desc:'Un <strong>archivo de configuración</strong> (<code>.yaml</code>, <code>.json</code>) le dice a un programa cómo comportarse. Es como un manual de instrucciones 📋. Zoo Code usa <code>custom_modes.yaml</code> para saber cómo ayudarte.',action:'✅ ¡Entendido!',url:null}];
 
-/* Nivel 3: Pasos VS Code (simplificado para niños) */
-const VSCODE_STEPS=[{id:'vs1',icon:'💻',title:'¿Qué es VS Code?',desc:'Un <strong>editor de código gratis</strong> 🆓 donde escribes programas. ¡Como un cuaderno digital inteligente!',action:'✅ ¡Entendido!',terminal:null,url:null},{id:'vs2',icon:'📥',title:'Descargar VS Code',desc:'Ve a <a href="https://code.visualstudio.com" target="_blank" rel="noopener">👉 code.visualstudio.com</a> y haz clic en <strong>Download</strong>. Se instala solito 🪄',action:'🌐 Abrir página',terminal:null,url:'https://code.visualstudio.com'},{id:'vs3',icon:'🧩',title:'Instalar Python',desc:'Descarga Python desde <a href="https://python.org" target="_blank" rel="noopener">👉 python.org</a>. Al instalar, marca ✅ <strong>"Add Python to PATH"</strong>.',action:'🌐 Abrir python.org',terminal:'🐨 Thot dice: "Python es el lenguaje que hablarás con la computadora."',url:'https://python.org'},{id:'vs4',icon:'📁',title:'Crear tu primer archivo',desc:'En VS Code presiona <strong>Ctrl+N</strong>. Escribe: <code>print("¡Hola mundo!")</code>. Guarda con <strong>Ctrl+S</strong> como <code>hola.py</code>.',action:'✅ ¡Listo!',terminal:'1. Ctrl+N (archivo nuevo)\n2. Escribe: print("¡Hola mundo!")\n3. Ctrl+S (guardar)\n4. Nombre: hola.py',url:null},{id:'vs5',icon:'🚀',title:'¡Ejecutar!',desc:'En VS Code ve a <strong>Terminal → New Terminal</strong> y escribe <code>python hola.py</code>. ¡Mira tu programa correr! 🎉<br><br>🎬 <strong>¿Prefieres un video?</strong>',action:'▶️ ¡Ejecutar!',terminal:'> python hola.py\n¡Hola mundo!\n\n🐨🎉 ¡Lo lograste!',url:'https://www.youtube.com/results?search_query=primer+programa+python+para+ni%C3%B1os'}];
+/* Nivel 4: Pergamino Mágico */
+const SCROLL_STEPS=[{id:'s1',icon:'📜',title:'¿Qué es custom_modes.yaml?',desc:'Es un <strong>pergamino mágico</strong> que le dice a Zoo Code qué agentes usar y cómo deben ayudarte. Escrito en YAML (un lenguaje fácil de leer).',action:'✅ ¡Entendido!',yaml:null},{id:'s2',icon:'👀',title:'Así se ve un custom_modes sencillo',desc:'Mira este ejemplo simple. Define un agente llamado "Mi Ayudante" que saluda:',action:'✅ ¡Lo veo!',yaml:'# Mi primer custom_modes.yaml\ncustomModes:\n  - slug: mi-ayudante\n    name: "🐨 Mi Ayudante"\n    roleDefinition: "Eres un ayudante amigable para niños. Responde simple y con emojis."\n    groups:\n      - read\n    model: openrouter/deepseek/deepseek-v4-flash'},{id:'s3',icon:'📂',title:'¿Dónde se guarda?',desc:'El archivo <code>custom_modes.yaml</code> se guarda en una carpeta especial de Zoo Code. Normalmente en <code>docs/custom_modes/</code> dentro de tu proyecto.',action:'✅ ¡Entendido!',yaml:null},{id:'s4',icon:'✏️',title:'Crea tu propio agente',desc:'Puedes crear un agente que te ayude con tus tareas escolares, que te cuente chistes, o que te explique matemáticas. ¡Tú decides qué hace! Solo necesitas escribir 6 líneas en YAML.',action:'✅ ¡Qué fácil!',yaml:'# Agente para kids\ncustomModes:\n  - slug: mi-primer-agente\n    name: "🌟 Mi Primer Agente"\n    roleDefinition: "Eres un agente para niños. Habla con emojis y palabras simples."\n    groups:\n      - read\n    model: openrouter/deepseek/deepseek-v4-flash'},{id:'s5',icon:'🎯',title:'Agentes que trabajan juntos',desc:'Puedes tener VARIOS agentes en tu <code>custom_modes.yaml</code>. Cada uno con una especialidad: uno para matemáticas ➗, otro para cuentos 📖, otro para dibujos 🎨.',action:'✅ ¡Increíble!',yaml:null}];
 
-/* -------------------- ESTADO -------------------- */
-const state={currentScreen:'screenWelcome',l1a:{selectedKoala:null,matchedCount:0,matches:{}},l1b:{currentQuestion:0,score:0,answered:[],total:QUIZ_QUESTIONS.length},l1c:{currentSlot:0,used:[],attempts:0},l2:{currentQuestion:0,score:0,answered:[],total:L2_QUIZ.length},l3:{currentStep:0,completed:[],total:VSCODE_STEPS.length},totalScore:0,unlockedLevels:[1]};
+/* Nivel 5: Templo del Código */
+const TEMPLE_STEPS=[{id:'t1',icon:'📥',title:'Descargar VS Code',desc:'Ve a <a href="https://code.visualstudio.com" target="_blank" rel="noopener">👉 code.visualstudio.com</a> y haz clic en <strong>Download</strong>. Es gratis 🆓.',action:'🌐 Abrir página',url:'https://code.visualstudio.com'},{id:'t2',icon:'🐍',title:'Instalar Python',desc:'Ve a <a href="https://python.org" target="_blank" rel="noopener">👉 python.org</a>. Descarga Python. Al instalar, MARCA ✅ <strong>"Add Python to PATH"</strong>.',action:'🌐 Abrir python.org',url:'https://python.org'},{id:'t3',icon:'🧩',title:'Instalar Extensión Zoo Code',desc:'Abre VS Code, ve a Extensiones (Ctrl+Shift+X), busca <strong>"Zoo Code"</strong> o <strong>"Roo Code"</strong> y haz clic en <strong>Install</strong>.',action:'✅ ¡Listo!',url:null},{id:'t4',icon:'📜',title:'Agregar custom_modes.yaml',desc:'Copia el pergamino que creaste en el Nivel 4 en: <code>docs/custom_modes/custom_modes.yaml</code> dentro de tu proyecto. Zoo Code lo leerá automáticamente.',action:'✅ ¡Listo!',url:null},{id:'t5',icon:'📁',title:'Crear tu primer programa',desc:'En VS Code: <strong>Ctrl+N</strong>, escribe <code>print("¡Hola desde COALA!")</code>, guarda con <strong>Ctrl+S</strong> como <code>hola.py</code>.',action:'✅ ¡Listo!',terminal:'1. Ctrl+N (nuevo archivo)\n2. Escribe: print("¡Hola desde COALA!")\n3. Ctrl+S (guardar)\n4. Nombre: hola.py'},{id:'t6',icon:'🚀',title:'¡Ejecutar!',desc:'En VS Code: <strong>Terminal → New Terminal</strong>. Escribe <code>python hola.py</code>. ¡Verás tu programa correr! 🎉<br><br>🎬 <strong>¿Prefieres un video?</strong>',action:'▶️ ¡Ejecutar!',terminal:'> python hola.py\n¡Hola desde COALA!\n\n🐨🎉 ¡Lo lograste!',url:'https://www.youtube.com/results?search_query=primer+programa+python+para+ni%C3%B1os'}];
 
-/* -------------------- UTILIDADES -------------------- */
+/* ESTADO */
+const state={currentScreen:'screenWelcome',l1a:{selectedKoala:null,matchedCount:0,matches:{}},l1b:{currentQuestion:0,score:0,answered:[],total:QUIZ_QUESTIONS.length},l1c:{currentSlot:0,used:[],attempts:0},l2:{currentQuestion:0,score:0,answered:[],total:L2_QUIZ.length},l3:{currentStep:0,completed:[],total:WORKSHOP_STEPS.length},l4:{currentStep:0,completed:[],total:SCROLL_STEPS.length},l5:{currentStep:0,completed:[],total:TEMPLE_STEPS.length},totalScore:0,unlockedLevels:[1]};
+
+/* UTILIDADES */
 function showToast(m,d=2500){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._timeout);t._timeout=setTimeout(()=>t.classList.remove('show'),d)}
 function switchScreen(fid,tid){const f=document.getElementById(fid),t=document.getElementById(tid);if(f)f.classList.remove('active');if(t)t.classList.add('active');state.currentScreen=tid;updateProgressBar()}
-function updateProgressBar(){const m={screenWelcome:0,screenL1_Koala:1,screenL1_Quiz:2,screenL1_Pipeline:3,screenL2_Pyramid:3,screenL3_VSCode:3,screenVictory:4};const ci=m[state.currentScreen]??0;for(let i=0;i<=4;i++){const e=document.getElementById('step'+i);e.classList.remove('done','active');if(i<ci)e.classList.add('done');if(i===ci)e.classList.add('active')}}
-function updateLevelIndex(){for(let l=1;l<=3;l++){const b=document.getElementById('liBtn'+l);if(!b)continue;if(state.unlockedLevels.includes(l)){b.classList.remove('locked');b.classList.add('unlocked')}else{b.classList.add('locked');b.classList.remove('unlocked')}}}
-function jumpToLevel(l){if(!state.unlockedLevels.includes(l)){showToast('🔒 Completa los niveles anteriores para desbloquear este');return}playClick();document.body.classList.remove('level2-active','level3-active');if(l===1){switchScreen(state.currentScreen,'screenL1_Koala');buildL1_Koala()}else if(l===2){document.body.classList.add('level2-active');switchScreen(state.currentScreen,'screenL2_Pyramid');buildL2()}else if(l===3){document.body.classList.add('level3-active');switchScreen(state.currentScreen,'screenL3_VSCode');buildL3()}}
-function saveProgress(){try{localStorage.setItem('coala_v2_progress',JSON.stringify({unlocked:state.unlockedLevels,hs:state.totalScore}))}catch(_){}}
-function loadProgress(){try{const r=localStorage.getItem('coala_v2_progress');if(r){const d=JSON.parse(r);if(d.unlocked)state.unlockedLevels=d.unlocked}}catch(_){}}
+function updateProgressBar(){const m={screenWelcome:0,screenL1_Koala:1,screenL1_Quiz:2,screenL1_Pipeline:3,screenL2_Pyramid:3,screenL3_Workshop:3,screenL4_Scroll:3,screenL5_Temple:3,screenVictory:4};const ci=m[state.currentScreen]??0;for(let i=0;i<=4;i++){const e=document.getElementById('step'+i);e.classList.remove('done','active');if(i<ci)e.classList.add('done');if(i===ci)e.classList.add('active')}}
+function updateLevelIndex(){for(let l=1;l<=5;l++){const b=document.getElementById('liBtn'+l);if(!b)continue;if(state.unlockedLevels.includes(l)){b.classList.remove('locked');b.classList.add('unlocked')}else{b.classList.add('locked');b.classList.remove('unlocked')}}}
+function jumpToLevel(l){if(!state.unlockedLevels.includes(l)){showToast('🔒 Completa los niveles anteriores para desbloquear este');return}playClick();document.body.classList.remove('level2-active','level3-active','level4-active','level5-active');if(l===1){switchScreen(state.currentScreen,'screenL1_Koala');buildL1_Koala()}else if(l===2){document.body.classList.add('level2-active');switchScreen(state.currentScreen,'screenL2_Pyramid');buildL2()}else if(l===3){document.body.classList.add('level3-active');switchScreen(state.currentScreen,'screenL3_Workshop');buildSteps('workshopSteps',WORKSHOP_STEPS,3)}else if(l===4){document.body.classList.add('level4-active');switchScreen(state.currentScreen,'screenL4_Scroll');buildSteps('scrollSteps',SCROLL_STEPS,4)}else if(l===5){document.body.classList.add('level5-active');switchScreen(state.currentScreen,'screenL5_Temple');buildSteps('templeSteps',TEMPLE_STEPS,5)}}
+function saveProgress(){try{localStorage.setItem('coala_v3_progress',JSON.stringify({unlocked:state.unlockedLevels,hs:state.totalScore}))}catch(_){}}
+function loadProgress(){try{const r=localStorage.getItem('coala_v3_progress');if(r){const d=JSON.parse(r);if(d.unlocked)state.unlockedLevels=d.unlocked}}catch(_){}}
 
-/* -------------------- AUDIO -------------------- */
-function playTone(f,ty='sine',d=0.15){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.type=ty;o.frequency.setValueAtTime(f,c.currentTime);g.gain.setValueAtTime(0.1,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.connect(g);g.connect(c.destination);o.start(c.currentTime);o.stop(c.currentTime+d)}catch(_){}}
+/* AUDIO */
+function playTone(f,ty='sine',d=0.15){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.type=ty;o.frequency.setValueAtTime(f,c.currentTime);g.gain.setValueAtTime(0.08,c.currentTime);g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+d);o.connect(g);g.connect(c.destination);o.start(c.currentTime);o.stop(c.currentTime+d)}catch(_){}}
 function playCorrect(){playTone(523);setTimeout(()=>playTone(659),120);setTimeout(()=>playTone(784),240)}
 function playWrong(){playTone(200,'square',0.25)}
 function playClick(){playTone(440,'sine',0.08)}
 function playVictory(){[523,587,659,698,784,880,988,1047].forEach((f,i)=>setTimeout(()=>playTone(f,'triangle',0.2),i*100))}
 
-/* -------------------- INICIO -------------------- */
-function startGame(){playClick();state.totalScore=0;state.unlockedLevels=[1];state.l1a={selectedKoala:null,matchedCount:0,matches:{}};state.l1b={currentQuestion:0,score:0,answered:[],total:QUIZ_QUESTIONS.length};state.l1c={currentSlot:0,used:[],attempts:0};state.l2={currentQuestion:0,score:0,answered:[],total:L2_QUIZ.length};state.l3={currentStep:0,completed:[],total:VSCODE_STEPS.length};document.body.classList.remove('level2-active','level3-active');updateLevelIndex();switchScreen('screenWelcome','screenL1_Koala');buildL1_Koala()}
+/* INICIO */
+function startGame(){playClick();state.totalScore=0;state.unlockedLevels=[1];state.l1a={selectedKoala:null,matchedCount:0,matches:{}};state.l1b={currentQuestion:0,score:0,answered:[],total:QUIZ_QUESTIONS.length};state.l1c={currentSlot:0,used:[],attempts:0};state.l2={currentQuestion:0,score:0,answered:[],total:L2_QUIZ.length};state.l3={currentStep:0,completed:[],total:WORKSHOP_STEPS.length};state.l4={currentStep:0,completed:[],total:SCROLL_STEPS.length};state.l5={currentStep:0,completed:[],total:TEMPLE_STEPS.length};document.body.classList.remove('level2-active','level3-active','level4-active','level5-active');updateLevelIndex();switchScreen('screenWelcome','screenL1_Koala');buildL1_Koala()}
 
-/* ==================== NIVEL 1A: KOALA MATCHING ==================== */
+/* NIVEL 1A */
 function buildL1_Koala(){state.l1a={selectedKoala:null,matchedCount:0,matches:{}};document.getElementById('btnL1aNext').style.display='none';document.getElementById('treeBranches').innerHTML=ROLES.map(r=>`<div class="branch-slot" data-branch="${r.id}" onclick="onBranchClick('${r.id}')"><span class="branch-emoji">${r.branchEmoji}</span><span class="branch-name">${r.branch}</span><span class="branch-occupant" id="occupant-${r.id}"></span></div>`).join('');const sh=[...ROLES].sort(()=>Math.random()-0.5);document.getElementById('koalaPool').innerHTML=sh.map(r=>`<div class="koala-card" data-role="${r.id}" onclick="onKoalaClick('${r.id}')" id="koala-${r.id}"><span class="koala-emoji">🐨${r.emoji}</span><span class="koala-role">${r.role}</span></div>`).join('')}
 function onKoalaClick(rid){playClick();const p=state.l1a.selectedKoala;if(Object.values(state.l1a.matches).includes(rid))return;if(p)document.getElementById('koala-'+p)?.classList.remove('selected');if(p===rid){state.l1a.selectedKoala=null;return}state.l1a.selectedKoala=rid;document.getElementById('koala-'+rid)?.classList.add('selected');document.querySelectorAll('.branch-slot').forEach(b=>{if(!state.l1a.matches[b.dataset.branch])b.classList.add('highlight')})}
-function onBranchClick(bid){const s=state.l1a.selectedKoala;if(!s){showToast('💡 Primero selecciona un koala, luego toca su rama');return}if(state.l1a.matches[bid]){showToast('🌿 Esta rama ya tiene un koala asignado');return}if(s===bid){playCorrect();state.l1a.matches[bid]=s;state.l1a.matchedCount++;document.querySelector(`[data-branch="${bid}"]`)?.classList.add('matched');document.getElementById('koala-'+s)?.classList.add('matched');document.getElementById('occupant-'+bid)&&(document.getElementById('occupant-'+bid).textContent='🐨');state.l1a.selectedKoala=null;document.querySelectorAll('.branch-slot').forEach(b=>b.classList.remove('highlight'));document.getElementById('koala-'+s)?.classList.remove('selected');const r=ROLES.find(r=>r.id===s);showToast(`✅ ¡Correcto! El ${r.role} va en la rama de ${r.branch}`);if(state.l1a.matchedCount===ROLES.length){state.totalScore+=100;saveProgress();setTimeout(()=>{showToast('🌳 ¡El Árbol Sagrado está completo! ✨',3000);document.getElementById('btnL1aNext').style.display='inline-flex'},800)}}else{playWrong();const sr=ROLES.find(r=>r.id===s),br=ROLES.find(r=>r.id===bid);showToast(`❌ ¡No! El ${sr.role} no pertenece a la rama de ${br.branch}.`);state.l1a.selectedKoala=null;document.getElementById('koala-'+s)?.classList.remove('selected');document.querySelectorAll('.branch-slot').forEach(b=>b.classList.remove('highlight'))}}
+function onBranchClick(bid){const s=state.l1a.selectedKoala;if(!s){showToast('💡 Selecciona un koala, luego toca su rama');return}if(state.l1a.matches[bid]){showToast('🌿 Esta rama ya tiene un koala');return}if(s===bid){playCorrect();state.l1a.matches[bid]=s;state.l1a.matchedCount++;document.querySelector(`[data-branch="${bid}"]`)?.classList.add('matched');document.getElementById('koala-'+s)?.classList.add('matched');document.getElementById('occupant-'+bid)&&(document.getElementById('occupant-'+bid).textContent='🐨');state.l1a.selectedKoala=null;document.querySelectorAll('.branch-slot').forEach(b=>b.classList.remove('highlight'));document.getElementById('koala-'+s)?.classList.remove('selected');const r=ROLES.find(r=>r.id===s);showToast(`✅ ¡Correcto! El ${r.role} va en ${r.branch}`);if(state.l1a.matchedCount===ROLES.length){state.totalScore+=100;saveProgress();setTimeout(()=>{showToast('🌳 ¡Árbol Sagrado completo! ✨',3000);document.getElementById('btnL1aNext').style.display='inline-flex'},800)}}else{playWrong();const sr=ROLES.find(r=>r.id===s);showToast(`❌ El ${sr.role} no pertenece a esa rama`);state.l1a.selectedKoala=null;document.getElementById('koala-'+s)?.classList.remove('selected');document.querySelectorAll('.branch-slot').forEach(b=>b.classList.remove('highlight'))}}
 function goToL1_Quiz(){playClick();switchScreen('screenL1_Koala','screenL1_Quiz');buildL1_Quiz()}
 
-/* ==================== NIVEL 1B: QUIZ ==================== */
+/* NIVEL 1B */
 function buildL1_Quiz(){state.l1b={currentQuestion:0,score:0,answered:[],total:QUIZ_QUESTIONS.length};document.getElementById('btnL1bNext').style.display='none';document.getElementById('quizKoala').textContent='🐨🌿';document.getElementById('quizResult').innerHTML='';renderQuiz()}
 function renderQuiz(){const i=state.l1b.currentQuestion,q=QUIZ_QUESTIONS[i];document.getElementById('quizDesc').textContent=`Pregunta ${i+1} de ${state.l1b.total} — ${state.l1b.score} aciertos`;document.getElementById('quizArea').innerHTML=`<div class="quiz-question-card"><div class="q-label">📜 Pergamino de Thot #${i+1}</div><div class="q-text">${q.q}</div></div><div class="quiz-options" id="quizOptions">${q.options.map((o,oi)=>`<button class="quiz-option" onclick="answerQuiz(${oi})" id="opt-${oi}">${o}</button>`).join('')}</div>`}
-function answerQuiz(c){const i=state.l1b.currentQuestion,q=QUIZ_QUESTIONS[i];document.querySelectorAll('.quiz-option').forEach(o=>o.classList.add('disabled'));const ce=document.getElementById('opt-'+c);if(c===q.correct){playCorrect();ce.classList.add('correct');state.l1b.score++;state.l1b.answered.push({q:i,correct:true});document.getElementById('quizKoala').textContent=q.koala+' ⬆️🌿';showToast(q.feedback)}else{playWrong();ce.classList.add('wrong');document.getElementById('opt-'+q.correct).classList.add('correct');state.l1b.answered.push({q:i,correct:false});document.getElementById('quizKoala').textContent='🐨💤';showToast('❌ Esa no es la respuesta correcta...')}setTimeout(()=>{state.l1b.currentQuestion++;if(state.l1b.currentQuestion>=state.l1b.total)finishL1_Quiz();else renderQuiz()},1800)}
-function finishL1_Quiz(){const s=state.l1b.score,t=state.l1b.total;state.totalScore+=Math.round((s/t)*150);saveProgress();const r=document.getElementById('quizResult');if(s===t){document.getElementById('quizKoala').textContent='🐨✨🏛️✨🐨';r.innerHTML='<p style="color:var(--gold-bright);">🌟 ¡Perfecto! ¡Thot está impresionado!</p>';playVictory()}else if(s>=t/2){document.getElementById('quizKoala').textContent='🐨👍🌿';r.innerHTML=`<p style="color:var(--gold);">📜 Bien hecho. ${s} de ${t} aciertos.</p>`}else{document.getElementById('quizKoala').textContent='🐨📚';r.innerHTML=`<p style="color:var(--sand);">📚 Thot dice: "El conocimiento requiere estudio. ${s} de ${t}."</p>`}document.getElementById('btnL1bNext').style.display='inline-flex';document.getElementById('quizArea').innerHTML=''}
+function answerQuiz(c){const i=state.l1b.currentQuestion,q=QUIZ_QUESTIONS[i];document.querySelectorAll('.quiz-option').forEach(o=>o.classList.add('disabled'));const ce=document.getElementById('opt-'+c);if(c===q.correct){playCorrect();ce.classList.add('correct');state.l1b.score++;document.getElementById('quizKoala').textContent=q.koala+' ⬆️🌿';showToast(q.feedback)}else{playWrong();ce.classList.add('wrong');document.getElementById('opt-'+q.correct).classList.add('correct');document.getElementById('quizKoala').textContent='🐨💤';showToast('❌ Esa no es la respuesta...')}setTimeout(()=>{state.l1b.currentQuestion++;if(state.l1b.currentQuestion>=state.l1b.total)finishL1_Quiz();else renderQuiz()},1800)}
+function finishL1_Quiz(){const s=state.l1b.score,t=state.l1b.total;state.totalScore+=Math.round((s/t)*150);saveProgress();const r=document.getElementById('quizResult');if(s===t){document.getElementById('quizKoala').textContent='🐨✨🏛️✨🐨';r.innerHTML='<p style="color:var(--gold-bright)">🌟 ¡Perfecto! ¡Thot está impresionado!</p>';playVictory()}else if(s>=t/2){document.getElementById('quizKoala').textContent='🐨👍🌿';r.innerHTML=`<p style="color:var(--gold)">📜 Bien hecho. ${s} de ${t} aciertos.</p>`}else{document.getElementById('quizKoala').textContent='🐨📚';r.innerHTML=`<p style="color:var(--sand)">📚 Thot dice: "El conocimiento requiere estudio. ${s} de ${t}."</p>`}document.getElementById('btnL1bNext').style.display='inline-flex';document.getElementById('quizArea').innerHTML=''}
 function goToL1_Pipeline(){playClick();switchScreen('screenL1_Quiz','screenL1_Pipeline');buildL1_Pipeline()}
 
-/* ==================== NIVEL 1C: PIPELINE ==================== */
+/* NIVEL 1C */
 function buildL1_Pipeline(){state.l1c={currentSlot:0,used:[],attempts:0};document.getElementById('btnL1cNext').style.display='none';document.getElementById('pipelineHint').textContent='💡 Toca el primer paso del flujo COALA';document.getElementById('pipelineSlots').innerHTML=PIPELINE_ORDER.map((_,i)=>`<div class="slot" id="slot-${i}">${i+1}</div>`).join('');const sh=[...PIPELINE_ORDER].sort(()=>Math.random()-0.5);document.getElementById('pipelineOptions').innerHTML=sh.map(p=>`<button class="pipeline-chip" data-id="${p.id}" onclick="selectPipelineStep('${p.id}')" id="chip-${p.id}">${p.emoji} ${p.label}</button>`).join('')}
-function selectPipelineStep(sid){playClick();const si=state.l1c.currentSlot;if(sid===PIPELINE_ORDER[si].id){playCorrect();const se=document.getElementById('slot-'+si),st=PIPELINE_ORDER[si];se.classList.add('filled');se.textContent=st.emoji;document.getElementById('chip-'+sid)?.classList.add('used');state.l1c.used.push(sid);state.l1c.currentSlot++;if(state.l1c.currentSlot>=PIPELINE_ORDER.length){state.totalScore+=150;saveProgress();document.getElementById('pipelineHint').textContent='⚡ ¡El Flujo Sagrado está completo!';showToast('⚡ ¡Has dominado el Flujo Sagrado de COALA! ✨',3000);playVictory();setTimeout(()=>{document.getElementById('btnL1cNext').style.display='inline-flex'},600)}else{document.getElementById('pipelineHint').textContent=`✅ ¡Correcto! ¿Cuál es el paso #${state.l1c.currentSlot+1}?`;showToast(`✅ ¡Bien! El ${st.label}. ¿Cuál sigue?`)}}else{playWrong();state.l1c.attempts++;showToast(`❌ Ese no es el paso #${si+1}. Piensa en el flujo COALA`);if(state.l1c.attempts>=2)document.getElementById('pipelineHint').textContent=`💡 Pista: El paso #${si+1} es "${PIPELINE_ORDER[si].label}"`}}
+function selectPipelineStep(sid){playClick();const si=state.l1c.currentSlot;if(sid===PIPELINE_ORDER[si].id){playCorrect();const se=document.getElementById('slot-'+si),st=PIPELINE_ORDER[si];se.classList.add('filled');se.textContent=st.emoji;document.getElementById('chip-'+sid)?.classList.add('used');state.l1c.used.push(sid);state.l1c.currentSlot++;if(state.l1c.currentSlot>=PIPELINE_ORDER.length){state.totalScore+=150;saveProgress();document.getElementById('pipelineHint').textContent='⚡ ¡Flujo Sagrado completo!';showToast('⚡ ¡Has dominado el Flujo Sagrado! ✨',3000);playVictory();setTimeout(()=>{document.getElementById('btnL1cNext').style.display='inline-flex'},600)}else{document.getElementById('pipelineHint').textContent=`✅ ¿Cuál es el paso #${state.l1c.currentSlot+1}?`;showToast(`✅ ¡Bien! ${st.label}. ¿Cuál sigue?`)}}else{playWrong();state.l1c.attempts++;showToast(`❌ Ese no es el paso #${si+1}`);if(state.l1c.attempts>=2)document.getElementById('pipelineHint').textContent=`💡 Pista: "${PIPELINE_ORDER[si].label}"`}}
+function finishLevel1(){playClick();if(!state.unlockedLevels.includes(2)){state.unlockedLevels.push(2);saveProgress()}updateLevelIndex();document.body.classList.remove('level2-active','level3-active','level4-active','level5-active');showToast('🏆 ¡Nivel 1 COMPLETADO! Desbloqueaste Nivel 2 — La Pirámide 🏛️',4000);switchScreen('screenL1_Pipeline','screenWelcome')}
 
-function finishLevel1(){playClick();if(!state.unlockedLevels.includes(2)){state.unlockedLevels.push(2);saveProgress()}updateLevelIndex();document.body.classList.remove('level2-active','level3-active');showToast('🏆 ¡Nivel 1 COMPLETADO! Has desbloqueado el Nivel 2 — La Pirámide de Thot 🏛️',4000);switchScreen('screenL1_Pipeline','screenWelcome')}
-
-/* ==================== NIVEL 2: QUIZ PIRÁMIDE ==================== */
-function buildL2(){state.l2={currentQuestion:0,score:0,answered:[],total:L2_QUIZ.length};document.getElementById('btnL2Next').style.display='none';document.getElementById('quizKoalaL2').textContent='🐨🏛️';document.getElementById('l2Result').innerHTML='';document.getElementById('l2Desc').textContent='📜 Pergamino de la Pirámide — Responde con sabiduría...';document.getElementById('summaryGrid').innerHTML=ROLES.map(r=>`<div class="summary-item" title="${r.desc}"><span style="font-size:1.1rem;">🐨${r.emoji}</span><span>${r.role} → ${r.branch}</span></div>`).join('')+`<div class="summary-item"><span style="font-size:1.1rem;">🌳</span><span>COALA = Enjambre de agentes</span></div>`;renderL2Quiz()}
+/* NIVEL 2 */
+function buildL2(){state.l2={currentQuestion:0,score:0,answered:[],total:L2_QUIZ.length};document.getElementById('btnL2Next').style.display='none';document.getElementById('quizKoalaL2').textContent='🐨🏛️';document.getElementById('l2Result').innerHTML='';document.getElementById('l2Desc').textContent='📜 Pergamino de la Pirámide — Responde con sabiduría...';document.getElementById('summaryGrid').innerHTML=ROLES.map(r=>`<div class="summary-item" title="${r.desc}"><span style="font-size:1.1rem">🐨${r.emoji}</span><span>${r.role} → ${r.branch}</span></div>`).join('')+`<div class="summary-item"><span style="font-size:1.1rem">🌳</span><span>COALA = Enjambre de agentes</span></div>`;renderL2Quiz()}
 function renderL2Quiz(){const i=state.l2.currentQuestion,q=L2_QUIZ[i];document.getElementById('l2Desc').textContent=`📜 Pergamino #${i+1} de ${state.l2.total} — ${state.l2.score} aciertos`;document.getElementById('quizAreaL2').innerHTML=`<div class="quiz-question-card"><div class="q-label">🏛️ Pirámide de Thot — Pregunta ${i+1}</div><div class="q-text">${q.q}</div></div><div class="quiz-options" id="l2quizOptions">${q.options.map((o,oi)=>`<button class="quiz-option" onclick="answerL2Quiz(${oi})" id="l2opt-${oi}">${o}</button>`).join('')}</div>`}
-function answerL2Quiz(c){const i=state.l2.currentQuestion,q=L2_QUIZ[i];document.querySelectorAll('#l2quizOptions .quiz-option').forEach(o=>o.classList.add('disabled'));const ce=document.getElementById('l2opt-'+c);if(c===q.correct){playCorrect();ce.classList.add('correct');state.l2.score++;state.l2.answered.push({q:i,correct:true});document.getElementById('quizKoalaL2').textContent=q.koala+' ⬆️🏛️';showToast(q.feedback)}else{playWrong();ce.classList.add('wrong');document.getElementById('l2opt-'+q.correct).classList.add('correct');state.l2.answered.push({q:i,correct:false});document.getElementById('quizKoalaL2').textContent='🐨💤';showToast('❌ Esa no es la respuesta... ¡La pirámide te observa!')}setTimeout(()=>{state.l2.currentQuestion++;if(state.l2.currentQuestion>=state.l2.total)finishL2Quiz();else renderL2Quiz()},1800)}
-function finishL2Quiz(){const s=state.l2.score,t=state.l2.total;state.totalScore+=Math.round((s/t)*200);saveProgress();const r=document.getElementById('l2Result');if(s===t){document.getElementById('quizKoalaL2').textContent='🐨✨🏛️✨🐨';r.innerHTML='<p style="color:var(--gold-bright);">🌟 ¡Perfecto! La Pirámide de Thot brilla con tu sabiduría.</p>';playVictory()}else if(s>=t/2){document.getElementById('quizKoalaL2').textContent='🐨👍🏛️';r.innerHTML=`<p style="color:var(--gold);">📜 Bien hecho. ${s} de ${t} aciertos. ¡La pirámide te reconoce!</p>`}else{document.getElementById('quizKoalaL2').textContent='🐨📚';r.innerHTML=`<p style="color:var(--sand);">📚 Thot dice: "El conocimiento requiere práctica. ${s} de ${t}."</p>`}document.getElementById('btnL2Next').style.display='inline-flex';document.getElementById('quizAreaL2').innerHTML=''}
+function answerL2Quiz(c){const i=state.l2.currentQuestion,q=L2_QUIZ[i];document.querySelectorAll('#l2quizOptions .quiz-option').forEach(o=>o.classList.add('disabled'));const ce=document.getElementById('l2opt-'+c);if(c===q.correct){playCorrect();ce.classList.add('correct');state.l2.score++;document.getElementById('quizKoalaL2').textContent=q.koala+' ⬆️🏛️';showToast(q.feedback)}else{playWrong();ce.classList.add('wrong');document.getElementById('l2opt-'+q.correct).classList.add('correct');document.getElementById('quizKoalaL2').textContent='🐨💤';showToast('❌ Esa no es la respuesta...')}setTimeout(()=>{state.l2.currentQuestion++;if(state.l2.currentQuestion>=state.l2.total)finishL2Quiz();else renderL2Quiz()},1800)}
+function finishL2Quiz(){const s=state.l2.score,t=state.l2.total;state.totalScore+=Math.round((s/t)*200);saveProgress();const r=document.getElementById('l2Result');if(s===t){document.getElementById('quizKoalaL2').textContent='🐨✨🏛️✨🐨';r.innerHTML='<p style="color:var(--gold-bright)">🌟 ¡Perfecto! La Pirámide brilla con tu sabiduría.</p>';playVictory()}else if(s>=t/2){document.getElementById('quizKoalaL2').textContent='🐨👍🏛️';r.innerHTML=`<p style="color:var(--gold)">📜 Bien hecho. ${s} de ${t} aciertos.</p>`}else{document.getElementById('quizKoalaL2').textContent='🐨📚';r.innerHTML=`<p style="color:var(--sand)">📚 Thot dice: "El conocimiento requiere práctica. ${s} de ${t}."</p>`}document.getElementById('btnL2Next').style.display='inline-flex';document.getElementById('quizAreaL2').innerHTML=''}
+function finishLevel2(){playClick();if(!state.unlockedLevels.includes(3)){state.unlockedLevels.push(3);saveProgress()}updateLevelIndex();document.body.classList.remove('level2-active','level3-active','level4-active','level5-active');showToast('🏛️ ¡Nivel 2 COMPLETADO! Desbloqueaste Nivel 3 — El Taller Digital 🔧',4000);switchScreen('screenL2_Pyramid','screenWelcome')}
 
-function finishLevel2(){playClick();if(!state.unlockedLevels.includes(3)){state.unlockedLevels.push(3);saveProgress()}updateLevelIndex();document.body.classList.remove('level2-active','level3-active');showToast('🏛️ ¡Nivel 2 COMPLETADO! Has desbloqueado el Nivel 3 — El Templo del Código 💻',4000);switchScreen('screenL2_Pyramid','screenWelcome')}
+/* NIVELES 3, 4, 5: Pasos interactivos (genérico) */
+function buildSteps(containerId,stepsData,levelNum){const stKey='l'+levelNum;state[stKey]={currentStep:0,completed:[],total:stepsData.length};document.getElementById('btnL'+levelNum+'Next').style.display='none';document.getElementById('l'+levelNum+'Result').innerHTML='';const descEl=document.getElementById('l'+levelNum+'Desc');if(descEl)descEl.textContent='🐨 Thot dice: "Avancemos paso a paso..."';document.getElementById(containerId).innerHTML=stepsData.map((s,i)=>{const isActive=i===0,isDone=false;return`<div class="step-card active-step" id="st-${levelNum}-${i}"><div class="st-header"><span class="st-icon">${s.icon}</span><span class="st-title">${s.title}</span><span class="st-check" id="stCheck-${levelNum}-${i}">✅</span></div><div class="st-desc">${s.desc}</div>${s.yaml?`<div class="yaml-preview">${s.yaml.replace(/</g,'<').replace(/>/g,'>')}</div>`:''}${s.terminal?`<div class="terminal-mock"><span class="prompt">🐨></span> <span class="cmd">${s.terminal.replace(/\n/g,'<br>')}</span></div>`:''}<div class="st-actions">${s.url?`<a href="${s.url}" target="_blank" rel="noopener" class="st-btn link-btn" onclick="playClick()">🌐 Abrir</a>`:''}<button class="st-btn" id="stBtn-${levelNum}-${i}" onclick="completeStep(${i},${levelNum})">${s.action}</button></div></div>`}).join('');setTimeout(()=>document.getElementById('st-'+levelNum+'-0')?.scrollIntoView({behavior:'smooth',block:'center'}),300)}
+function completeStep(si,levelNum){const stKey='l'+levelNum;if(si!==state[stKey].currentStep||state[stKey].completed.includes(si))return;playCorrect();state[stKey].completed.push(si);state[stKey].currentStep++;const se=document.getElementById('st-'+levelNum+'-'+si);se?.classList.add('done-step');se?.classList.remove('active-step');document.getElementById('stCheck-'+levelNum+'-'+si)?.classList.add('show');const be=document.getElementById('stBtn-'+levelNum+'-'+si);if(be){be.classList.add('done-btn');be.textContent='✅ Completado';be.disabled=true}const stepsData=levelNum===3?WORKSHOP_STEPS:levelNum===4?SCROLL_STEPS:TEMPLE_STEPS;showToast(`✅ ¡${stepsData[si].title} completado!`,2000);if(state[stKey].currentStep>=stepsData.length){finishSteps(levelNum)}else{const ne=document.getElementById('st-'+levelNum+'-'+state[stKey].currentStep),nb=document.getElementById('stBtn-'+levelNum+'-'+state[stKey].currentStep);ne?.classList.add('active-step');if(nb)nb.disabled=false;const descEl=document.getElementById('l'+levelNum+'Desc');if(descEl)descEl.textContent=`Paso ${state[stKey].currentStep+1} de ${stepsData.length}`;setTimeout(()=>ne?.scrollIntoView({behavior:'smooth',block:'center'}),200)}}
+function finishSteps(levelNum){const stKey='l'+levelNum;const stepsData=levelNum===3?WORKSHOP_STEPS:levelNum===4?SCROLL_STEPS:TEMPLE_STEPS;const co=state[stKey].completed.length,tot=state[stKey].total;const pts=levelNum===3?150:levelNum===4?200:250;state.totalScore+=Math.round((co/tot)*pts);saveProgress();const descEl=document.getElementById('l'+levelNum+'Desc');if(descEl)descEl.textContent='🎉 ¡Has completado este nivel!';const resEl=document.getElementById('l'+levelNum+'Result');if(resEl)resEl.innerHTML=co===tot?`<p style="color:var(--gold-bright)">🌟 ¡Completaste todos los pasos! +${pts} pts</p>`:`<p style="color:var(--gold)">💻 ¡Buen trabajo! ${co} de ${tot} pasos. +${Math.round((co/tot)*pts)} pts</p>`;if(co===tot)playVictory();document.getElementById('btnL'+levelNum+'Next').style.display='inline-flex'}
 
-/* ==================== NIVEL 3: VS CODE (MEJORADO) ==================== */
-function buildL3(){state.l3={currentStep:0,completed:[],total:VSCODE_STEPS.length};document.getElementById('btnL3Next').style.display='none';document.getElementById('l3Result').innerHTML='';document.getElementById('l3Desc').textContent='🐨 Thot dice: "Aprende a usar las herramientas de un Arquitecto de Enjambres..."';document.getElementById('vscodeSteps').innerHTML=VSCODE_STEPS.map((s,i)=>{const ia=i===0,ic=false;return`<div class="vscode-step active-step" id="vsStep-${i}"><div class="vs-header"><span class="vs-num">${s.icon}</span><span class="vs-title">${s.title}</span><span class="vs-check" id="vsCheck-${i}">✅</span></div><div class="vs-desc">${s.desc}</div>${s.terminal?`<div class="vscode-terminal-mock"><span class="prompt">🐨></span> <span class="cmd">${s.terminal.replace(/\n/g,'<br>')}</span></div>`:''}<div class="vs-action">${s.url?`<a href="${s.url}" target="_blank" rel="noopener" class="vs-btn link-btn" onclick="playClick()">${s.icon==='🚀'?'🎬 Ver video tutorial':'🌐 Abrir página'}</a>`:''}<button class="vs-btn" id="vsBtn-${i}" onclick="completeL3(${i})">${s.action}</button></div></div>`}).join('');setTimeout(()=>document.getElementById('vsStep-0')?.scrollIntoView({behavior:'smooth',block:'center'}),300)}
-function completeL3(si){if(si!==state.l3.currentStep||state.l3.completed.includes(si))return;playCorrect();state.l3.completed.push(si);state.l3.currentStep++;const se=document.getElementById('vsStep-'+si);se?.classList.add('completed-step');se?.classList.remove('active-step');document.getElementById('vsCheck-'+si)?.classList.add('show');const be=document.getElementById('vsBtn-'+si);if(be){be.classList.add('done-btn');be.textContent='✅ Completado';be.disabled=true}showToast(`✅ ¡${VSCODE_STEPS[si].title} completado!`,2000);if(state.l3.currentStep>=VSCODE_STEPS.length){finishL3()}else{const ne=document.getElementById('vsStep-'+state.l3.currentStep),nb=document.getElementById('vsBtn-'+state.l3.currentStep);ne?.classList.add('active-step');if(nb)nb.disabled=false;document.getElementById('l3Desc').textContent=`Paso ${state.l3.currentStep+1} de ${VSCODE_STEPS.length}`;setTimeout(()=>ne?.scrollIntoView({behavior:'smooth',block:'center'}),200)}}
-function finishL3(){const co=state.l3.completed.length,tot=state.l3.total;state.totalScore+=Math.round((co/tot)*200);saveProgress();document.getElementById('l3Desc').textContent='🎉 ¡Has completado el Templo del Código!';document.getElementById('l3Result').innerHTML=co===tot?'<p style="color:var(--gold-bright);">💻🌟 ¡Completaste todos los pasos! Ya sabes usar VS Code. ¡Eres un Arquitecto Digital!</p>':`<p style="color:var(--gold);">💻 ¡Buen trabajo! ${co} de ${tot} pasos. ¡VS Code te espera!</p>`;if(co===tot)playVictory();document.getElementById('btnL3Next').style.display='inline-flex'}
+function finishLevel3(){playClick();if(!state.unlockedLevels.includes(4)){state.unlockedLevels.push(4);saveProgress()}updateLevelIndex();document.body.classList.remove('level2-active','level3-active','level4-active','level5-active');showToast('🔧 ¡Nivel 3 COMPLETADO! Desbloqueaste Nivel 4 — El Pergamino Mágico 📜',4000);switchScreen('screenL3_Workshop','screenWelcome')}
+function finishLevel4(){playClick();if(!state.unlockedLevels.includes(5)){state.unlockedLevels.push(5);saveProgress()}updateLevelIndex();document.body.classList.remove('level2-active','level3-active','level4-active','level5-active');showToast('📜 ¡Nivel 4 COMPLETADO! Desbloqueaste Nivel 5 — El Templo del Código 💻',4000);switchScreen('screenL4_Scroll','screenWelcome')}
 
-/* -------------------- VICTORY -------------------- */
-function goToVictory(){playClick();document.body.classList.remove('level2-active','level3-active');switchScreen('screenL3_VSCode','screenVictory');const sc=state.totalScore;let r='';if(sc>=650)r='🌟 Gran Maestre del Enjambre';else if(sc>=450)r='🏛️ Arquitecto Sagrado';else if(sc>=250)r='🐨 Guardián del Árbol';else r='📜 Aprendiz de Thot';document.getElementById('finalScore').textContent=`${sc} pts · ${r}`;try{const p=parseInt(localStorage.getItem('coala_v2_highscore')||'0');if(sc>p)localStorage.setItem('coala_v2_highscore',sc)}catch(_){}updateAvanzadoBtn(sc);playVictory()}
-function updateAvanzadoBtn(sc){const b=document.getElementById('btnAvanzado');if(!b)return;if(sc>=500){b.textContent='🔮 ¡Has desbloqueado el Nivel 3!';b.style.borderColor='var(--gold-bright)';b.style.color='var(--gold-bright)'}else if(sc>=250){b.textContent='🔮 Has desbloqueado el Nivel 2';b.style.borderColor='var(--gold)'}}
-function onAvanzadoClick(){if(state.totalScore>=250)showToast('🏛️ ¡Has desbloqueado niveles avanzados! Visita el repo para más aventuras 🐨✨',4000);else showToast('🔮 Necesitas 250 pts para desbloquear. ¡Completa el Nivel 1! ✨',3500)}
+/* VICTORY */
+function goToVictory(){playClick();document.body.classList.remove('level2-active','level3-active','level4-active','level5-active');switchScreen('screenL5_Temple','screenVictory');const sc=state.totalScore;let r='';if(sc>=900)r='🌟 Gran Maestre del Enjambre';else if(sc>=650)r='🏛️ Arquitecto Sagrado';else if(sc>=400)r='🐨 Guardián del Árbol';else if(sc>=200)r='📜 Escriba del Templo';else r='🌱 Aprendiz de Thot';document.getElementById('finalScore').textContent=`${sc} pts · ${r}`;try{const p=parseInt(localStorage.getItem('coala_v3_highscore')||'0');if(sc>p)localStorage.setItem('coala_v3_highscore',sc)}catch(_){}updateAvanzadoBtn(sc);playVictory()}
+function updateAvanzadoBtn(sc){const b=document.getElementById('btnAvanzado');if(!b)return;if(sc>=700){b.textContent='🔮 ¡Maestría Desbloqueada!';b.style.borderColor='var(--gold-bright)';b.style.color='var(--gold-bright)'}else if(sc>=400){b.textContent='🔮 Has desbloqueado el Nivel 4';b.style.borderColor='var(--gold)'}}
+function onAvanzadoClick(){if(state.totalScore>=400)showToast('🏛️ ¡Has desbloqueado contenido avanzado! Visita el repo para más 🐨✨',4000);else showToast('🔮 Necesitas 400 pts. ¡Completa más niveles! ✨',3500)}
 
-/* -------------------- RESET -------------------- */
-function resetGame(){playClick();state.totalScore=0;state.unlockedLevels=[1];state.l1a={selectedKoala:null,matchedCount:0,matches:{}};state.l1b={currentQuestion:0,score:0,answered:[],total:QUIZ_QUESTIONS.length};state.l1c={currentSlot:0,used:[],attempts:0};state.l2={currentQuestion:0,score:0,answered:[],total:L2_QUIZ.length};state.l3={currentStep:0,completed:[],total:VSCODE_STEPS.length};document.body.classList.remove('level2-active','level3-active');document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screenWelcome').classList.add('active');state.currentScreen='screenWelcome';updateProgressBar();updateLevelIndex();const b=document.getElementById('btnAvanzado');if(b){b.textContent='🔮 Modo Avanzado';b.style.borderColor='';b.style.color=''}}
+/* RESET */
+function resetGame(){playClick();state.totalScore=0;state.unlockedLevels=[1];state.l1a={selectedKoala:null,matchedCount:0,matches:{}};state.l1b={currentQuestion:0,score:0,answered:[],total:QUIZ_QUESTIONS.length};state.l1c={currentSlot:0,used:[],attempts:0};state.l2={currentQuestion:0,score:0,answered:[],total:L2_QUIZ.length};state.l3={currentStep:0,completed:[],total:WORKSHOP_STEPS.length};state.l4={currentStep:0,completed:[],total:SCROLL_STEPS.length};state.l5={currentStep:0,completed:[],total:TEMPLE_STEPS.length};document.body.classList.remove('level2-active','level3-active','level4-active','level5-active');document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screenWelcome').classList.add('active');state.currentScreen='screenWelcome';updateProgressBar();updateLevelIndex();const b=document.getElementById('btnAvanzado');if(b){b.textContent='🔮 Modo Avanzado';b.style.borderColor='';b.style.color=''}}
 
-/* -------------------- INIT -------------------- */
-document.addEventListener('DOMContentLoaded',()=>{loadProgress();updateProgressBar();updateLevelIndex();let hs=0;try{hs=parseInt(localStorage.getItem('coala_v2_highscore')||'0')}catch(_){}if(hs>0)console.log(`🐨 High Score: ${hs} pts`);document.addEventListener('dragstart',e=>{if(e.target.closest('.koala-card'))e.preventDefault()})});
-console.log('🐨🏛️ COALA-SwarmOps Game v2.1 | Pirámide de Thot');
-console.log('📜 N1: Koalas→Quiz→Pipeline | N2: Quiz Pirámide | N3: VS Code para Niños');
+document.addEventListener('DOMContentLoaded',()=>{loadProgress();updateProgressBar();updateLevelIndex();let hs=0;try{hs=parseInt(localStorage.getItem('coala_v3_highscore')||'0')}catch(_){}if(hs>0)console.log(`🐨 High Score: ${hs} pts`);document.addEventListener('dragstart',e=>{if(e.target.closest('.koala-card'))e.preventDefault()})});
+console.log('🐨🏛️ COALA-SwarmOps Game v3.0 | 5 Niveles del Templo');
+console.log('📜 N1:Aprendiz | N2:Pirámide | N3:Taller | N4:Pergamino | N5:Código');
 </script>
 </body>
 </html>
