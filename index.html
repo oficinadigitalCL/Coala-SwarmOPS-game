@@ -21,17 +21,8 @@
 <meta name="twitter:title" content="COALA-SwarmOps Game — Aprende automatización jugando">
 <meta name="twitter:description" content="🐨🏛️ Entrena en el Templo de Thot y domina el arte de coordinar enjambres de agentes IA.">
 
-<!-- Favicon: emoji 🐨 via SVG data URI -->
+<!-- Favicon -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐨</text></svg>">
-
-<!-- Google Analytics (placeholder — descomentar y agregar ID para activar) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
-<!-- <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
-</script> -->
 
 <title>🐨 COALA-SwarmOps Game | El Templo de Thot</title>
 <style>
@@ -81,10 +72,11 @@ body {
     radial-gradient(ellipse at 50% 0%, rgba(212,168,67,0.08) 0%, transparent 60%),
     radial-gradient(ellipse at 20% 80%, rgba(26,58,92,0.15) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 70%, rgba(244,197,66,0.06) 0%, transparent 50%);
+  transition: background 0.6s ease;
 }
 
 /* ============================================================
-   DECORATIVE ELEMENTS — Jeroglíficos flotantes
+   JEROGLÍFICOS FLOTANTES (siempre visibles)
    ============================================================ */
 .bg-glyphs {
   position: fixed;
@@ -119,39 +111,33 @@ body {
 }
 
 /* ============================================================
-   PIRÁMIDE ANIMADA — Fondo del Nivel 2
+   PIRÁMIDE — Escena decorativa (Nivel 2)
+   Se muestra solo cuando body tiene .level2-active
    ============================================================ */
 .pyramid-scene {
+  display: none;
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
 }
+body.level2-active .pyramid-scene { display: block; }
 
-/* Cielo del desierto */
 .pyramid-sky {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg,
-    #0D1B2A 0%,
-    #1B2838 25%,
-    #2C1A4A 45%,
-    #6B3A5E 60%,
-    #C4714D 75%,
-    #E8A94E 90%,
-    #F4C542 100%
+    #0D1B2A 0%, #1B2838 25%, #2C1A4A 45%,
+    #6B3A5E 60%, #C4714D 75%, #E8A94E 90%, #F4C542 100%
   );
   opacity: 0.85;
 }
 
-/* Sol egipcio */
 .pyramid-sun {
   position: absolute;
-  top: 8%;
-  right: 15%;
-  width: 70px;
-  height: 70px;
+  top: 8%; right: 15%;
+  width: 70px; height: 70px;
   background: radial-gradient(circle, #F4C542 0%, #E8A94E 40%, transparent 70%);
   border-radius: 50%;
   box-shadow: 0 0 60px rgba(244,197,66,0.5), 0 0 120px rgba(244,197,66,0.25);
@@ -162,22 +148,14 @@ body {
   50% { box-shadow: 0 0 80px rgba(244,197,66,0.7), 0 0 150px rgba(244,197,66,0.35); }
 }
 
-/* Pirámide principal — CSS clip-path */
 .pyramid {
   position: absolute;
-  bottom: 0;
-  left: 50%;
+  bottom: 0; left: 50%;
   transform: translateX(-50%);
-  width: 300px;
-  height: 220px;
+  width: 300px; height: 220px;
   background: linear-gradient(135deg,
-    #C2A870 0%,
-    #D4A843 20%,
-    #E8C86A 40%,
-    #C4953A 55%,
-    #B8862D 70%,
-    #9A7020 85%,
-    #7A5810 100%
+    #C2A870 0%, #D4A843 20%, #E8C86A 40%,
+    #C4953A 55%, #B8862D 70%, #9A7020 85%, #7A5810 100%
   );
   clip-path: polygon(50% 0%, 5% 100%, 95% 100%);
   box-shadow: 0 0 40px rgba(212,168,67,0.15);
@@ -185,8 +163,7 @@ body {
 }
 .pyramid::after {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(244,197,66,0.15) 0%, transparent 50%);
   clip-path: polygon(50% 0%, 5% 100%, 95% 100%);
 }
@@ -195,13 +172,10 @@ body {
   50% { filter: brightness(1.08); }
 }
 
-/* Pirámide más pequeña al fondo (perspectiva) */
 .pyramid-far {
   position: absolute;
-  bottom: 0;
-  right: 8%;
-  width: 120px;
-  height: 90px;
+  bottom: 0; right: 8%;
+  width: 120px; height: 90px;
   background: linear-gradient(135deg, #8A6D3B 0%, #A08040 50%, #7A5D30 100%);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   opacity: 0.5;
@@ -209,33 +183,24 @@ body {
   animation-delay: -2s;
 }
 
-/* Arena del desierto */
 .desert-sand {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
+  bottom: 0; left: 0; right: 0; height: 60px;
   background: linear-gradient(180deg,
-    rgba(194,168,112,0.3) 0%,
-    rgba(180,150,90,0.5) 30%,
-    rgba(160,130,70,0.7) 60%,
-    rgba(140,110,55,0.85) 100%
+    rgba(194,168,112,0.3) 0%, rgba(180,150,90,0.5) 30%,
+    rgba(160,130,70,0.7) 60%, rgba(140,110,55,0.85) 100%
   );
 }
 
-/* Palmeras */
 .palm-tree {
   position: absolute;
-  bottom: 20px;
-  z-index: 2;
+  bottom: 20px; z-index: 2;
 }
 .palm-tree.left { left: 3%; }
 .palm-tree.right { right: 3%; }
 
 .palm-trunk {
-  width: 8px;
-  height: 90px;
+  width: 8px; height: 90px;
   background: linear-gradient(180deg, #5D4037 0%, #795548 40%, #6D4C41 70%, #4E342E 100%);
   margin: 0 auto;
   border-radius: 4px 4px 0 0;
@@ -244,8 +209,7 @@ body {
 
 .palm-leaves {
   position: absolute;
-  top: -15px;
-  left: 50%;
+  top: -15px; left: 50%;
   transform: translateX(-50%);
   font-size: 2.2rem;
   animation: palmSway 3s infinite ease-in-out;
@@ -257,7 +221,6 @@ body {
   50% { transform: translateX(-50%) rotate(3deg); }
 }
 
-/* Jeroglíficos mejorados para el Nivel 2 */
 .glyph-l2 {
   position: absolute;
   font-size: 1.8rem;
@@ -271,233 +234,12 @@ body {
   66% { transform: translateY(-5px) rotate(-3deg); opacity: 0.10; }
 }
 
-/* Polvo de estrellas/arena flotante */
-.desert-sparkle {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: var(--gold-bright);
-  border-radius: 50%;
-  animation: sparkleFloat 4s infinite ease-in-out;
-  opacity: 0;
-}
-@keyframes sparkleFloat {
-  0% { opacity: 0; transform: translateY(0) translateX(0); }
-  20% { opacity: 0.8; }
-  100% { opacity: 0; transform: translateY(-60px) translateX(20px); }
-}
-
 /* ============================================================
-   LEVEL 2 — LEARNING SUMMARY CARD
+   FONDO NIVEL 3 — Tema Código
    ============================================================ */
-.learning-summary {
-  background: linear-gradient(135deg, rgba(26,58,92,0.3), rgba(26,58,92,0.1));
-  border: 1px solid rgba(212,168,67,0.3);
-  border-radius: var(--radius);
-  padding: 1rem 1.2rem;
-  margin-bottom: 1rem;
+body.level3-active {
+  background: linear-gradient(180deg, #0A1628 0%, #1A2A4A 40%, #0F1F3A 100%);
 }
-.learning-summary h4 {
-  font-family: var(--font-title);
-  color: var(--gold-bright);
-  font-size: 1rem;
-  margin-bottom: 0.6rem;
-  text-align: center;
-}
-.learning-summary .summary-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 0.4rem;
-}
-.learning-summary .summary-item {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.35rem 0.5rem;
-  background: rgba(255,255,255,0.04);
-  border-radius: var(--radius-sm);
-  font-size: 0.75rem;
-  color: var(--sand);
-}
-.learning-summary .summary-item .s-emoji { font-size: 1.2rem; }
-.learning-summary .summary-item.done {
-  border-left: 3px solid var(--success);
-  opacity: 1;
-}
-.learning-summary .summary-item.pending {
-  opacity: 0.5;
-}
-
-/* ============================================================
-   LEVEL 2 — EXERCISE CARDS (matching concepts)
-   ============================================================ */
-.exercise-area {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-.exercise-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(212,168,67,0.15);
-  border-radius: var(--radius);
-  padding: 1rem;
-  transition: var(--transition);
-}
-.exercise-card.active-exercise {
-  border-color: var(--gold-bright);
-  box-shadow: 0 0 20px rgba(212,168,67,0.2);
-}
-.exercise-card.completed-exercise {
-  border-color: var(--success);
-  background: rgba(46,204,113,0.05);
-}
-.exercise-card .ex-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.6rem;
-}
-.exercise-card .ex-number {
-  font-family: var(--font-title);
-  color: var(--gold-bright);
-  font-size: 1.2rem;
-}
-.exercise-card .ex-question {
-  color: var(--text-light);
-  font-size: 0.85rem;
-  line-height: 1.5;
-}
-.exercise-card .ex-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.6rem;
-}
-.exercise-card .ex-option {
-  padding: 0.45rem 0.8rem;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(212,168,67,0.25);
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.78rem;
-  color: var(--sand);
-  transition: var(--transition);
-}
-.exercise-card .ex-option:hover {
-  border-color: var(--gold);
-  background: rgba(212,168,67,0.1);
-}
-.exercise-card .ex-option.chosen-correct {
-  border-color: var(--success);
-  background: rgba(46,204,113,0.15);
-  color: var(--success);
-}
-.exercise-card .ex-option.chosen-wrong {
-  border-color: var(--error);
-  background: rgba(231,76,60,0.1);
-}
-.exercise-card .ex-feedback {
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  color: var(--sand);
-  font-style: italic;
-  min-height: 1.2rem;
-}
-
-/* ============================================================
-   LEVEL 3 — VS CODE LEARNING
-   ============================================================ */
-.vscode-step {
-  background: rgba(26,58,92,0.2);
-  border: 1px solid rgba(212,168,67,0.2);
-  border-radius: var(--radius);
-  padding: 1rem 1.2rem;
-  margin-bottom: 0.8rem;
-  transition: var(--transition);
-}
-.vscode-step.active-step {
-  border-color: var(--gold-bright);
-  box-shadow: 0 0 16px rgba(244,197,66,0.15);
-}
-.vscode-step .vs-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.vscode-step .vs-num {
-  font-family: var(--font-title);
-  color: var(--gold-bright);
-  font-size: 1.1rem;
-  min-width: 24px;
-  text-align: center;
-}
-.vscode-step .vs-title {
-  color: var(--text-light);
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-.vscode-step .vs-desc {
-  color: var(--sand);
-  font-size: 0.8rem;
-  line-height: 1.5;
-  margin-bottom: 0.5rem;
-}
-.vscode-step .vs-action {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  align-items: center;
-}
-.vscode-step .vs-btn {
-  padding: 0.4rem 1rem;
-  background: rgba(212,168,67,0.15);
-  border: 1px solid var(--gold);
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 0.78rem;
-  color: var(--gold);
-  transition: var(--transition);
-  font-family: var(--font-body);
-}
-.vscode-step .vs-btn:hover {
-  background: rgba(212,168,67,0.25);
-  transform: translateY(-1px);
-}
-.vscode-step .vs-btn.done-btn {
-  background: rgba(46,204,113,0.15);
-  border-color: var(--success);
-  color: var(--success);
-  pointer-events: none;
-}
-.vscode-step .vs-check {
-  color: var(--success);
-  font-size: 1.2rem;
-  display: none;
-}
-.vscode-step .vs-check.show { display: inline; }
-.vscode-step.completed-step {
-  border-color: var(--success);
-  opacity: 0.85;
-}
-.vscode-step.completed-step .vs-title { color: var(--success); }
-
-/* Terminal mock para VS Code */
-.vscode-terminal-mock {
-  background: #0C0C0E;
-  border: 1px solid rgba(212,168,67,0.25);
-  border-radius: var(--radius-sm);
-  padding: 0.6rem 0.8rem;
-  margin: 0.5rem 0;
-  font-family: 'Consolas', 'Courier New', monospace;
-  font-size: 0.7rem;
-  color: #CCCCCC;
-  overflow-x: auto;
-  white-space: pre-wrap;
-}
-.vscode-terminal-mock .prompt { color: var(--success); }
-.vscode-terminal-mock .cmd { color: #61AFEF; }
 
 /* ============================================================
    MAIN CONTAINER
@@ -513,20 +255,8 @@ body {
   padding: 1rem;
 }
 
-/* Level-specific body backgrounds */
-body.level2-active {
-  background: #0D1B2A;
-  background-image:
-    radial-gradient(ellipse at 50% 20%, rgba(244,197,66,0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 30% 90%, rgba(212,168,67,0.04) 0%, transparent 40%);
-}
-body.level3-active {
-  background: linear-gradient(180deg, #0A1628 0%, #1A2A4A 40%, #0F1F3A 100%);
-}
-
-
 /* ============================================================
-   GAME HEADER (interno, se mantiene del original)
+   GAME HEADER
    ============================================================ */
 .game-header {
   text-align: center;
@@ -558,7 +288,7 @@ body.level3-active {
 }
 
 /* ============================================================
-   SITE TOP BAR — Link al repo principal (sutil)
+   SITE TOP BAR
    ============================================================ */
 .site-topbar {
   text-align: center;
@@ -690,6 +420,40 @@ body.level3-active {
   gap: 0.5rem;
   font-size: 2.2rem;
   flex-wrap: wrap;
+}
+
+/* Índice de niveles en Welcome */
+.level-index {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 0.3rem;
+}
+.level-index .li-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(212,168,67,0.25);
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--sand);
+  transition: var(--transition);
+  font-family: var(--font-body);
+  text-decoration: none;
+}
+.level-index .li-btn:hover {
+  border-color: var(--gold);
+  background: rgba(212,168,67,0.1);
+  color: var(--gold-bright);
+}
+.level-index .li-btn.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* ============================================================
@@ -831,131 +595,214 @@ body.level3-active {
 }
 
 /* ============================================================
-   LEVEL 2 — QUIZ
+   LEVEL 2 — LEARNING SUMMARY + EXERCISES
    ============================================================ */
-.quiz-area {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-.quiz-question-card {
-  background: rgba(26,58,92,0.2);
-  border: 1px solid rgba(212,168,67,0.2);
+.learning-summary {
+  background: linear-gradient(135deg, rgba(26,58,92,0.3), rgba(26,58,92,0.1));
+  border: 1px solid rgba(212,168,67,0.3);
   border-radius: var(--radius);
-  padding: 1.2rem;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+}
+.learning-summary h4 {
+  font-family: var(--font-title);
+  color: var(--gold-bright);
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
   text-align: center;
 }
-.quiz-question-card .q-label {
+.learning-summary .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.4rem;
+}
+.learning-summary .summary-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.5rem;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-sm);
   font-size: 0.75rem;
   color: var(--sand);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 0.5rem;
-}
-.quiz-question-card .q-text {
-  font-family: var(--font-title);
-  font-size: 1.1rem;
-  color: var(--gold-bright);
-  line-height: 1.5;
-}
-.quiz-options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-.quiz-option {
-  padding: 0.9rem 1rem;
-  background: rgba(255,255,255,0.04);
-  border: 2px solid rgba(212,168,67,0.2);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.9rem;
-  color: var(--text-light);
-  text-align: left;
-}
-.quiz-option:hover { border-color: var(--gold); background: rgba(212,168,67,0.08); }
-.quiz-option.correct { border-color: var(--success); background: rgba(46,204,113,0.12); animation: correctPulse 0.6s; }
-.quiz-option.wrong { border-color: var(--error); background: rgba(231,76,60,0.12); animation: shake 0.5s; }
-.quiz-option.disabled { pointer-events: none; opacity: 0.7; }
-@keyframes correctPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-}
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-6px); }
-  40% { transform: translateX(6px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
+  border-left: 3px solid var(--success);
 }
 
 .quiz-koala-feedback {
   text-align: center;
-  font-size: 3rem;
-  min-height: 4rem;
+  font-size: 2rem;
+  min-height: 2.5rem;
   transition: var(--transition);
+}
+
+.exercise-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.exercise-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(212,168,67,0.15);
+  border-radius: var(--radius);
+  padding: 1rem;
+  transition: var(--transition);
+}
+.exercise-card.active-exercise {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 20px rgba(212,168,67,0.2);
+}
+.exercise-card.completed-exercise {
+  border-color: var(--success);
+  background: rgba(46,204,113,0.05);
+}
+.exercise-card .ex-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.exercise-card .ex-number {
+  font-family: var(--font-title);
+  color: var(--gold-bright);
+  font-size: 1.2rem;
+}
+.exercise-card .ex-question {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.exercise-card .ex-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+.exercise-card .ex-option {
+  padding: 0.45rem 0.8rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(212,168,67,0.25);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--sand);
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+.exercise-card .ex-option:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: rgba(212,168,67,0.1);
+}
+.exercise-card .ex-option:disabled { cursor: not-allowed; opacity: 0.6; }
+.exercise-card .ex-option.chosen-correct {
+  border-color: var(--success);
+  background: rgba(46,204,113,0.15);
+  color: var(--success);
+}
+.exercise-card .ex-option.chosen-wrong {
+  border-color: var(--error);
+  background: rgba(231,76,60,0.1);
+}
+.exercise-card .ex-feedback {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--sand);
+  font-style: italic;
+  min-height: 1.2rem;
 }
 
 /* ============================================================
-   LEVEL 3 — ORDER PIPELINE
+   LEVEL 3 — VS CODE LEARNING STEPS
    ============================================================ */
-.pipeline-area {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
+.vscode-step {
+  background: rgba(26,58,92,0.2);
+  border: 1px solid rgba(212,168,67,0.2);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.8rem;
+  transition: var(--transition);
 }
-.pipeline-slots {
+.vscode-step.active-step {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 16px rgba(244,197,66,0.15);
+}
+.vscode-step.completed-step {
+  border-color: var(--success);
+  opacity: 0.85;
+}
+.vscode-step .vs-header {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 0.5rem;
-  justify-content: center;
-  min-height: 50px;
-  padding: 0.5rem;
-  background: rgba(26,58,92,0.15);
-  border-radius: var(--radius-sm);
-  border: 2px dashed rgba(212,168,67,0.2);
+  margin-bottom: 0.5rem;
 }
-.pipeline-slots .slot {
-  width: 48px;
-  height: 48px;
-  border: 2px dashed rgba(255,255,255,0.2);
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.3);
-  transition: var(--transition);
+.vscode-step .vs-num {
+  font-family: var(--font-title);
+  color: var(--gold-bright);
+  font-size: 1.1rem;
+  min-width: 24px;
+  text-align: center;
 }
-.pipeline-slots .slot.filled {
-  border-color: var(--gold);
-  border-style: solid;
-  background: rgba(212,168,67,0.1);
-  font-size: 1.5rem;
+.vscode-step .vs-title {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-weight: 600;
 }
-
-.pipeline-options {
+.vscode-step.completed-step .vs-title { color: var(--success); }
+.vscode-step .vs-desc {
+  color: var(--sand);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+.vscode-step .vs-action {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem;
-  justify-content: center;
-}
-.pipeline-chip {
-  padding: 0.6rem 1rem;
-  background: rgba(255,255,255,0.05);
-  border: 2px solid rgba(212,168,67,0.3);
-  border-radius: 50px;
-  cursor: pointer;
-  transition: var(--transition);
-  font-size: 0.85rem;
-  color: var(--sand);
-  display: flex;
-  align-items: center;
   gap: 0.4rem;
+  align-items: center;
 }
-.pipeline-chip:hover { border-color: var(--gold-bright); transform: translateY(-2px); }
-.pipeline-chip.used { opacity: 0.3; pointer-events: none; }
+.vscode-step .vs-btn {
+  padding: 0.4rem 1rem;
+  background: rgba(212,168,67,0.15);
+  border: 1px solid var(--gold);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--gold);
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+.vscode-step .vs-btn:hover:not(:disabled) {
+  background: rgba(212,168,67,0.25);
+  transform: translateY(-1px);
+}
+.vscode-step .vs-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+.vscode-step .vs-btn.done-btn {
+  background: rgba(46,204,113,0.15);
+  border-color: var(--success);
+  color: var(--success);
+}
+.vscode-step .vs-check {
+  color: var(--success);
+  font-size: 1.2rem;
+  display: none;
+}
+.vscode-step .vs-check.show { display: inline; }
+
+.vscode-terminal-mock {
+  background: #0C0C0E;
+  border: 1px solid rgba(212,168,67,0.25);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  margin: 0.5rem 0;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: #CCCCCC;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+.vscode-terminal-mock .prompt { color: var(--success); }
+.vscode-terminal-mock .cmd { color: #61AFEF; }
 
 /* ============================================================
    VICTORY SCREEN
@@ -1052,6 +899,10 @@ body.level3-active {
   .koala-card .koala-emoji { font-size: 1.5rem; }
   .branch-slot .branch-emoji { font-size: 1.3rem; }
   .victory-link-block a { font-size: 0.75rem; }
+  .pyramid { width: 220px; height: 160px; }
+  .pyramid-far { width: 80px; height: 60px; }
+  .palm-tree { display: none; }
+  .learning-summary .summary-grid { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
 }
 
 @media (min-width: 768px) {
@@ -1069,7 +920,7 @@ body.level3-active {
 </head>
 <body>
 
-<!-- Jeroglíficos decorativos de fondo -->
+<!-- Jeroglíficos decorativos de fondo (siempre visibles) -->
 <div class="bg-glyphs" aria-hidden="true">
   <span class="glyph">☥</span><span class="glyph">𓂀</span><span class="glyph">◈</span>
   <span class="glyph">☥</span><span class="glyph">𓂀</span><span class="glyph">◈</span>
@@ -1077,7 +928,30 @@ body.level3-active {
   <span class="glyph">𓂀</span>
 </div>
 
-<!-- SITE TOP BAR — Link sutil al repo principal -->
+<!-- Escena de pirámide (Nivel 2) — fuera de los screens, controlada por body.level2-active -->
+<div class="pyramid-scene" aria-hidden="true">
+  <div class="pyramid-sky"></div>
+  <div class="pyramid-sun"></div>
+  <div class="pyramid"></div>
+  <div class="pyramid-far"></div>
+  <div class="desert-sand"></div>
+  <div class="palm-tree left">
+    <div class="palm-leaves">🌴</div>
+    <div class="palm-trunk"></div>
+  </div>
+  <div class="palm-tree right">
+    <div class="palm-leaves">🌴</div>
+    <div class="palm-trunk"></div>
+  </div>
+  <span class="glyph-l2" style="top:10%;left:10%;animation-delay:0s;">☥</span>
+  <span class="glyph-l2" style="top:18%;right:12%;animation-delay:-2s;">𓂀</span>
+  <span class="glyph-l2" style="top:40%;left:6%;animation-delay:-4s;">◈</span>
+  <span class="glyph-l2" style="top:55%;right:8%;animation-delay:-1s;">☥</span>
+  <span class="glyph-l2" style="top:70%;left:15%;animation-delay:-5s;">𓂀</span>
+  <span class="glyph-l2" style="top:80%;right:18%;animation-delay:-3s;">◈</span>
+</div>
+
+<!-- SITE TOP BAR -->
 <div class="site-topbar">
   <a href="https://github.com/oficinadigitalcl/COALA-SwarmOps" title="Ver repo principal COALA-SwarmOps" target="_blank" rel="noopener">🐨 COALA-SwarmOps Game</a>
 </div>
@@ -1126,6 +1000,15 @@ body.level3-active {
       <p class="welcome-text" style="font-size:0.8rem; opacity:0.7;">
         ⚡ "Después de que aprendas COALA-SwarmOps entenderás mucho sobre automatización y memoria cognitiva"
       </p>
+
+      <!-- ÍNDICE DE NIVELES -->
+      <div class="level-index">
+        <button class="li-btn" onclick="jumpToLevel(1)" id="liBtn1">🌳 Nivel 1</button>
+        <button class="li-btn locked" onclick="jumpToLevel(2)" id="liBtn2">🏛️ Nivel 2</button>
+        <button class="li-btn locked" onclick="jumpToLevel(3)" id="liBtn3">💻 Nivel 3</button>
+      </div>
+      <p style="font-size:0.65rem; opacity:0.5;">Completa cada nivel para desbloquear el siguiente</p>
+
       <button class="btn btn-primary" onclick="startGame()" style="margin-top:0.5rem;">
         🔮 Comenzar Entrenamiento
       </button>
@@ -1133,7 +1016,7 @@ body.level3-active {
   </div>
 
   <!-- ============================================================
-       SCREEN: LEVEL 1 — Emparejar Koalas con Ramas
+       SCREEN: LEVEL 1 — Emparejar Koalas con Ramas (INTACTO)
        ============================================================ -->
   <div class="screen" id="screenLevel1">
     <div class="card" style="flex:1; display:flex; flex-direction:column;">
@@ -1160,33 +1043,9 @@ body.level3-active {
   </div>
 
   <!-- ============================================================
-       SCREEN: LEVEL 2 — La Pirámide de Thot (Sumario + Ejercicios)
+       SCREEN: LEVEL 2 — La Pirámide de Thot
        ============================================================ -->
   <div class="screen" id="screenLevel2">
-    <!-- Escena de pirámide (fondo decorativo) -->
-    <div class="pyramid-scene" aria-hidden="true">
-      <div class="pyramid-sky"></div>
-      <div class="pyramid-sun"></div>
-      <div class="pyramid"></div>
-      <div class="pyramid-far"></div>
-      <div class="desert-sand"></div>
-      <div class="palm-tree left">
-        <div class="palm-leaves">🌴</div>
-        <div class="palm-trunk"></div>
-      </div>
-      <div class="palm-tree right">
-        <div class="palm-leaves">🌴</div>
-        <div class="palm-trunk"></div>
-      </div>
-      <!-- Jeroglíficos Nivel 2 -->
-      <span class="glyph-l2" style="top:10%;left:10%;animation-delay:0s;">☥</span>
-      <span class="glyph-l2" style="top:18%;right:12%;animation-delay:-2s;">𓂀</span>
-      <span class="glyph-l2" style="top:40%;left:6%;animation-delay:-4s;">◈</span>
-      <span class="glyph-l2" style="top:55%;right:8%;animation-delay:-1s;">☥</span>
-      <span class="glyph-l2" style="top:70%;left:15%;animation-delay:-5s;">𓂀</span>
-      <span class="glyph-l2" style="top:80%;right:18%;animation-delay:-3s;">◈</span>
-    </div>
-
     <div class="card" style="flex:1; display:flex; flex-direction:column; position:relative; z-index:1;">
       <h3 class="level-title">🏛️ Nivel 2 — La Pirámide de Thot</h3>
       <p class="level-desc" id="l2Desc">
@@ -1202,7 +1061,7 @@ body.level3-active {
       </div>
 
       <!-- INDICADOR DE KOALA -->
-      <div class="quiz-koala-feedback" id="quizKoalaFeedback" style="font-size:2rem; min-height:2.5rem;">🐨🏛️</div>
+      <div class="quiz-koala-feedback" id="quizKoalaFeedback">🐨🏛️</div>
 
       <!-- EJERCICIOS SIMPLES PARA NIÑOS -->
       <div class="exercise-area" id="exerciseArea">
@@ -1217,7 +1076,7 @@ body.level3-active {
   </div>
 
   <!-- ============================================================
-       SCREEN: LEVEL 3 — El Templo del Código (VS Code)
+       SCREEN: LEVEL 3 — El Templo del Código
        ============================================================ -->
   <div class="screen" id="screenLevel3">
     <div class="card" style="flex:1; display:flex; flex-direction:column;">
@@ -1248,12 +1107,13 @@ body.level3-active {
       <div class="victory-score" id="finalScore">0 pts</div>
       <p class="victory-text">
         🔮 <strong>Thot te observa con orgullo.</strong><br>
-        Has dominado las ramas del Árbol Sagrado COALA.
+        Has dominado las ramas del Árbol Sagrado COALA,
+        la Pirámide de Thot y el Templo del Código.<br>
         Ahora comprendes cómo los agentes koala coordinan sus talentos
         para construir software como un enjambre inteligente.
       </p>
       <p class="victory-text" style="font-size:0.85rem;">
-        📜 "Cada rama que dominas te acerca a la Maestría Digital"<br>
+        📜 "Cada nivel que dominas te acerca a la Maestría Digital"<br>
         🐨 "Los koalas del Árbol Sagrado te esperan para futuras misiones..."
       </p>
 
@@ -1273,7 +1133,7 @@ body.level3-active {
         </button>
       </div>
       <p style="font-size:0.7rem; opacity:0.5; margin-top:0.8rem;">
-        COALA-SwarmOps Game v2.0 · Nivel 2 — La Pirámide de Thot 🏛️
+        COALA-SwarmOps Game v2.0 · La Pirámide de Thot 🏛️
       </p>
     </div>
   </div>
@@ -1294,7 +1154,7 @@ body.level3-active {
 
 <script>
 /* ============================================================
-   COALA-SwarmOps Game — El Templo de Thot
+   COALA-SwarmOps Game — La Pirámide de Thot v2.0
    Juego didáctico interactivo · Vanilla JS ES6+
    ============================================================ */
 
@@ -1312,82 +1172,10 @@ const ROLES = [
   { id: 'coordinator',role: 'Coordinador',   emoji: '🎯', branch: 'Orquesta', branchEmoji: '🌐', desc: 'Coordina todo el enjambre' },
 ];
 
-/** Preguntas del quiz (Nivel 2) */
-const QUIZ_QUESTIONS = [
-  {
-    q: '¿Qué significa COALA en COALA-SwarmOps?',
-    options: [
-      'Coordinación de Operaciones con Agentes de Legado Autónomo',
-      'Computer Online Automated Language Analyzer',
-      'Cloud Operations And Logistics Architecture',
-    ],
-    correct: 0,
-    koala: '🎯',
-    feedback: '¡Exacto! COALA = Coordinación de Operaciones con Agentes de Legado Autónomo. ¡Como un enjambre inteligente!',
-  },
-  {
-    q: '¿Por qué koalas?',
-    options: [
-      'Porque son animales que trabajan en comunidad en los eucaliptos, como los agentes en el árbol de tareas',
-      'Porque son nativos de Egipto',
-      'Porque es un acrónimo técnico',
-    ],
-    correct: 0,
-    koala: '🐨',
-    feedback: '¡Sí! Los koalas viven en comunidad en árboles de eucalipto, igual que los agentes trabajan juntos en el árbol de tareas COALA.',
-  },
-  {
-    q: '¿Quién es Thot en la mitología egipcia?',
-    options: [
-      'El dios de la guerra',
-      'El dios de la sabiduría, escritura, ciencia y magia',
-      'El dios del sol',
-    ],
-    correct: 1,
-    koala: '🏛️',
-    feedback: '¡Correcto! Thot es el dios de la sabiduría, la escritura y la ciencia — el guía perfecto para nuestro templo digital.',
-  },
-  {
-    q: 'En un swarm de agentes, ¿qué hace el Arquitecto?',
-    options: [
-      'Escribe todo el código solo',
-      'Diseña la estructura del software y el plan de trabajo',
-      'Solo revisa documentación',
-    ],
-    correct: 1,
-    koala: '🏗️',
-    feedback: '¡Bien! El Arquitecto diseña la estructura y el plan. Luego el Constructor lo implementa. ¡Trabajo en equipo!',
-  },
-  {
-    q: '¿Qué es un "swarm" (enjambre) en inteligencia artificial?',
-    options: [
-      'Un solo agente muy poderoso que hace todo',
-      'Un conjunto de agentes especializados que colaboran para resolver tareas complejas',
-      'Una base de datos distribuida',
-    ],
-    correct: 1,
-    koala: '🌐',
-    feedback: '¡Perfecto! Un swarm es un enjambre de agentes especializados que colaboran — cada uno hace su parte y juntos logran más.',
-  },
-  {
-    q: '¿Cuál es el orden correcto del flujo COALA?',
-    options: [
-      'Construir → Probar → Diseñar → Coordinar',
-      'Diseñar → Construir → Probar → Documentar → Proteger → Coordinar',
-      'Coordinar → Documentar → Construir → Probar',
-    ],
-    correct: 1,
-    koala: '⚡',
-    feedback: '¡Así es! El flujo sagrado: Diseñar → Construir → Probar → Documentar → Proteger → Coordinar. ¡El orden es clave!',
-  },
-];
-
 /** Ejercicios del Nivel 2 — basados en custom_modes_v6.0_edu.yaml */
 const L2_EXERCISES = [
   {
-    id: 'ex1',
-    agentEmoji: '🏗️',
-    agentName: 'Arquitecto',
+    id: 'ex1', agentEmoji: '🏗️', agentName: 'Arquitecto',
     question: 'Si quisieras construir una casa, ¿qué harías PRIMERO?',
     options: [
       { text: 'Comprar todos los ladrillos y cemento', correct: false },
@@ -1398,9 +1186,7 @@ const L2_EXERCISES = [
     feedbackFail: '📐 Thot dice: "Sin plano, la casa sale torcida." El Arquitecto diseña primero, igual que en el software.',
   },
   {
-    id: 'ex2',
-    agentEmoji: '💻',
-    agentName: 'Constructor',
+    id: 'ex2', agentEmoji: '💻', agentName: 'Constructor',
     question: 'En programación, ¿qué es una "variable"?',
     options: [
       { text: 'Un tipo de pantalla', correct: false },
@@ -1411,9 +1197,7 @@ const L2_EXERCISES = [
     feedbackFail: '📦 Piensa en una caja con etiqueta. `nombre = "Ana"` guarda "Ana" en la caja llamada "nombre".',
   },
   {
-    id: 'ex3',
-    agentEmoji: '🧪',
-    agentName: 'Probador',
+    id: 'ex3', agentEmoji: '🧪', agentName: 'Probador',
     question: '¿Para qué sirve un "test" en programación?',
     options: [
       { text: 'Para hacer el programa más bonito', correct: false },
@@ -1424,9 +1208,7 @@ const L2_EXERCISES = [
     feedbackFail: '🔍 Un test es como un inspector de calidad. Revisa que todo funcione ANTES de que el usuario lo vea.',
   },
   {
-    id: 'ex4',
-    agentEmoji: '📝',
-    agentName: 'Documentador',
+    id: 'ex4', agentEmoji: '📝', agentName: 'Documentador',
     question: '¿Para qué sirve un README en un proyecto?',
     options: [
       { text: 'Para acelerar la computadora', correct: false },
@@ -1434,12 +1216,10 @@ const L2_EXERCISES = [
       { text: 'Para guardar contraseñas', correct: false },
     ],
     feedbackOk: '🐨📝 ¡Sí! El README es la carta de presentación. Explica qué es y cómo usar el proyecto.',
-    feedbackFail: '📜 Sin README, en 6 meses ni tú recordarás cómo funciona tu código. ¡Documentar es un regalo a tu yo futuro!',
+    feedbackFail: '📜 Sin README, en 6 meses ni tú recordarás cómo funciona tu código. ¡Documentar es un regalo!',
   },
   {
-    id: 'ex5',
-    agentEmoji: '🧠',
-    agentName: 'Guardián',
+    id: 'ex5', agentEmoji: '🧠', agentName: 'Guardián',
     question: '¿Por qué un equipo de programación necesita "memoria"?',
     options: [
       { text: 'Porque las computadoras tienen poca RAM', correct: false },
@@ -1450,9 +1230,7 @@ const L2_EXERCISES = [
     feedbackFail: '🧠 Sin el Guardián, cada error se "descubre" de nuevo. La memoria ahorra tiempo y evita repetir fallos.',
   },
   {
-    id: 'ex6',
-    agentEmoji: '🎯',
-    agentName: 'Coordinador',
+    id: 'ex6', agentEmoji: '🎯', agentName: 'Coordinador',
     question: '¿En qué orden trabaja el equipo COALA?',
     options: [
       { text: 'Primero documentan, luego diseñan, luego prueban', correct: false },
@@ -1467,63 +1245,39 @@ const L2_EXERCISES = [
 /** Pasos interactivos del Nivel 3 — Aprender VS Code */
 const VSCODE_STEPS = [
   {
-    id: 'vs1',
-    icon: '💻',
-    title: '¿Qué es VS Code?',
+    id: 'vs1', icon: '💻', title: '¿Qué es VS Code?',
     desc: 'Visual Studio Code es un editor de código gratuito donde los programadores escriben sus proyectos. Es como un cuaderno digital súper inteligente que te ayuda a escribir código sin errores.',
-    action: 'Entendido ✅',
-    terminal: null,
+    action: 'Entendido ✅', terminal: null,
   },
   {
-    id: 'vs2',
-    icon: '📥',
-    title: 'Paso 1: Descargar VS Code',
+    id: 'vs2', icon: '📥', title: 'Paso 1: Descargar VS Code',
     desc: 'Ve a <strong>code.visualstudio.com</strong> y descarga la versión para tu computadora (Windows, Mac o Linux). Es gratis y se instala como cualquier programa.',
-    action: '¡Lo descargaré! 💾',
-    terminal: null,
+    action: '¡Lo descargaré! 💾', terminal: null,
   },
   {
-    id: 'vs3',
-    icon: '🧩',
-    title: 'Paso 2: Instalar una Extensión',
+    id: 'vs3', icon: '🧩', title: 'Paso 2: Instalar una Extensión',
     desc: 'Las extensiones son como "superpoderes" para VS Code. Ve al ícono de Extensiones (los 4 cuadritos a la izquierda) y busca "Python" o "Live Server". Instálalas con un clic.',
     action: '¡Añadir superpoderes! ⚡',
     terminal: 'En VS Code:\n1. Haz clic en el ícono de Extensiones (Ctrl+Shift+X)\n2. Busca "Python"\n3. Haz clic en "Install"\n\n🐨 Thot dice: "Las extensiones son como herramientas mágicas para tu taller digital."',
   },
   {
-    id: 'vs4',
-    icon: '📁',
-    title: 'Paso 3: Crear tu primer archivo',
+    id: 'vs4', icon: '📁', title: 'Paso 3: Crear tu primer archivo',
     desc: 'En VS Code, ve a <strong>File → New File</strong> (Ctrl+N). Escribe algo simple como <code>print("¡Hola, mundo!")</code> y guárdalo como <code>mi_primer_programa.py</code>.',
     action: '¡Crear archivo! 📄',
     terminal: 'En VS Code:\n1. File → New File (Ctrl+N)\n2. Escribe: print("¡Hola desde COALA!")\n3. File → Save As (Ctrl+S)\n4. Nómbralo: mi_programa.py\n\n🐨 ¡Tu primer archivo de código!',
   },
   {
-    id: 'vs5',
-    icon: '📂',
-    title: 'Paso 4: Abrir una carpeta de proyecto',
+    id: 'vs5', icon: '📂', title: 'Paso 4: Abrir una carpeta de proyecto',
     desc: 'VS Code trabaja con carpetas enteras. Ve a <strong>File → Open Folder</strong> y selecciona la carpeta donde guardaste tu archivo. Así ves todos tus archivos juntos en el explorador lateral.',
     action: '¡Abrir carpeta! 📂',
     terminal: 'En VS Code:\n1. File → Open Folder (Ctrl+K Ctrl+O)\n2. Selecciona tu carpeta de proyecto\n3. Verás el EXPLORER a la izquierda con tus archivos\n\n🐨 Thot dice: "Una carpeta ordenada es como un templo bien construido."',
   },
   {
-    id: 'vs6',
-    icon: '🚀',
-    title: 'Paso 5: Ejecutar tu programa',
+    id: 'vs6', icon: '🚀', title: 'Paso 5: Ejecutar tu programa',
     desc: 'Abre la Terminal en VS Code (<strong>Terminal → New Terminal</strong>) y escribe <code>python mi_programa.py</code>. ¡Verás tu código ejecutarse! Así es como los programadores prueban sus creaciones.',
     action: '¡Ejecutar! ▶️',
     terminal: 'En la Terminal de VS Code:\n> python mi_programa.py\n¡Hola desde COALA!\n\n🐨🎉 ¡Felicidades! Acabas de ejecutar tu primer programa.\nAsí trabajan los Arquitectos de Enjambres.',
   },
-];
-
-/** Orden correcto del pipeline (Nivel 3) */
-const PIPELINE_ORDER = [
-  { id: 'design',  emoji: '🏗️', label: 'Arquitecto diseña' },
-  { id: 'build',   emoji: '💻', label: 'Constructor codifica' },
-  { id: 'test',    emoji: '🧪', label: 'Probador verifica' },
-  { id: 'docs',    emoji: '📝', label: 'Documentador escribe' },
-  { id: 'secure',  emoji: '🧠', label: 'Guardián protege' },
-  { id: 'orchestrate', emoji: '🎯', label: 'Coordinador orquesta' },
 ];
 
 /* ----------------------------------------------------------
@@ -1534,14 +1288,13 @@ const state = {
   level1: {
     selectedKoala: null,
     matchedCount: 0,
-    matches: {},  // branchId -> roleId
+    matches: {},
   },
   level2: {
     currentExercise: 0,
     score: 0,
     completed: [],
     total: L2_EXERCISES.length,
-    showSummary: true,
   },
   level3: {
     currentStep: 0,
@@ -1549,6 +1302,7 @@ const state = {
     total: VSCODE_STEPS.length,
   },
   totalScore: 0,
+  unlockedLevels: [1], // Niveles desbloqueados (siempre el 1)
 };
 
 /* ----------------------------------------------------------
@@ -1586,6 +1340,45 @@ function updateProgressBar() {
   }
 }
 
+/** Actualiza botones del índice de niveles */
+function updateLevelIndex() {
+  const unlocked = state.unlockedLevels;
+  for (let lv = 1; lv <= 3; lv++) {
+    const btn = document.getElementById('liBtn' + lv);
+    if (!btn) continue;
+    if (unlocked.includes(lv)) {
+      btn.classList.remove('locked');
+    } else {
+      btn.classList.add('locked');
+    }
+  }
+}
+
+/** Salta a un nivel específico (si está desbloqueado) */
+function jumpToLevel(lv) {
+  if (!state.unlockedLevels.includes(lv)) {
+    showToast('🔒 Completa los niveles anteriores para desbloquear este');
+    return;
+  }
+  playClick();
+
+  // Limpiar fondos
+  document.body.classList.remove('level2-active', 'level3-active');
+
+  if (lv === 1) {
+    switchScreen(state.currentScreen, 'screenLevel1');
+    buildLevel1();
+  } else if (lv === 2) {
+    document.body.classList.add('level2-active');
+    switchScreen(state.currentScreen, 'screenLevel2');
+    buildLevel2();
+  } else if (lv === 3) {
+    document.body.classList.add('level3-active');
+    switchScreen(state.currentScreen, 'screenLevel3');
+    buildLevel3();
+  }
+}
+
 /** Reproduce un tono simple con Web Audio API */
 function playTone(freq, type = 'sine', duration = 0.15) {
   try {
@@ -1614,7 +1407,22 @@ function playVictory() {
 
 /** Guarda progreso en localStorage */
 function saveProgress() {
-  try { localStorage.setItem('coala_game_progress', JSON.stringify(state.totalScore)); } catch (_) {}
+  try {
+    const data = { score: state.totalScore, unlocked: state.unlockedLevels };
+    localStorage.setItem('coala_game_progress', JSON.stringify(data));
+  } catch (_) {}
+}
+
+/** Carga progreso de localStorage */
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem('coala_game_progress');
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (data.unlocked) state.unlockedLevels = data.unlocked;
+      // No cargamos score previo — cada partida es nueva
+    }
+  } catch (_) {}
 }
 
 /* ----------------------------------------------------------
@@ -1622,12 +1430,19 @@ function saveProgress() {
    ---------------------------------------------------------- */
 function startGame() {
   playClick();
+  // Resetear estado para partida nueva
+  state.totalScore = 0;
+  state.level1 = { selectedKoala: null, matchedCount: 0, matches: {} };
+  state.level2 = { currentExercise: 0, score: 0, completed: [], total: L2_EXERCISES.length };
+  state.level3 = { currentStep: 0, completed: [], total: VSCODE_STEPS.length };
+  document.body.classList.remove('level2-active', 'level3-active');
+
   switchScreen('screenWelcome', 'screenLevel1');
   buildLevel1();
 }
 
 /* ----------------------------------------------------------
-   NIVEL 1 — Emparejar Koalas con Ramas
+   NIVEL 1 — Emparejar Koalas con Ramas (ORIGINAL INTACTO)
    ---------------------------------------------------------- */
 function buildLevel1() {
   state.level1 = { selectedKoala: null, matchedCount: 0, matches: {} };
@@ -1745,6 +1560,12 @@ function onBranchClick(branchId) {
 
 function goToLevel2() {
   playClick();
+  // Desbloquear Nivel 2
+  if (!state.unlockedLevels.includes(2)) {
+    state.unlockedLevels.push(2);
+  }
+  updateLevelIndex();
+  saveProgress();
   // Activar fondo de pirámide
   document.body.classList.add('level2-active');
   document.body.classList.remove('level3-active');
@@ -1756,33 +1577,30 @@ function goToLevel2() {
    NIVEL 2 — La Pirámide de Thot (Sumario + Ejercicios)
    ---------------------------------------------------------- */
 function buildLevel2() {
-  state.level2 = { currentExercise: 0, score: 0, completed: [], total: L2_EXERCISES.length, showSummary: true };
+  state.level2 = { currentExercise: 0, score: 0, completed: [], total: L2_EXERCISES.length };
   document.getElementById('btnL2Next').style.display = 'none';
   document.getElementById('quizKoalaFeedback').textContent = '🐨🏛️';
   document.getElementById('l2Result').innerHTML = '';
   document.getElementById('l2Desc').textContent = '📜 Thot dice: "Antes de avanzar, recordemos lo aprendido en el Árbol Sagrado..."';
 
-  // Construir sumario de aprendizaje
   buildLearningSummary();
-
-  // Construir ejercicios
   buildExercises();
 }
 
 function buildLearningSummary() {
   const grid = document.getElementById('summaryGrid');
   grid.innerHTML = ROLES.map(r => `
-    <div class="summary-item done" title="${r.desc}">
-      <span class="s-emoji">🐨${r.emoji}</span>
+    <div class="summary-item" title="${r.desc}">
+      <span style="font-size:1.2rem;">🐨${r.emoji}</span>
       <span>${r.role} → ${r.branch}</span>
     </div>
   `).join('') + `
-    <div class="summary-item done">
-      <span class="s-emoji">🌳</span>
+    <div class="summary-item">
+      <span style="font-size:1.2rem;">🌳</span>
       <span>COALA = Coordinación de Agentes</span>
     </div>
-    <div class="summary-item done">
-      <span class="s-emoji">🐨</span>
+    <div class="summary-item">
+      <span style="font-size:1.2rem;">🐨</span>
       <span>Koalas = comunidad en árbol</span>
     </div>
   `;
@@ -1807,7 +1625,7 @@ function buildExercises() {
         <div class="ex-options" id="exOptions-${i}">
           ${ex.options.map((opt, oi) => `
             <button class="ex-option" onclick="answerExercise(${i}, ${oi})" id="exOpt-${i}-${oi}"
-              ${isCompleted ? 'disabled' : (!isActive ? 'disabled' : '')}>
+              ${!isActive || isCompleted ? 'disabled' : ''}>
               ${opt.text}
             </button>
           `).join('')}
@@ -1838,18 +1656,14 @@ function answerExercise(exIdx, optIdx) {
     fbEl.style.color = 'var(--success)';
     document.getElementById('quizKoalaFeedback').textContent = '🐨' + ex.agentEmoji + ' ⬆️🏛️';
 
-    // Marcar tarjeta como completada
     document.getElementById('exCard-' + exIdx).classList.add('completed-exercise');
     document.getElementById('exCard-' + exIdx).classList.remove('active-exercise');
 
-    // Siguiente ejercicio
     state.level2.currentExercise++;
     if (state.level2.currentExercise < L2_EXERCISES.length) {
-      // Activar siguiente
       const nextCard = document.getElementById('exCard-' + state.level2.currentExercise);
       if (nextCard) {
         nextCard.classList.add('active-exercise');
-        // Habilitar opciones del siguiente
         document.querySelectorAll(`#exOptions-${state.level2.currentExercise} .ex-option`).forEach(b => b.disabled = false);
       }
       document.getElementById('l2Desc').textContent =
@@ -1861,16 +1675,13 @@ function answerExercise(exIdx, optIdx) {
   } else {
     playWrong();
     document.getElementById('exOpt-' + exIdx + '-' + optIdx).classList.add('chosen-wrong');
-    // Marcar la correcta
     const correctIdx = ex.options.findIndex(o => o.correct);
     document.getElementById('exOpt-' + exIdx + '-' + correctIdx).classList.add('chosen-correct');
     fbEl.innerHTML = '❌ ' + ex.feedbackFail;
     fbEl.style.color = 'var(--error)';
     document.getElementById('quizKoalaFeedback').textContent = '🐨💤';
 
-    // Reintentar después de delay
     setTimeout(() => {
-      // Resetear opciones
       document.querySelectorAll(`#exOptions-${exIdx} .ex-option`).forEach(b => {
         b.classList.remove('chosen-correct', 'chosen-wrong');
         b.disabled = false;
@@ -1908,6 +1719,12 @@ function finishLevel2() {
 
 function goToLevel3() {
   playClick();
+  // Desbloquear Nivel 3
+  if (!state.unlockedLevels.includes(3)) {
+    state.unlockedLevels.push(3);
+  }
+  updateLevelIndex();
+  saveProgress();
   // Cambiar fondo: quitar pirámide, poner tema código
   document.body.classList.remove('level2-active');
   document.body.classList.add('level3-active');
@@ -1954,14 +1771,13 @@ function renderVSCodeSteps() {
             id="vsBtn-${i}"
             onclick="completeVSCodeStep(${i})"
             ${!isActive || isCompleted ? 'disabled' : ''}>
-            ${step.action}
+            ${isCompleted ? '✅ Completado' : step.action}
           </button>
         </div>
       </div>
     `;
   }).join('');
 
-  // Scroll al paso activo
   setTimeout(() => {
     document.getElementById('vsStep-' + state.level3.currentStep)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 300);
@@ -1975,7 +1791,6 @@ function completeVSCodeStep(stepIdx) {
   state.level3.completed.push(stepIdx);
   state.level3.currentStep++;
 
-  // Actualizar UI
   const stepEl = document.getElementById('vsStep-' + stepIdx);
   const checkEl = document.getElementById('vsCheck-' + stepIdx);
   const btnEl = document.getElementById('vsBtn-' + stepIdx);
@@ -1986,6 +1801,7 @@ function completeVSCodeStep(stepIdx) {
   if (btnEl) {
     btnEl.classList.add('done-btn');
     btnEl.textContent = '✅ Completado';
+    btnEl.disabled = true;
   }
 
   const step = VSCODE_STEPS[stepIdx];
@@ -1994,7 +1810,6 @@ function completeVSCodeStep(stepIdx) {
   if (state.level3.currentStep >= VSCODE_STEPS.length) {
     finishLevel3();
   } else {
-    // Activar siguiente
     const nextEl = document.getElementById('vsStep-' + state.level3.currentStep);
     const nextBtn = document.getElementById('vsBtn-' + state.level3.currentStep);
     nextEl?.classList.add('active-step');
@@ -2039,7 +1854,6 @@ function goToVictory() {
    VICTORY SCREEN
    ---------------------------------------------------------- */
 function buildVictory() {
-  const totalMax = 100 + 200 + 200; // 500
   const score = state.totalScore;
   let rank = '';
 
@@ -2056,13 +1870,10 @@ function buildVictory() {
     if (score > prev) localStorage.setItem('coala_game_highscore', score);
   } catch (_) {}
 
-  // Actualizar texto del botón Avanzado según puntaje
   updateAvanzadoButton(score);
-
   playVictory();
 }
 
-/** Actualiza el botón "Modo Avanzado" según el puntaje */
 function updateAvanzadoButton(score) {
   const btn = document.getElementById('btnAvanzado');
   if (!btn) return;
@@ -2076,7 +1887,6 @@ function updateAvanzadoButton(score) {
   }
 }
 
-/** Click en botón Avanzado */
 function onAvanzadoClick() {
   if (state.totalScore >= 200) {
     showToast('🏛️ ¡Has desbloqueado el Nivel 2 — La Pirámide de Thot! Visita el repo para más aventuras 🐨✨', 4000);
@@ -2092,7 +1902,7 @@ function resetGame() {
   playClick();
   state.totalScore = 0;
   state.level1 = { selectedKoala: null, matchedCount: 0, matches: {} };
-  state.level2 = { currentExercise: 0, score: 0, completed: [], total: L2_EXERCISES.length, showSummary: true };
+  state.level2 = { currentExercise: 0, score: 0, completed: [], total: L2_EXERCISES.length };
   state.level3 = { currentStep: 0, completed: [], total: VSCODE_STEPS.length };
 
   // Quitar fondos de nivel
@@ -2102,6 +1912,7 @@ function resetGame() {
   document.getElementById('screenWelcome').classList.add('active');
   state.currentScreen = 'screenWelcome';
   updateProgressBar();
+  updateLevelIndex();
 
   // Resetear botón avanzado
   const btn = document.getElementById('btnAvanzado');
@@ -2116,7 +1927,9 @@ function resetGame() {
    INICIALIZACIÓN
    ---------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
+  loadProgress();
   updateProgressBar();
+  updateLevelIndex();
 
   // Cargar high score previo
   let hs = 0;
@@ -2126,8 +1939,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Prevenir drag en móviles para los koala cards
-  document.querySelectorAll('.koala-card').forEach(el => {
-    el.addEventListener('dragstart', e => e.preventDefault());
+  document.addEventListener('dragstart', e => {
+    if (e.target.closest('.koala-card')) e.preventDefault();
   });
 });
 
