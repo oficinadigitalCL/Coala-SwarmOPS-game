@@ -119,6 +119,387 @@ body {
 }
 
 /* ============================================================
+   PIRÁMIDE ANIMADA — Fondo del Nivel 2
+   ============================================================ */
+.pyramid-scene {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Cielo del desierto */
+.pyramid-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    #0D1B2A 0%,
+    #1B2838 25%,
+    #2C1A4A 45%,
+    #6B3A5E 60%,
+    #C4714D 75%,
+    #E8A94E 90%,
+    #F4C542 100%
+  );
+  opacity: 0.85;
+}
+
+/* Sol egipcio */
+.pyramid-sun {
+  position: absolute;
+  top: 8%;
+  right: 15%;
+  width: 70px;
+  height: 70px;
+  background: radial-gradient(circle, #F4C542 0%, #E8A94E 40%, transparent 70%);
+  border-radius: 50%;
+  box-shadow: 0 0 60px rgba(244,197,66,0.5), 0 0 120px rgba(244,197,66,0.25);
+  animation: sunGlow 3s infinite ease-in-out;
+}
+@keyframes sunGlow {
+  0%, 100% { box-shadow: 0 0 60px rgba(244,197,66,0.5), 0 0 120px rgba(244,197,66,0.25); }
+  50% { box-shadow: 0 0 80px rgba(244,197,66,0.7), 0 0 150px rgba(244,197,66,0.35); }
+}
+
+/* Pirámide principal — CSS clip-path */
+.pyramid {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 220px;
+  background: linear-gradient(135deg,
+    #C2A870 0%,
+    #D4A843 20%,
+    #E8C86A 40%,
+    #C4953A 55%,
+    #B8862D 70%,
+    #9A7020 85%,
+    #7A5810 100%
+  );
+  clip-path: polygon(50% 0%, 5% 100%, 95% 100%);
+  box-shadow: 0 0 40px rgba(212,168,67,0.15);
+  animation: pyramidGlow 4s infinite ease-in-out;
+}
+.pyramid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(244,197,66,0.15) 0%, transparent 50%);
+  clip-path: polygon(50% 0%, 5% 100%, 95% 100%);
+}
+@keyframes pyramidGlow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.08); }
+}
+
+/* Pirámide más pequeña al fondo (perspectiva) */
+.pyramid-far {
+  position: absolute;
+  bottom: 0;
+  right: 8%;
+  width: 120px;
+  height: 90px;
+  background: linear-gradient(135deg, #8A6D3B 0%, #A08040 50%, #7A5D30 100%);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  opacity: 0.5;
+  animation: pyramidGlow 5s infinite ease-in-out;
+  animation-delay: -2s;
+}
+
+/* Arena del desierto */
+.desert-sand {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(180deg,
+    rgba(194,168,112,0.3) 0%,
+    rgba(180,150,90,0.5) 30%,
+    rgba(160,130,70,0.7) 60%,
+    rgba(140,110,55,0.85) 100%
+  );
+}
+
+/* Palmeras */
+.palm-tree {
+  position: absolute;
+  bottom: 20px;
+  z-index: 2;
+}
+.palm-tree.left { left: 3%; }
+.palm-tree.right { right: 3%; }
+
+.palm-trunk {
+  width: 8px;
+  height: 90px;
+  background: linear-gradient(180deg, #5D4037 0%, #795548 40%, #6D4C41 70%, #4E342E 100%);
+  margin: 0 auto;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+}
+
+.palm-leaves {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.2rem;
+  animation: palmSway 3s infinite ease-in-out;
+}
+.palm-tree.right .palm-leaves { animation-delay: -1.5s; }
+
+@keyframes palmSway {
+  0%, 100% { transform: translateX(-50%) rotate(-3deg); }
+  50% { transform: translateX(-50%) rotate(3deg); }
+}
+
+/* Jeroglíficos mejorados para el Nivel 2 */
+.glyph-l2 {
+  position: absolute;
+  font-size: 1.8rem;
+  opacity: 0.12;
+  color: var(--gold);
+  animation: floatGlyphL2 8s infinite ease-in-out;
+}
+@keyframes floatGlyphL2 {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.08; }
+  33% { transform: translateY(-10px) rotate(5deg); opacity: 0.15; }
+  66% { transform: translateY(-5px) rotate(-3deg); opacity: 0.10; }
+}
+
+/* Polvo de estrellas/arena flotante */
+.desert-sparkle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: var(--gold-bright);
+  border-radius: 50%;
+  animation: sparkleFloat 4s infinite ease-in-out;
+  opacity: 0;
+}
+@keyframes sparkleFloat {
+  0% { opacity: 0; transform: translateY(0) translateX(0); }
+  20% { opacity: 0.8; }
+  100% { opacity: 0; transform: translateY(-60px) translateX(20px); }
+}
+
+/* ============================================================
+   LEVEL 2 — LEARNING SUMMARY CARD
+   ============================================================ */
+.learning-summary {
+  background: linear-gradient(135deg, rgba(26,58,92,0.3), rgba(26,58,92,0.1));
+  border: 1px solid rgba(212,168,67,0.3);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+}
+.learning-summary h4 {
+  font-family: var(--font-title);
+  color: var(--gold-bright);
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+  text-align: center;
+}
+.learning-summary .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.4rem;
+}
+.learning-summary .summary-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.5rem;
+  background: rgba(255,255,255,0.04);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  color: var(--sand);
+}
+.learning-summary .summary-item .s-emoji { font-size: 1.2rem; }
+.learning-summary .summary-item.done {
+  border-left: 3px solid var(--success);
+  opacity: 1;
+}
+.learning-summary .summary-item.pending {
+  opacity: 0.5;
+}
+
+/* ============================================================
+   LEVEL 2 — EXERCISE CARDS (matching concepts)
+   ============================================================ */
+.exercise-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.exercise-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(212,168,67,0.15);
+  border-radius: var(--radius);
+  padding: 1rem;
+  transition: var(--transition);
+}
+.exercise-card.active-exercise {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 20px rgba(212,168,67,0.2);
+}
+.exercise-card.completed-exercise {
+  border-color: var(--success);
+  background: rgba(46,204,113,0.05);
+}
+.exercise-card .ex-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.exercise-card .ex-number {
+  font-family: var(--font-title);
+  color: var(--gold-bright);
+  font-size: 1.2rem;
+}
+.exercise-card .ex-question {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.exercise-card .ex-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+.exercise-card .ex-option {
+  padding: 0.45rem 0.8rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(212,168,67,0.25);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--sand);
+  transition: var(--transition);
+}
+.exercise-card .ex-option:hover {
+  border-color: var(--gold);
+  background: rgba(212,168,67,0.1);
+}
+.exercise-card .ex-option.chosen-correct {
+  border-color: var(--success);
+  background: rgba(46,204,113,0.15);
+  color: var(--success);
+}
+.exercise-card .ex-option.chosen-wrong {
+  border-color: var(--error);
+  background: rgba(231,76,60,0.1);
+}
+.exercise-card .ex-feedback {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--sand);
+  font-style: italic;
+  min-height: 1.2rem;
+}
+
+/* ============================================================
+   LEVEL 3 — VS CODE LEARNING
+   ============================================================ */
+.vscode-step {
+  background: rgba(26,58,92,0.2);
+  border: 1px solid rgba(212,168,67,0.2);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.8rem;
+  transition: var(--transition);
+}
+.vscode-step.active-step {
+  border-color: var(--gold-bright);
+  box-shadow: 0 0 16px rgba(244,197,66,0.15);
+}
+.vscode-step .vs-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.vscode-step .vs-num {
+  font-family: var(--font-title);
+  color: var(--gold-bright);
+  font-size: 1.1rem;
+  min-width: 24px;
+  text-align: center;
+}
+.vscode-step .vs-title {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.vscode-step .vs-desc {
+  color: var(--sand);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+.vscode-step .vs-action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+.vscode-step .vs-btn {
+  padding: 0.4rem 1rem;
+  background: rgba(212,168,67,0.15);
+  border: 1px solid var(--gold);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--gold);
+  transition: var(--transition);
+  font-family: var(--font-body);
+}
+.vscode-step .vs-btn:hover {
+  background: rgba(212,168,67,0.25);
+  transform: translateY(-1px);
+}
+.vscode-step .vs-btn.done-btn {
+  background: rgba(46,204,113,0.15);
+  border-color: var(--success);
+  color: var(--success);
+  pointer-events: none;
+}
+.vscode-step .vs-check {
+  color: var(--success);
+  font-size: 1.2rem;
+  display: none;
+}
+.vscode-step .vs-check.show { display: inline; }
+.vscode-step.completed-step {
+  border-color: var(--success);
+  opacity: 0.85;
+}
+.vscode-step.completed-step .vs-title { color: var(--success); }
+
+/* Terminal mock para VS Code */
+.vscode-terminal-mock {
+  background: #0C0C0E;
+  border: 1px solid rgba(212,168,67,0.25);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.8rem;
+  margin: 0.5rem 0;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.7rem;
+  color: #CCCCCC;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+.vscode-terminal-mock .prompt { color: var(--success); }
+.vscode-terminal-mock .cmd { color: #61AFEF; }
+
+/* ============================================================
    MAIN CONTAINER
    ============================================================ */
 .app-container {
@@ -131,6 +512,18 @@ body {
   flex-direction: column;
   padding: 1rem;
 }
+
+/* Level-specific body backgrounds */
+body.level2-active {
+  background: #0D1B2A;
+  background-image:
+    radial-gradient(ellipse at 50% 20%, rgba(244,197,66,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 90%, rgba(212,168,67,0.04) 0%, transparent 40%);
+}
+body.level3-active {
+  background: linear-gradient(180deg, #0A1628 0%, #1A2A4A 40%, #0F1F3A 100%);
+}
+
 
 /* ============================================================
    GAME HEADER (interno, se mantiene del original)
@@ -701,9 +1094,9 @@ body {
   <!-- PROGRESS BAR -->
   <div class="progress-bar-wrap" id="progressBar">
     <div class="progress-step done" id="step0"><span class="step-label">Inicio</span></div>
-    <div class="progress-step" id="step1"><span class="step-label">Enjambre</span></div>
-    <div class="progress-step" id="step2"><span class="step-label">Roles</span></div>
-    <div class="progress-step" id="step3"><span class="step-label">Flujo</span></div>
+    <div class="progress-step" id="step1"><span class="step-label">Árbol</span></div>
+    <div class="progress-step" id="step2"><span class="step-label">Pirámide</span></div>
+    <div class="progress-step" id="step3"><span class="step-label">Código</span></div>
     <div class="progress-step" id="step4"><span class="step-label">Fin</span></div>
   </div>
 
@@ -767,50 +1160,81 @@ body {
   </div>
 
   <!-- ============================================================
-       SCREEN: LEVEL 2 — Quiz de Roles
+       SCREEN: LEVEL 2 — La Pirámide de Thot (Sumario + Ejercicios)
        ============================================================ -->
   <div class="screen" id="screenLevel2">
-    <div class="card" style="flex:1; display:flex; flex-direction:column;">
-      <h3 class="level-title">🧠 Nivel 2 — La Sabiduría de Thot</h3>
+    <!-- Escena de pirámide (fondo decorativo) -->
+    <div class="pyramid-scene" aria-hidden="true">
+      <div class="pyramid-sky"></div>
+      <div class="pyramid-sun"></div>
+      <div class="pyramid"></div>
+      <div class="pyramid-far"></div>
+      <div class="desert-sand"></div>
+      <div class="palm-tree left">
+        <div class="palm-leaves">🌴</div>
+        <div class="palm-trunk"></div>
+      </div>
+      <div class="palm-tree right">
+        <div class="palm-leaves">🌴</div>
+        <div class="palm-trunk"></div>
+      </div>
+      <!-- Jeroglíficos Nivel 2 -->
+      <span class="glyph-l2" style="top:10%;left:10%;animation-delay:0s;">☥</span>
+      <span class="glyph-l2" style="top:18%;right:12%;animation-delay:-2s;">𓂀</span>
+      <span class="glyph-l2" style="top:40%;left:6%;animation-delay:-4s;">◈</span>
+      <span class="glyph-l2" style="top:55%;right:8%;animation-delay:-1s;">☥</span>
+      <span class="glyph-l2" style="top:70%;left:15%;animation-delay:-5s;">𓂀</span>
+      <span class="glyph-l2" style="top:80%;right:18%;animation-delay:-3s;">◈</span>
+    </div>
+
+    <div class="card" style="flex:1; display:flex; flex-direction:column; position:relative; z-index:1;">
+      <h3 class="level-title">🏛️ Nivel 2 — La Pirámide de Thot</h3>
       <p class="level-desc" id="l2Desc">
-        Responde las preguntas del guardián. Cada acierto hace que un koala suba una rama.
+        📜 Thot dice: "Antes de avanzar, recordemos lo aprendido en el Árbol Sagrado..."
       </p>
 
-      <div class="quiz-koala-feedback" id="quizKoalaFeedback">🐨🌿</div>
+      <!-- SUMARIO DE APRENDIZAJE -->
+      <div class="learning-summary" id="learningSummary">
+        <h4>📋 Lo que aprendiste en el Nivel 1</h4>
+        <div class="summary-grid" id="summaryGrid">
+          <!-- Generado dinámicamente -->
+        </div>
+      </div>
 
-      <div class="quiz-area" id="quizArea">
+      <!-- INDICADOR DE KOALA -->
+      <div class="quiz-koala-feedback" id="quizKoalaFeedback" style="font-size:2rem; min-height:2.5rem;">🐨🏛️</div>
+
+      <!-- EJERCICIOS SIMPLES PARA NIÑOS -->
+      <div class="exercise-area" id="exerciseArea">
         <!-- Generado dinámicamente -->
       </div>
 
-      <div id="quizResult" style="text-align:center; margin-top:0.8rem;"></div>
+      <div id="l2Result" style="text-align:center; margin-top:0.5rem;"></div>
     </div>
-    <button class="btn btn-primary" id="btnL2Next" style="display:none; margin-top:0.8rem;" onclick="goToLevel3()">
-      ✨ Avanzar al Nivel 3
+    <button class="btn btn-primary" id="btnL2Next" style="display:none; margin-top:0.8rem; position:relative; z-index:1;" onclick="goToLevel3()">
+      ✨ Avanzar al Nivel 3 — El Templo del Código
     </button>
   </div>
 
   <!-- ============================================================
-       SCREEN: LEVEL 3 — Ordenar el Pipeline
+       SCREEN: LEVEL 3 — El Templo del Código (VS Code)
        ============================================================ -->
   <div class="screen" id="screenLevel3">
     <div class="card" style="flex:1; display:flex; flex-direction:column;">
-      <h3 class="level-title">⚡ Nivel 3 — El Flujo Sagrado</h3>
-      <p class="level-desc">
-        Ordena los pasos del pipeline COALA. Toca cada paso en el orden correcto.
+      <h3 class="level-title">💻 Nivel 3 — El Templo del Código</h3>
+      <p class="level-desc" id="l3Desc">
+        🐨 Thot dice: "Ahora aprenderás a usar las herramientas de un verdadero Arquitecto de Enjambres..."
       </p>
 
-      <div class="pipeline-area" id="pipelineArea">
-        <div class="pipeline-slots" id="pipelineSlots">
-          <!-- 6 slots generados dinámicamente -->
-        </div>
-        <div class="pipeline-options" id="pipelineOptions">
-          <!-- Chips generados dinámicamente -->
-        </div>
+      <!-- Pasos interactivos para aprender VS Code -->
+      <div id="vscodeSteps">
+        <!-- Generado dinámicamente -->
       </div>
-      <p class="level-hint" id="pipelineHint">💡 Toca el primer paso que ocurre en el flujo COALA</p>
+
+      <div id="l3Result" style="text-align:center; margin-top:0.5rem;"></div>
     </div>
     <button class="btn btn-primary" id="btnL3Next" style="display:none; margin-top:0.8rem;" onclick="goToVictory()">
-      🏆 Ver Resultado
+      🏆 Ver Resultado Final
     </button>
   </div>
 
@@ -844,12 +1268,12 @@ body {
 
       <div style="display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center;">
         <button class="btn btn-primary" onclick="resetGame()">🔄 Jugar de Nuevo</button>
-        <button class="btn btn-secondary" onclick="showToast('🔮 El Modo Avanzado llegará pronto... La magia de Thot está en desarrollo ✨')">
+        <button class="btn btn-secondary" id="btnAvanzado" onclick="onAvanzadoClick()">
           🔮 Modo Avanzado
         </button>
       </div>
       <p style="font-size:0.7rem; opacity:0.5; margin-top:0.8rem;">
-        COALA-SwarmOps Game v1.0 · Prototipo Didáctico · Templo de Thot 🏛️
+        COALA-SwarmOps Game v2.0 · Nivel 2 — La Pirámide de Thot 🏛️
       </p>
     </div>
   </div>
@@ -862,7 +1286,7 @@ body {
   <span class="footer-divider">·</span>
   <a href="https://github.com/oficinadigitalcl/COALA-SwarmOps" target="_blank" rel="noopener">Repo Principal</a>
   <span class="footer-divider">·</span>
-  <span>v1.0 · Templo de Thot 🏛️</span>
+  <span>v2.0 · Pirámide de Thot 🏛️</span>
 </div>
 
 <!-- TOAST -->
@@ -958,6 +1382,140 @@ const QUIZ_QUESTIONS = [
   },
 ];
 
+/** Ejercicios del Nivel 2 — basados en custom_modes_v6.0_edu.yaml */
+const L2_EXERCISES = [
+  {
+    id: 'ex1',
+    agentEmoji: '🏗️',
+    agentName: 'Arquitecto',
+    question: 'Si quisieras construir una casa, ¿qué harías PRIMERO?',
+    options: [
+      { text: 'Comprar todos los ladrillos y cemento', correct: false },
+      { text: 'Hacer un plano con las medidas y habitaciones', correct: true },
+      { text: 'Pintar las paredes de colores bonitos', correct: false },
+    ],
+    feedbackOk: '🐨🏗️ ¡Exacto! Primero diseñas el plano. El Arquitecto siempre planifica ANTES de construir.',
+    feedbackFail: '📐 Thot dice: "Sin plano, la casa sale torcida." El Arquitecto diseña primero, igual que en el software.',
+  },
+  {
+    id: 'ex2',
+    agentEmoji: '💻',
+    agentName: 'Constructor',
+    question: 'En programación, ¿qué es una "variable"?',
+    options: [
+      { text: 'Un tipo de pantalla', correct: false },
+      { text: 'Una caja con etiqueta donde guardas datos como un nombre o número', correct: true },
+      { text: 'Un cable del teclado', correct: false },
+    ],
+    feedbackOk: '🐨💻 ¡Bien! Una variable es como un frasco etiquetado donde guardas información.',
+    feedbackFail: '📦 Piensa en una caja con etiqueta. `nombre = "Ana"` guarda "Ana" en la caja llamada "nombre".',
+  },
+  {
+    id: 'ex3',
+    agentEmoji: '🧪',
+    agentName: 'Probador',
+    question: '¿Para qué sirve un "test" en programación?',
+    options: [
+      { text: 'Para hacer el programa más bonito', correct: false },
+      { text: 'Para verificar automáticamente que el código funciona sin errores', correct: true },
+      { text: 'Para borrar archivos viejos', correct: false },
+    ],
+    feedbackOk: '🐨🧪 ¡Perfecto! Un test es un robot inspector que revisa cada función y te avisa si algo falla.',
+    feedbackFail: '🔍 Un test es como un inspector de calidad. Revisa que todo funcione ANTES de que el usuario lo vea.',
+  },
+  {
+    id: 'ex4',
+    agentEmoji: '📝',
+    agentName: 'Documentador',
+    question: '¿Para qué sirve un README en un proyecto?',
+    options: [
+      { text: 'Para acelerar la computadora', correct: false },
+      { text: 'Para explicar qué hace el proyecto y cómo usarlo', correct: true },
+      { text: 'Para guardar contraseñas', correct: false },
+    ],
+    feedbackOk: '🐨📝 ¡Sí! El README es la carta de presentación. Explica qué es y cómo usar el proyecto.',
+    feedbackFail: '📜 Sin README, en 6 meses ni tú recordarás cómo funciona tu código. ¡Documentar es un regalo a tu yo futuro!',
+  },
+  {
+    id: 'ex5',
+    agentEmoji: '🧠',
+    agentName: 'Guardián',
+    question: '¿Por qué un equipo de programación necesita "memoria"?',
+    options: [
+      { text: 'Porque las computadoras tienen poca RAM', correct: false },
+      { text: 'Para no repetir errores y recordar qué funcionó', correct: true },
+      { text: 'Para guardar contraseñas', correct: false },
+    ],
+    feedbackOk: '🐨🧠 ¡Correcto! La memoria evita redescubrir soluciones. Como un cuaderno de recetas de la abuela.',
+    feedbackFail: '🧠 Sin el Guardián, cada error se "descubre" de nuevo. La memoria ahorra tiempo y evita repetir fallos.',
+  },
+  {
+    id: 'ex6',
+    agentEmoji: '🎯',
+    agentName: 'Coordinador',
+    question: '¿En qué orden trabaja el equipo COALA?',
+    options: [
+      { text: 'Primero documentan, luego diseñan, luego prueban', correct: false },
+      { text: 'Diseñan → Construyen → Prueban → Documentan → Recuerdan → Coordinan', correct: true },
+      { text: 'Todos trabajan a la vez en lo que quieran', correct: false },
+    ],
+    feedbackOk: '🐨🎯 ¡Así es! El orden importa: no puedes probar algo que no existe ni documentar algo no terminado.',
+    feedbackFail: '🎯 El flujo es: Diseñar → Construir → Probar → Documentar → Recordar. ¡Como una orquesta bien dirigida!',
+  },
+];
+
+/** Pasos interactivos del Nivel 3 — Aprender VS Code */
+const VSCODE_STEPS = [
+  {
+    id: 'vs1',
+    icon: '💻',
+    title: '¿Qué es VS Code?',
+    desc: 'Visual Studio Code es un editor de código gratuito donde los programadores escriben sus proyectos. Es como un cuaderno digital súper inteligente que te ayuda a escribir código sin errores.',
+    action: 'Entendido ✅',
+    terminal: null,
+  },
+  {
+    id: 'vs2',
+    icon: '📥',
+    title: 'Paso 1: Descargar VS Code',
+    desc: 'Ve a <strong>code.visualstudio.com</strong> y descarga la versión para tu computadora (Windows, Mac o Linux). Es gratis y se instala como cualquier programa.',
+    action: '¡Lo descargaré! 💾',
+    terminal: null,
+  },
+  {
+    id: 'vs3',
+    icon: '🧩',
+    title: 'Paso 2: Instalar una Extensión',
+    desc: 'Las extensiones son como "superpoderes" para VS Code. Ve al ícono de Extensiones (los 4 cuadritos a la izquierda) y busca "Python" o "Live Server". Instálalas con un clic.',
+    action: '¡Añadir superpoderes! ⚡',
+    terminal: 'En VS Code:\n1. Haz clic en el ícono de Extensiones (Ctrl+Shift+X)\n2. Busca "Python"\n3. Haz clic en "Install"\n\n🐨 Thot dice: "Las extensiones son como herramientas mágicas para tu taller digital."',
+  },
+  {
+    id: 'vs4',
+    icon: '📁',
+    title: 'Paso 3: Crear tu primer archivo',
+    desc: 'En VS Code, ve a <strong>File → New File</strong> (Ctrl+N). Escribe algo simple como <code>print("¡Hola, mundo!")</code> y guárdalo como <code>mi_primer_programa.py</code>.',
+    action: '¡Crear archivo! 📄',
+    terminal: 'En VS Code:\n1. File → New File (Ctrl+N)\n2. Escribe: print("¡Hola desde COALA!")\n3. File → Save As (Ctrl+S)\n4. Nómbralo: mi_programa.py\n\n🐨 ¡Tu primer archivo de código!',
+  },
+  {
+    id: 'vs5',
+    icon: '📂',
+    title: 'Paso 4: Abrir una carpeta de proyecto',
+    desc: 'VS Code trabaja con carpetas enteras. Ve a <strong>File → Open Folder</strong> y selecciona la carpeta donde guardaste tu archivo. Así ves todos tus archivos juntos en el explorador lateral.',
+    action: '¡Abrir carpeta! 📂',
+    terminal: 'En VS Code:\n1. File → Open Folder (Ctrl+K Ctrl+O)\n2. Selecciona tu carpeta de proyecto\n3. Verás el EXPLORER a la izquierda con tus archivos\n\n🐨 Thot dice: "Una carpeta ordenada es como un templo bien construido."',
+  },
+  {
+    id: 'vs6',
+    icon: '🚀',
+    title: 'Paso 5: Ejecutar tu programa',
+    desc: 'Abre la Terminal en VS Code (<strong>Terminal → New Terminal</strong>) y escribe <code>python mi_programa.py</code>. ¡Verás tu código ejecutarse! Así es como los programadores prueban sus creaciones.',
+    action: '¡Ejecutar! ▶️',
+    terminal: 'En la Terminal de VS Code:\n> python mi_programa.py\n¡Hola desde COALA!\n\n🐨🎉 ¡Felicidades! Acabas de ejecutar tu primer programa.\nAsí trabajan los Arquitectos de Enjambres.',
+  },
+];
+
 /** Orden correcto del pipeline (Nivel 3) */
 const PIPELINE_ORDER = [
   { id: 'design',  emoji: '🏗️', label: 'Arquitecto diseña' },
@@ -979,15 +1537,16 @@ const state = {
     matches: {},  // branchId -> roleId
   },
   level2: {
-    currentQuestion: 0,
+    currentExercise: 0,
     score: 0,
-    answered: [],
-    total: QUIZ_QUESTIONS.length,
+    completed: [],
+    total: L2_EXERCISES.length,
+    showSummary: true,
   },
   level3: {
-    currentSlot: 0,
-    used: [],
-    attempts: 0,
+    currentStep: 0,
+    completed: [],
+    total: VSCODE_STEPS.length,
   },
   totalScore: 0,
 };
@@ -1186,186 +1745,292 @@ function onBranchClick(branchId) {
 
 function goToLevel2() {
   playClick();
+  // Activar fondo de pirámide
+  document.body.classList.add('level2-active');
+  document.body.classList.remove('level3-active');
   switchScreen('screenLevel1', 'screenLevel2');
   buildLevel2();
 }
 
 /* ----------------------------------------------------------
-   NIVEL 2 — Quiz de Roles
+   NIVEL 2 — La Pirámide de Thot (Sumario + Ejercicios)
    ---------------------------------------------------------- */
 function buildLevel2() {
-  state.level2 = { currentQuestion: 0, score: 0, answered: [], total: QUIZ_QUESTIONS.length };
+  state.level2 = { currentExercise: 0, score: 0, completed: [], total: L2_EXERCISES.length, showSummary: true };
   document.getElementById('btnL2Next').style.display = 'none';
-  document.getElementById('quizKoalaFeedback').textContent = '🐨🌿';
-  document.getElementById('quizResult').innerHTML = '';
-  renderQuizQuestion();
+  document.getElementById('quizKoalaFeedback').textContent = '🐨🏛️';
+  document.getElementById('l2Result').innerHTML = '';
+  document.getElementById('l2Desc').textContent = '📜 Thot dice: "Antes de avanzar, recordemos lo aprendido en el Árbol Sagrado..."';
+
+  // Construir sumario de aprendizaje
+  buildLearningSummary();
+
+  // Construir ejercicios
+  buildExercises();
 }
 
-function renderQuizQuestion() {
-  const idx = state.level2.currentQuestion;
-  const q = QUIZ_QUESTIONS[idx];
-  const area = document.getElementById('quizArea');
-
-  document.getElementById('l2Desc').textContent =
-    `Pregunta ${idx + 1} de ${state.level2.total} — ${state.level2.score} aciertos`;
-
-  area.innerHTML = `
-    <div class="quiz-question-card">
-      <div class="q-label">📜 Pergamino de Thot #${idx + 1}</div>
-      <div class="q-text">${q.q}</div>
+function buildLearningSummary() {
+  const grid = document.getElementById('summaryGrid');
+  grid.innerHTML = ROLES.map(r => `
+    <div class="summary-item done" title="${r.desc}">
+      <span class="s-emoji">🐨${r.emoji}</span>
+      <span>${r.role} → ${r.branch}</span>
     </div>
-    <div class="quiz-options" id="quizOptions">
-      ${q.options.map((opt, i) => `
-        <button class="quiz-option" onclick="answerQuiz(${i})" id="opt-${i}">${opt}</button>
-      `).join('')}
+  `).join('') + `
+    <div class="summary-item done">
+      <span class="s-emoji">🌳</span>
+      <span>COALA = Coordinación de Agentes</span>
+    </div>
+    <div class="summary-item done">
+      <span class="s-emoji">🐨</span>
+      <span>Koalas = comunidad en árbol</span>
     </div>
   `;
 }
 
-function answerQuiz(choice) {
-  const idx = state.level2.currentQuestion;
-  const q = QUIZ_QUESTIONS[idx];
+function buildExercises() {
+  const area = document.getElementById('exerciseArea');
+  area.innerHTML = L2_EXERCISES.map((ex, i) => {
+    const isActive = i === state.level2.currentExercise;
+    const isCompleted = state.level2.completed.includes(i);
+    let cls = 'exercise-card';
+    if (isActive) cls += ' active-exercise';
+    if (isCompleted) cls += ' completed-exercise';
 
-  // Deshabilitar todas las opciones
-  document.querySelectorAll('.quiz-option').forEach(o => o.classList.add('disabled'));
+    return `
+      <div class="${cls}" id="exCard-${i}">
+        <div class="ex-header">
+          <span class="ex-number">${ex.agentEmoji}</span>
+          <span style="color:var(--gold);font-size:0.8rem;">${ex.agentName} dice:</span>
+        </div>
+        <div class="ex-question">${ex.question}</div>
+        <div class="ex-options" id="exOptions-${i}">
+          ${ex.options.map((opt, oi) => `
+            <button class="ex-option" onclick="answerExercise(${i}, ${oi})" id="exOpt-${i}-${oi}"
+              ${isCompleted ? 'disabled' : (!isActive ? 'disabled' : '')}>
+              ${opt.text}
+            </button>
+          `).join('')}
+        </div>
+        <div class="ex-feedback" id="exFb-${i}"></div>
+      </div>
+    `;
+  }).join('');
+}
 
-  const chosenEl = document.getElementById('opt-' + choice);
+function answerExercise(exIdx, optIdx) {
+  if (state.level2.completed.includes(exIdx)) return;
+  if (exIdx !== state.level2.currentExercise) return;
 
-  if (choice === q.correct) {
+  const ex = L2_EXERCISES[exIdx];
+  const chosen = ex.options[optIdx];
+  const fbEl = document.getElementById('exFb-' + exIdx);
+
+  // Deshabilitar opciones
+  document.querySelectorAll(`#exOptions-${exIdx} .ex-option`).forEach(b => b.disabled = true);
+
+  if (chosen.correct) {
     playCorrect();
-    chosenEl.classList.add('correct');
+    document.getElementById('exOpt-' + exIdx + '-' + optIdx).classList.add('chosen-correct');
     state.level2.score++;
-    state.level2.answered.push({ q: idx, correct: true });
-    document.getElementById('quizKoalaFeedback').textContent = q.koala + ' ⬆️🌿';
-    showToast(q.feedback);
+    state.level2.completed.push(exIdx);
+    fbEl.innerHTML = '✅ ' + ex.feedbackOk;
+    fbEl.style.color = 'var(--success)';
+    document.getElementById('quizKoalaFeedback').textContent = '🐨' + ex.agentEmoji + ' ⬆️🏛️';
+
+    // Marcar tarjeta como completada
+    document.getElementById('exCard-' + exIdx).classList.add('completed-exercise');
+    document.getElementById('exCard-' + exIdx).classList.remove('active-exercise');
+
+    // Siguiente ejercicio
+    state.level2.currentExercise++;
+    if (state.level2.currentExercise < L2_EXERCISES.length) {
+      // Activar siguiente
+      const nextCard = document.getElementById('exCard-' + state.level2.currentExercise);
+      if (nextCard) {
+        nextCard.classList.add('active-exercise');
+        // Habilitar opciones del siguiente
+        document.querySelectorAll(`#exOptions-${state.level2.currentExercise} .ex-option`).forEach(b => b.disabled = false);
+      }
+      document.getElementById('l2Desc').textContent =
+        `Ejercicio ${state.level2.currentExercise + 1} de ${L2_EXERCISES.length} — ${state.level2.score} aciertos`;
+      nextCard?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      finishLevel2();
+    }
   } else {
     playWrong();
-    chosenEl.classList.add('wrong');
-    document.getElementById('opt-' + q.correct).classList.add('correct');
-    state.level2.answered.push({ q: idx, correct: false });
+    document.getElementById('exOpt-' + exIdx + '-' + optIdx).classList.add('chosen-wrong');
+    // Marcar la correcta
+    const correctIdx = ex.options.findIndex(o => o.correct);
+    document.getElementById('exOpt-' + exIdx + '-' + correctIdx).classList.add('chosen-correct');
+    fbEl.innerHTML = '❌ ' + ex.feedbackFail;
+    fbEl.style.color = 'var(--error)';
     document.getElementById('quizKoalaFeedback').textContent = '🐨💤';
-    showToast('❌ Esa no es la respuesta correcta... ¡Thot te invita a reflexionar!');
-  }
 
-  // Avanzar después de un delay
-  setTimeout(() => {
-    state.level2.currentQuestion++;
-    if (state.level2.currentQuestion >= state.level2.total) {
-      finishLevel2();
-    } else {
-      renderQuizQuestion();
-    }
-  }, 1800);
+    // Reintentar después de delay
+    setTimeout(() => {
+      // Resetear opciones
+      document.querySelectorAll(`#exOptions-${exIdx} .ex-option`).forEach(b => {
+        b.classList.remove('chosen-correct', 'chosen-wrong');
+        b.disabled = false;
+      });
+      fbEl.innerHTML = '';
+      document.getElementById('quizKoalaFeedback').textContent = '🐨🏛️';
+    }, 2000);
+  }
 }
 
 function finishLevel2() {
   const score = state.level2.score;
   const total = state.level2.total;
-  const points = Math.round((score / total) * 150);
+  const points = Math.round((score / total) * 200);
   state.totalScore += points;
   saveProgress();
 
-  const resultDiv = document.getElementById('quizResult');
+  const resultDiv = document.getElementById('l2Result');
   const perfect = score === total;
 
   if (perfect) {
     document.getElementById('quizKoalaFeedback').textContent = '🐨✨🏛️✨🐨';
-    resultDiv.innerHTML = '<p style="color:var(--gold-bright);">🌟 ¡Perfecto! Has respondido todas las preguntas correctamente. ¡Thot está impresionado!</p>';
+    resultDiv.innerHTML = '<p style="color:var(--gold-bright);">🌟 ¡Perfecto! ¡Has completado todos los ejercicios! La Pirámide de Thot brilla con tu sabiduría.</p>';
     playVictory();
   } else if (score >= total / 2) {
-    document.getElementById('quizKoalaFeedback').textContent = '🐨👍🌿';
-    resultDiv.innerHTML = `<p style="color:var(--gold);">📜 Bien hecho, Aprendiz. ${score} de ${total} aciertos. ¡Sigue aprendiendo!</p>`;
+    document.getElementById('quizKoalaFeedback').textContent = '🐨👍🏛️';
+    resultDiv.innerHTML = `<p style="color:var(--gold);">📜 Bien hecho, Aprendiz. ${score} de ${total} ejercicios correctos. ¡La pirámide te reconoce!</p>`;
   } else {
     document.getElementById('quizKoalaFeedback').textContent = '🐨📚';
-    resultDiv.innerHTML = `<p style="color:var(--sand);">📚 Thot dice: "El conocimiento requiere estudio. ${score} de ${total}. ¡Vuelve a intentarlo!"</p>`;
+    resultDiv.innerHTML = `<p style="color:var(--sand);">📚 Thot dice: "El conocimiento requiere práctica. ${score} de ${total}. ¡Sigue intentando!"</p>`;
   }
 
   document.getElementById('btnL2Next').style.display = 'inline-flex';
-  document.getElementById('quizArea').innerHTML = '';
 }
 
 function goToLevel3() {
   playClick();
+  // Cambiar fondo: quitar pirámide, poner tema código
+  document.body.classList.remove('level2-active');
+  document.body.classList.add('level3-active');
   switchScreen('screenLevel2', 'screenLevel3');
   buildLevel3();
 }
 
 /* ----------------------------------------------------------
-   NIVEL 3 — Ordenar el Pipeline
+   NIVEL 3 — El Templo del Código (VS Code Learning)
    ---------------------------------------------------------- */
 function buildLevel3() {
-  state.level3 = { currentSlot: 0, used: [], attempts: 0 };
+  state.level3 = { currentStep: 0, completed: [], total: VSCODE_STEPS.length };
   document.getElementById('btnL3Next').style.display = 'none';
-  document.getElementById('pipelineHint').textContent = '💡 Toca el primer paso que ocurre en el flujo COALA';
+  document.getElementById('l3Result').innerHTML = '';
+  document.getElementById('l3Desc').textContent = '🐨 Thot dice: "Ahora aprenderás a usar las herramientas de un verdadero Arquitecto de Enjambres..."';
 
-  // Construir slots
-  const slotsEl = document.getElementById('pipelineSlots');
-  slotsEl.innerHTML = PIPELINE_ORDER.map((_, i) => `
-    <div class="slot" id="slot-${i}">${i + 1}</div>
-  `).join('');
-
-  // Construir chips (orden aleatorio)
-  const shuffled = [...PIPELINE_ORDER].sort(() => Math.random() - 0.5);
-  const optionsEl = document.getElementById('pipelineOptions');
-  optionsEl.innerHTML = shuffled.map(p => `
-    <button class="pipeline-chip" data-id="${p.id}" onclick="selectPipelineStep('${p.id}')" id="chip-${p.id}">
-      ${p.emoji} ${p.label}
-    </button>
-  `).join('');
+  renderVSCodeSteps();
 }
 
-function selectPipelineStep(stepId) {
-  playClick();
-  const slotIdx = state.level3.currentSlot;
+function renderVSCodeSteps() {
+  const container = document.getElementById('vscodeSteps');
+  container.innerHTML = VSCODE_STEPS.map((step, i) => {
+    const isActive = i === state.level3.currentStep;
+    const isCompleted = state.level3.completed.includes(i);
+    let cls = 'vscode-step';
+    if (isActive) cls += ' active-step';
+    if (isCompleted) cls += ' completed-step';
 
-  // Verificar si es el paso correcto para este slot
-  const expectedId = PIPELINE_ORDER[slotIdx].id;
+    return `
+      <div class="${cls}" id="vsStep-${i}">
+        <div class="vs-header">
+          <span class="vs-num">${step.icon}</span>
+          <span class="vs-title">${step.title}</span>
+          <span class="vs-check ${isCompleted ? 'show' : ''}" id="vsCheck-${i}">✅</span>
+        </div>
+        <div class="vs-desc">${step.desc}</div>
+        ${step.terminal ? `
+          <div class="vscode-terminal-mock">
+            <span class="prompt">🐨></span> <span class="cmd">${step.terminal.replace(/\n/g, '<br>')}</span>
+          </div>
+        ` : ''}
+        <div class="vs-action">
+          <button class="vs-btn ${isCompleted ? 'done-btn' : ''}"
+            id="vsBtn-${i}"
+            onclick="completeVSCodeStep(${i})"
+            ${!isActive || isCompleted ? 'disabled' : ''}>
+            ${step.action}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
 
-  if (stepId === expectedId) {
-    playCorrect();
-    // Llenar el slot
-    const slotEl = document.getElementById('slot-' + slotIdx);
-    const step = PIPELINE_ORDER[slotIdx];
-    slotEl.classList.add('filled');
-    slotEl.textContent = step.emoji;
+  // Scroll al paso activo
+  setTimeout(() => {
+    document.getElementById('vsStep-' + state.level3.currentStep)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 300);
+}
 
-    // Marcar chip como usado
-    const chipEl = document.getElementById('chip-' + stepId);
-    chipEl?.classList.add('used');
+function completeVSCodeStep(stepIdx) {
+  if (stepIdx !== state.level3.currentStep) return;
+  if (state.level3.completed.includes(stepIdx)) return;
 
-    state.level3.used.push(stepId);
-    state.level3.currentSlot++;
+  playCorrect();
+  state.level3.completed.push(stepIdx);
+  state.level3.currentStep++;
 
-    if (state.level3.currentSlot >= PIPELINE_ORDER.length) {
-      // ¡Pipeline completo!
-      state.totalScore += 150;
-      saveProgress();
-      document.getElementById('pipelineHint').textContent = '⚡ ¡El Flujo Sagrado está completo!';
-      showToast('⚡ ¡Has dominado el Flujo Sagrado de COALA! El pipeline está completo ✨', 3000);
-      playVictory();
-      setTimeout(() => {
-        document.getElementById('btnL3Next').style.display = 'inline-flex';
-      }, 600);
-    } else {
-      const nextStep = PIPELINE_ORDER[state.level3.currentSlot];
-      document.getElementById('pipelineHint').textContent =
-        `✅ ¡Correcto! Ahora: ¿cuál es el paso #${state.level3.currentSlot + 1}?`;
-      showToast(`✅ ¡Bien! El ${step.label}. ¿Cuál sigue?`);
-    }
-  } else {
-    playWrong();
-    state.level3.attempts++;
-    const expectedStep = PIPELINE_ORDER[slotIdx];
-    showToast(`❌ Ese no es el paso #${slotIdx + 1}. Piensa: ¿qué ocurre primero en el flujo COALA?`);
-    if (state.level3.attempts >= 2) {
-      document.getElementById('pipelineHint').textContent =
-        `💡 Pista: El paso #${slotIdx + 1} es "${expectedStep.label}"`;
-    }
+  // Actualizar UI
+  const stepEl = document.getElementById('vsStep-' + stepIdx);
+  const checkEl = document.getElementById('vsCheck-' + stepIdx);
+  const btnEl = document.getElementById('vsBtn-' + stepIdx);
+
+  stepEl?.classList.add('completed-step');
+  stepEl?.classList.remove('active-step');
+  if (checkEl) checkEl.classList.add('show');
+  if (btnEl) {
+    btnEl.classList.add('done-btn');
+    btnEl.textContent = '✅ Completado';
   }
+
+  const step = VSCODE_STEPS[stepIdx];
+  showToast(`✅ ¡${step.title} completado!`, 2000);
+
+  if (state.level3.currentStep >= VSCODE_STEPS.length) {
+    finishLevel3();
+  } else {
+    // Activar siguiente
+    const nextEl = document.getElementById('vsStep-' + state.level3.currentStep);
+    const nextBtn = document.getElementById('vsBtn-' + state.level3.currentStep);
+    nextEl?.classList.add('active-step');
+    if (nextBtn) nextBtn.disabled = false;
+    document.getElementById('l3Desc').textContent =
+      `Paso ${state.level3.currentStep + 1} de ${VSCODE_STEPS.length}`;
+    setTimeout(() => {
+      nextEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+  }
+}
+
+function finishLevel3() {
+  const completed = state.level3.completed.length;
+  const total = state.level3.total;
+  const points = Math.round((completed / total) * 200);
+  state.totalScore += points;
+  saveProgress();
+
+  const resultDiv = document.getElementById('l3Result');
+  document.getElementById('l3Desc').textContent = '🎉 ¡Has completado el Templo del Código!';
+
+  if (completed === total) {
+    resultDiv.innerHTML = '<p style="color:var(--gold-bright);">💻🌟 ¡Completaste todos los pasos! Ya sabes cómo usar VS Code, instalar extensiones y crear archivos. ¡Eres un verdadero Arquitecto Digital!</p>';
+    playVictory();
+  } else {
+    resultDiv.innerHTML = `<p style="color:var(--gold);">💻 ¡Buen trabajo! Completaste ${completed} de ${total} pasos. ¡VS Code te espera para crear cosas increíbles!</p>`;
+  }
+
+  document.getElementById('btnL3Next').style.display = 'inline-flex';
 }
 
 function goToVictory() {
   playClick();
+  // Quitar clases de fondo
+  document.body.classList.remove('level2-active', 'level3-active');
   switchScreen('screenLevel3', 'screenVictory');
   buildVictory();
 }
@@ -1374,12 +2039,12 @@ function goToVictory() {
    VICTORY SCREEN
    ---------------------------------------------------------- */
 function buildVictory() {
-  const totalMax = 100 + 150 + 150; // 400
+  const totalMax = 100 + 200 + 200; // 500
   const score = state.totalScore;
   let rank = '';
 
-  if (score >= 380) rank = '🌟 Gran Maestre del Enjambre';
-  else if (score >= 300) rank = '🏛️ Arquitecto Sagrado';
+  if (score >= 480) rank = '🌟 Gran Maestre del Enjambre';
+  else if (score >= 350) rank = '🏛️ Arquitecto Sagrado';
   else if (score >= 200) rank = '🐨 Guardián del Árbol';
   else rank = '📜 Aprendiz de Thot';
 
@@ -1391,7 +2056,33 @@ function buildVictory() {
     if (score > prev) localStorage.setItem('coala_game_highscore', score);
   } catch (_) {}
 
+  // Actualizar texto del botón Avanzado según puntaje
+  updateAvanzadoButton(score);
+
   playVictory();
+}
+
+/** Actualiza el botón "Modo Avanzado" según el puntaje */
+function updateAvanzadoButton(score) {
+  const btn = document.getElementById('btnAvanzado');
+  if (!btn) return;
+  if (score >= 400) {
+    btn.textContent = '🔮 ¡Has desbloqueado el Nivel 2!';
+    btn.style.borderColor = 'var(--gold-bright)';
+    btn.style.color = 'var(--gold-bright)';
+  } else if (score >= 200) {
+    btn.textContent = '🔮 Has desbloqueado el Nivel 2';
+    btn.style.borderColor = 'var(--gold)';
+  }
+}
+
+/** Click en botón Avanzado */
+function onAvanzadoClick() {
+  if (state.totalScore >= 200) {
+    showToast('🏛️ ¡Has desbloqueado el Nivel 2 — La Pirámide de Thot! Visita el repo para más aventuras 🐨✨', 4000);
+  } else {
+    showToast('🔮 Necesitas 200 puntos para desbloquear el Nivel 2. ¡Completa los 3 niveles del Templo! ✨', 3500);
+  }
 }
 
 /* ----------------------------------------------------------
@@ -1401,13 +2092,24 @@ function resetGame() {
   playClick();
   state.totalScore = 0;
   state.level1 = { selectedKoala: null, matchedCount: 0, matches: {} };
-  state.level2 = { currentQuestion: 0, score: 0, answered: [], total: QUIZ_QUESTIONS.length };
-  state.level3 = { currentSlot: 0, used: [], attempts: 0 };
+  state.level2 = { currentExercise: 0, score: 0, completed: [], total: L2_EXERCISES.length, showSummary: true };
+  state.level3 = { currentStep: 0, completed: [], total: VSCODE_STEPS.length };
+
+  // Quitar fondos de nivel
+  document.body.classList.remove('level2-active', 'level3-active');
 
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screenWelcome').classList.add('active');
   state.currentScreen = 'screenWelcome';
   updateProgressBar();
+
+  // Resetear botón avanzado
+  const btn = document.getElementById('btnAvanzado');
+  if (btn) {
+    btn.textContent = '🔮 Modo Avanzado';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+  }
 }
 
 /* ----------------------------------------------------------
@@ -1429,9 +2131,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-console.log('🐨🏛️ COALA-SwarmOps Game | El Templo de Thot — v1.0');
-console.log('📜 "La sabiduría del enjambre te espera, Aprendiz..."');
+console.log('🐨🏛️ COALA-SwarmOps Game | La Pirámide de Thot — v2.0');
+console.log('📜 "La sabiduría del enjambre te espera, Aprendiz del Nivel 2..."');
 console.log('🔗 Repo: https://github.com/oficinadigitalcl/COALA-SwarmOps');
+console.log('🌴 Nivel 1: Árbol Sagrado | 🏛️ Nivel 2: Pirámide de Thot | 💻 Nivel 3: Templo del Código');
 </script>
 </body>
 </html>
