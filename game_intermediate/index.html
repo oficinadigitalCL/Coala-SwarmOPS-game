@@ -28,13 +28,13 @@ body{font-family:var(--font-body);background:var(--night);color:var(--text-light
 .card-glow{border-color:rgba(244,197,66,0.35);box-shadow:0 0 20px rgba(244,197,66,0.12)}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:0.35rem;padding:0.65rem 1.4rem;font-family:var(--font-title);font-size:0.9rem;font-weight:bold;border:2px solid var(--gold);border-radius:50px;cursor:pointer;transition:var(--transition);text-decoration:none;letter-spacing:0.5px}
-.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:var(--night);border-color:transparent;box-shadow:0 4px 16px rgba(212,168,67,0.25)}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(244,197,66,0.4)}.btn-primary:active{transform:translateY(0)}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:var(--night);border-color:transparent;box-shadow:0 4px 16px rgba(212,168,67,0.25);padding:0.8rem 2rem;font-size:1.1rem}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(244,197,66,0.4)}.btn-primary:active{transform:translateY(0)}
 .btn-secondary{background:transparent;color:var(--gold)}.btn-secondary:hover{background:rgba(212,168,67,0.07)}
 .btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important}
 
 .welcome-content{text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;gap:0.8rem}
 .thot-icon{font-size:4rem;animation:thotGlow 2.5s infinite}@keyframes thotGlow{50%{filter:drop-shadow(0 0 20px rgba(244,197,66,0.55))}}
-.welcome-title{font-family:var(--font-title);font-size:clamp(1.2rem,5vw,1.6rem);color:var(--gold-bright)}
+.welcome-title{font-family:var(--font-title);font-size:clamp(1.2rem,5vw,1.6rem);color:var(--gold-bright);text-shadow:0 0 14px rgba(244,197,66,0.3)}
 .welcome-text{color:var(--sand);font-size:0.85rem;line-height:1.45;max-width:460px;margin:0 auto}
 
 /* Dashboard */
@@ -94,6 +94,14 @@ body{font-family:var(--font-body);background:var(--night);color:var(--text-light
 /* Toast */
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%)translateY(100px);background:var(--night-light);border:1px solid var(--gold);border-radius:50px;padding:0.6rem 1.2rem;color:var(--gold-bright);font-size:0.8rem;z-index:100;opacity:0;transition:var(--transition);pointer-events:none;text-align:center;max-width:90vw}.toast.show{opacity:1;transform:translateX(-50%)translateY(0)}
 
+/* Instruction blocks — mobile-first (columna) */
+.instruction-blocks{display:flex;flex-direction:column;gap:0.6rem;margin:0.4rem 0}
+.instruction-block{display:flex;flex-direction:column;align-items:center;gap:0.3rem;padding:0.8rem 0.6rem;background:rgba(255,255,255,0.03);border:1px solid rgba(212,168,67,0.12);border-radius:var(--radius);text-align:center;animation:fadeSlideIn 0.4s ease both}
+.instruction-icon{font-size:2.5rem}
+.instruction-block h3{font-family:var(--font-title);font-size:0.9rem;color:var(--gold-bright);margin:0}
+.instruction-block p{font-size:0.75rem;color:var(--sand);opacity:0.85;margin:0;line-height:1.4}
+@media(min-width:600px){.instruction-blocks{flex-direction:row}.instruction-block{flex:1}}
+
 /* Reduced motion */
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
 @media(max-width:480px){.app-container{padding:0.5rem;gap:0.3rem}.card{padding:0.9rem 0.7rem}.robot-card{padding:0.5rem 0.7rem}}
@@ -129,13 +137,69 @@ body{font-family:var(--font-body);background:var(--night);color:var(--text-light
 <div class="screen active" id="screenWelcome">
   <div class="card welcome-content">
     <div class="thot-icon">🦉</div>
-    <h2 class="welcome-title">Bienvenido, aprendiz</h2>
+    <h2 class="welcome-title" id="welcomeTitle">Bienvenido, aprendiz</h2>
     <p class="welcome-text" id="welcomeText">
-      Este juego fue <strong>construido por robots</strong>, pero algo salió mal.
-      Solo <strong>2 de 5 pantallas</strong> funcionan. Necesito tu ayuda para repararlo.
+      <!-- Contenido dinámico vía renderWelcome() -->
     </p>
     <div id="welcomeActions">
-      <button class="btn btn-primary" onclick="goToDashboard()">🔧 Entrar a la Forja</button>
+      <!-- Contenido dinámico vía renderWelcome() -->
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: INSTRUCTIONS -->
+<div class="screen" id="screenInstructions">
+  <div class="card welcome-content">
+    <h2 class="welcome-title">📖 ¿Cómo se juega?</h2>
+    <p style="color:var(--sand);font-size:0.85rem;margin-bottom:0.5rem">
+      Necesitás 2 cosas para jugar (y 1 opcional):
+    </p>
+
+    <div class="instruction-blocks">
+      <div class="instruction-block" style="animation-delay:0.1s">
+        <span class="instruction-icon">🖥️</span>
+        <h3>Tu PC</h3>
+        <p>Abrí <strong>VS Code</strong> y cargá la carpeta<br><span class="code-inline">game_intermediate/seed/</span></p>
+      </div>
+
+      <div class="instruction-block" style="animation-delay:0.2s">
+        <span class="instruction-icon">🤖</span>
+        <h3>Zoo Code</h3>
+        <p>Usá los <strong>robots</strong> para reparar<br>el código del Artefacto Roto</p>
+      </div>
+
+      <div class="instruction-block" style="animation-delay:0.3s">
+        <span class="instruction-icon">📱</span>
+        <h3>Tu celu o tablet</h3>
+        <p>Abrí esta misma página en tu<br>celular para ver el juego mientras codeás</p>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-top:0.8rem">
+      <button class="btn btn-primary" onclick="goToDashboard()">🚀 Empezar</button>
+      <button class="btn btn-secondary" onclick="switchScreen('screenWelcome')">⬅️ Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: MISSION -->
+<div class="screen" id="screenMission">
+  <div class="card welcome-content">
+    <h2 class="welcome-title">🎯 Tu misión</h2>
+
+    <div style="font-size:3rem;margin:0.3rem 0">💤</div>
+    <p style="color:var(--sand);font-size:0.85rem;max-width:420px;margin:0 auto;line-height:1.5">
+      Los <strong>robots están dormidos</strong>. ¡Despertalos uno por uno!<br>
+      Cada robot te enseña algo nuevo.<br>
+      Repará las <strong>5 pantallas del Artefacto</strong>.
+    </p>
+
+    <div class="artifact-grid" id="missionArtifactGrid" style="max-width:340px;margin:0.5rem auto"></div>
+    <p style="font-size:0.7rem;color:var(--sand);opacity:0.6">2 de 5 pantallas funcionan · 3 necesitan reparación</p>
+
+    <div style="margin-top:0.6rem">
+      <button class="btn btn-primary" onclick="goToDashboard()">🚀 Empezar misión</button>
+      <button class="btn btn-secondary" onclick="switchScreen('screenWelcome')" style="margin-left:0.5rem">⬅️ Volver</button>
     </div>
   </div>
 </div>
@@ -311,7 +375,10 @@ let FORGE_STATE = {
   templeLevel5Complete: false,
   sessionStart: Date.now(),
   completionTime: null,
-  score: 0
+  score: 0,
+  // ===== NUEVOS v7.2 — guía didáctica =====
+  demo: false,        // true = modo demo sin progreso del Templo
+  firstVisit: true     // true = primera visita (mostrar instrucciones)
 };
 
 // ========== AUDIO WRAPPER ==========
@@ -329,7 +396,7 @@ function playClick(){playTone(330,'triangle',0.06)}
 function simpleChecksum(obj){return JSON.stringify(obj).split('').reduce((a,c)=>a+c.charCodeAt(0),0)}
 function saveState(){
   try{
-    const data={v:1,progress:FORGE_STATE.progress,robots:FORGE_STATE.robots,artifact:FORGE_STATE.artifact,score:FORGE_STATE.score,checksum:simpleChecksum({progress:FORGE_STATE.progress,robots:FORGE_STATE.robots,artifact:FORGE_STATE.artifact,score:FORGE_STATE.score}),savedAt:Date.now()};
+    const data={v:1,progress:FORGE_STATE.progress,robots:FORGE_STATE.robots,artifact:FORGE_STATE.artifact,score:FORGE_STATE.score,demo:FORGE_STATE.demo,checksum:simpleChecksum({progress:FORGE_STATE.progress,robots:FORGE_STATE.robots,artifact:FORGE_STATE.artifact,score:FORGE_STATE.score}),savedAt:Date.now()};
     localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
     return true;
   }catch(e){showToast('⚠️ Tu progreso no se guardará entre sesiones.');return false}
@@ -341,14 +408,17 @@ function loadState(){
     const data=JSON.parse(raw);
     if(data.v!==1)return false;
     FORGE_STATE.progress=data.progress||0;
-    FORGE_STATE.roots=data.robots||{constructor:'locked',tester:'locked',tablet:'locked',forge:'locked'};
+    FORGE_STATE.robots=data.robots||{constructor:'locked',tester:'locked',tablet:'locked',forge:'locked'};
     FORGE_STATE.artifact=data.artifact||{screen1:true,screen2:true,screen3:false,screen4:false,screen5:false};
     FORGE_STATE.score=data.score||0;
+    FORGE_STATE.demo=data.demo||false;       // NUEVO: restaurar flag demo
+    FORGE_STATE.firstVisit=false;             // NUEVO: al cargar, ya no es primera visita
     return true;
   }catch(e){localStorage.removeItem(STORAGE_KEY);showToast('Thot olvidó tu progreso. ¿Empezamos de nuevo?');return false}
 }
 
 // ========== TEMPLE LEVEL 5 CHECK ==========
+// EC-005: JSON corrupto → retorna false, flujo demo
 function checkTempleLevel5(){
   try{
     const raw=localStorage.getItem('coala_v3_progress');
@@ -367,6 +437,7 @@ function switchScreen(id){
   if(id==='screenDashboard')renderDashboard();
   if(id==='screenRobotTablet')renderYamlPreview();
   if(id==='screenRobotForge')renderChecklist();
+  if(id==='screenMission')renderMissionArtifact();
 }
 
 // ========== TOAST ==========
@@ -378,10 +449,25 @@ function showToast(msg,dur=2500){
 
 // ========== WELCOME ==========
 function goToDashboard(){
-  if(!FORGE_STATE.templeLevel5Complete){
-    showToast('🌳 Primero debes dominar el Templo de Thot');
+  playClick();
+  // Path A: Templo Nivel 5 completado → acceso directo
+  if(FORGE_STATE.templeLevel5Complete){
+    switchScreen('screenDashboard');
     return;
   }
+
+  // Path B: Sin Templo → modo demo
+  FORGE_STATE.demo = true;
+
+  // Primera visita → mostrar misión
+  if(FORGE_STATE.firstVisit){
+    FORGE_STATE.firstVisit = false;
+    switchScreen('screenMission');
+    showToast('🎮 Modo demo: jugá sin límites. Completá el Templo para el certificado oficial.', 4000);
+    return;
+  }
+
+  // Visita posterior → ir directo al Dashboard
   switchScreen('screenDashboard');
 }
 
@@ -605,8 +691,26 @@ function startConfetti(){
 }
 
 function showCertificate(){
-  document.getElementById('certificateView').style.display='block';
+  const certView=document.getElementById('certificateView');
+  certView.style.display='block';
   document.getElementById('certDate').textContent=new Date().toLocaleDateString('es-CL');
+
+  if(FORGE_STATE.demo){
+    // Ajustar texto del certificado para modo demo
+    const h3=certView.querySelector('h3');
+    if(h3)h3.textContent='🎮 Certificado — Modo Demo';
+    const ps=certView.querySelectorAll('p');
+    if(ps.length>=2)ps[1].textContent='Explorador de la Forja';
+    // Agregar nota si no existe
+    let note=certView.querySelector('.demo-note');
+    if(!note){
+      note=document.createElement('p');
+      note.className='demo-note';
+      note.style.cssText='font-size:0.7rem;color:var(--sand);opacity:0.7;margin-top:0.5rem;font-style:italic';
+      note.innerHTML='<em>Completa el Templo de Thot para obtener el certificado oficial.</em>';
+      certView.appendChild(note);
+    }
+  }
 }
 
 function shareVictory(){
@@ -616,7 +720,7 @@ function shareVictory(){
 
 function resetGame(){
   if(!confirm('¿Quieres reiniciar todo el progreso?'))return;
-  FORGE_STATE={screen:'welcome',progress:0,robots:{constructor:'locked',tester:'locked',tablet:'locked',forge:'locked'},artifact:{screen1:true,screen2:true,screen3:false,screen4:false,screen5:false},templeLevel5Complete:FORGE_STATE.templeLevel5Complete,sessionStart:Date.now(),completionTime:null,score:0};
+  FORGE_STATE={screen:'welcome',progress:0,robots:{constructor:'locked',tester:'locked',tablet:'locked',forge:'locked'},artifact:{screen1:true,screen2:true,screen3:false,screen4:false,screen5:false},templeLevel5Complete:FORGE_STATE.templeLevel5Complete,sessionStart:Date.now(),completionTime:null,score:0,demo:false,firstVisit:true};
   localStorage.removeItem(STORAGE_KEY);
   switchScreen('screenWelcome');
   showToast('🔄 Progreso reiniciado. ¡Buena suerte!');
@@ -626,15 +730,55 @@ function resetGame(){
 function init(){
   FORGE_STATE.templeLevel5Complete=checkTempleLevel5();
   const saved=loadState();
+
   if(saved){
     showToast('¡Bienvenido de vuelta! Continuamos donde quedaste.');
-    renderDashboard();
+    if(FORGE_STATE.progress>0){
+      // Ya tiene progreso → ir directo al Dashboard
+      renderDashboard();
+      switchScreen('screenDashboard');
+      return;
+    }
   }
-  // Update welcome text based on temple level
-  if(!FORGE_STATE.templeLevel5Complete){
-    document.getElementById('welcomeText').innerHTML='Primero debes dominar el <strong>Templo de Thot</strong>. Completa el Nivel 5 para desbloquear la Forja.';
-    document.getElementById('welcomeActions').innerHTML='<a href="../index.html" class="btn btn-primary">🏛️ Ir al Templo de Thot</a>';
+
+  // Renderizar bienvenida contextual
+  renderWelcome();
+}
+
+// ========== RENDER WELCOME (contextual) ==========
+function renderWelcome(){
+  const welcomeTitle=document.getElementById('welcomeTitle');
+  const welcomeText=document.getElementById('welcomeText');
+  const welcomeActions=document.getElementById('welcomeActions');
+
+  if(FORGE_STATE.templeLevel5Complete){
+    // Mensaje normal (existente, preservado)
+    if(welcomeTitle)welcomeTitle.textContent='Bienvenido, aprendiz';
+    welcomeText.innerHTML='Este juego fue <strong>construido por robots</strong>, pero algo salió mal. Solo <strong>2 de 5 pantallas</strong> funcionan. Necesito tu ayuda para repararlo.';
+    welcomeActions.innerHTML='<button class="btn btn-primary" onclick="goToDashboard()">🔧 Entrar a la Forja</button>';
+  }else{
+    // Mensaje modo demo
+    if(welcomeTitle)welcomeTitle.textContent='¡Hola, explorador!';
+    welcomeText.innerHTML='¡Hola! La <strong>Forja de Thot</strong> está abierta para todos.<br>Los robots están dormidos 💤 ¿Listo para despertarlos?';
+    welcomeActions.innerHTML='<button class="btn btn-primary" onclick="goToDashboard()">🚀 Empezar</button><button class="btn btn-secondary" onclick="switchScreen(\'screenInstructions\')" style="margin-left:0.5rem">📖 ¿Cómo se juega?</button>';
   }
+}
+
+// ========== RENDER MISSION ARTIFACT ==========
+function renderMissionArtifact(){
+  const grid=document.getElementById('missionArtifactGrid');
+  if(!grid)return;
+  const screens=['Bienvenida','Nivel 1','Nivel 2','Nivel 3','Victoria'];
+  const icons=['🏺','🧩','🔧','🧪','🏆'];
+  grid.innerHTML='';
+  screens.forEach((label,idx)=>{
+    const key='screen'+(idx+1);
+    const ok=FORGE_STATE.artifact[key];
+    const cell=document.createElement('div');
+    cell.className='artifact-cell '+(ok?'ok':'broken');
+    cell.innerHTML='<span class="cell-icon">'+icons[idx]+'</span><span class="cell-label">'+(ok?'✅':'🔧')+'</span>';
+    grid.appendChild(cell);
+  });
 }
 
 init();

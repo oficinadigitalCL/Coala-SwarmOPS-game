@@ -1,0 +1,102 @@
+# Budget — Forja Intermedia: Bug Fix + Guía Didáctica
+
+## Metadata
+
+| Campo | Valor |
+|---|---|
+| **Feature ID** | FEAT-002 |
+| **Slug** | `coala-forja-guide-fix` |
+| **Pipeline Mode** | PROTOTIPO 🚀 |
+| **Fecha** | 2026-06-17 |
+| **Moneda** | USD |
+
+---
+
+## Estimado Total
+
+```yaml
+feature_id: FEAT-002
+pipeline_mode: prototype
+estimado_total_usd: 1.04
+budget_objetivo: 1.00   # ≤ $1.00 para esta fase (T3)
+diferencia: +0.04        # $0.04 sobre el objetivo (4% → aceptable)
+```
+
+---
+
+## Desglose por Fase
+
+```yaml
+por_fase:
+  enrich:
+    worker: us-enricher
+    tier: T2
+    costo: 0.44
+    status: COMPLETED
+    output: docs/specs/coala-forja-guide-fix/user-stories.md
+
+  fastforward:
+    worker: fastforward-writer
+    tier: T3
+    costo: 0.44
+    status: COMPLETED
+    output:
+      - docs/specs/coala-forja-guide-fix/requirements.md
+      - docs/specs/coala-forja-guide-fix/design.md
+      - docs/specs/coala-forja-guide-fix/tasks.md
+      - docs/specs/coala-forja-guide-fix/budget.yaml
+      - docs/specs/coala-forja-guide-fix/fastforward-complete.md
+
+  implementation:
+    worker: flash-fast-coder
+    tier: T0.5
+    costo: 0.16
+    status: PENDING
+    tareas: 23
+    archivo: game_intermediate/index.html
+
+  spec_validation:
+    worker: spec-validator
+    tier: T2
+    costo: 0.44
+    status: PENDING
+    notas: "Opcional en prototipo — puede omitirse"
+```
+
+---
+
+## Total por Tier
+
+| Tier | Workers | Costo |
+|---|---|---|
+| **T0.5** (DS Flash) | flash-fast-coder | $0.16 |
+| **T2** (Kimi K2.5) | us-enricher, spec-validator | $0.88 |
+| **T3** (Kimi K2.6) | fastforward-writer | $0.44 |
+| **Total** | | **$1.48** (con spec-validator) / **$1.04** (sin spec-validator) |
+
+---
+
+## Comparativa con Guía
+
+| Concepto | Guía (presupuesto) | Real (estimado) | Diferencia |
+|---|---|---|---|
+| **Prototipo total** | ≤ $2.00 | $1.04 - $1.48 | ✅ Dentro de rango |
+| **Fase T3 (fastforward)** | ~$1.50 | $0.44 | ✅ Por debajo |
+| **Implementación (T0.5)** | ~$2.00 | $0.16 | ✅ Maximizado T0.5 |
+
+---
+
+## Notas
+
+- El budget se mantiene dentro del objetivo de $1.00 para la fase T3 ($0.44 real vs $1.00 objetivo).
+- La implementación usa T0.5 (flash-fast-coder) a $0.16, maximizando economía de tokens.
+- [`spec-validator`](../../.roo/rules-spec-validator/02-agent.md) es opcional en prototipo. Si se ejecuta, suma $0.44.
+- Sin mutation-engineer, dependency-guardian, ni security-auditor (omitidos en prototipo).
+- Sin test-engineer (omitido en prototipo — testing manual).
+
+---
+
+[PROTO: budget simplificado. En modo beta/producción se añadirían costos de T2 para code-reviewer, security-auditor, y test-engineer.]
+
+**STATUS: BUDGET_ESTIMATED ✓**
+**OUTPUT_FILE:** `docs/specs/coala-forja-guide-fix/budget.yaml`
