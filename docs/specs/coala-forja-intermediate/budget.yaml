@@ -1,0 +1,103 @@
+# Budget — COALA: La Forja de la Tabla Esmeralda
+
+feature_id: FEAT-001
+slug: coala-forja-intermediate
+pipeline_mode: prototype
+stack: html-vanilla-static
+fecha: 2026-06-17
+
+# ─── Estimado por Fase de Pipeline ───
+
+estimado_total_usd: 2.44
+
+por_fase:
+  fase_0_enrich:
+    worker: us-enricher
+    tier: T2
+    costo_usd: 0.44
+    status: COMPLETED
+    notas: "8 HUs enriquecidas con EARS, BDD, edge cases, DoD"
+
+  fase_0_5_profile:
+    worker: project-profiler
+    tier: T0.5
+    costo_usd: 0.14
+    status: COMPLETED
+    notas: "Stack HTML vanilla detectado, modo prototipo confirmado"
+
+  fase_1_branch:
+    worker: senior
+    tier: T1
+    costo_usd: 0.44
+    status: PENDING
+
+  fase_2_fastforward:
+    worker: fastforward-writer
+    tier: T3
+    costo_usd: 0.88
+    status: IN_PROGRESS
+    notas: "3 artifacts generados — requirements.md, design.md, tasks.md (24 tareas)"
+
+  fase_3_implementation:
+    worker: flash-fast-coder
+    tier: T0.5
+    costo_usd: 0.14
+    status: PENDING
+    notas: "Implementación de game_intermediate/index.html + seed/index.html"
+
+  fase_4_review:
+    worker: code-reviewer
+    tier: T2
+    costo_usd: 0.44
+    status: PENDING
+
+  fase_5_commit:
+    worker: senior
+    tier: T1
+    costo_usd: 0.44
+    status: PENDING
+
+  fase_6_memory:
+    worker: context-guardian
+    tier: T3
+    costo_usd: 0.44
+    status: PENDING
+
+# ─── Subtotal por Tier ───
+
+por_tier:
+  t0_5_flash:
+    workers: [project-profiler, flash-fast-coder]
+    costo_usd: 0.28
+    porcentaje: 11.5%
+  t1_pro:
+    workers: [senior]
+    costo_usd: 0.88
+    porcentaje: 36.1%
+  t2_kimi:
+    workers: [us-enricher, code-reviewer]
+    costo_usd: 0.88
+    porcentaje: 36.1%
+  t3_kimi26:
+    workers: [fastforward-writer, context-guardian]
+    costo_usd: 1.32
+    porcentaje: 54.1%
+    nota: "T3 es caro pero necesario para planificación y memoria. Maximizar uso de T0.5."
+
+# ─── Budget Acumulado ───
+
+acumulado:
+  ya_gastado_usd: 0.58   # fases 0 + 0.5
+  esta_fase_usd: 0.88     # fase 2 (fastforward)
+  restante_estimado_usd: 0.98
+  total_proyectado_usd: 2.44
+
+# ─── Notas ───
+
+budget_notes:
+  - "Prototipo con 8 HU. Budget guía $2/feature = $2.44 está dentro de rango aceptable."
+  - "Sin costos de mutation-engineer, dependency-guardian, security-auditor (omitidos en prototipo)."
+  - "Sin costo de nexus-predictive (GitNexus no disponible)."
+  - "Sin costo de continuity-engine (no disponible)."
+  - "T0.5 maximizado para fases de implementación y exploración."
+  - "Si fase 3 excede estimado, considerar reducir scope de YAML validator o confetti."

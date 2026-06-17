@@ -1,0 +1,214 @@
+spec_version: "7.2"
+feature_id: FEAT-001
+slug: coala-forja-intermediate
+pipeline_mode: prototype
+stack_profile: html-vanilla-static
+budget_max_usd: 2.0
+output_dir: game_intermediate/
+no_touch:
+  - index.html
+  - game_beginner/
+  - game_advanced/
+
+project_context:
+  name: "COALA-SwarmOps Game — Nivel Intermedio: La Forja de la Tabla Esmeralda"
+  domain: Educación / Gamificación / Agentes IA
+  audience: Niños y jóvenes (10-14 años)
+  language_ui: Español
+  tech: HTML5 + CSS3 + Vanilla JavaScript
+  dependencies: 0
+  deploy: GitHub Pages (static)
+  engine: CSS animations + JS DOM
+  persistence: localStorage (progress + high score)
+  audio: Web Audio API with silent fallback
+  responsive: mobile-first, touch-first
+
+hermes_avail: false
+nexus_avail: false
+continuity_avail: false
+cognitive_avail: false
+
+gates_omitidos:
+  - mutation-engineer      # [PROTO: omitir]
+  - dependency-guardian    # [PROTO: sin package manager; no aplica]
+  - security-auditor       # [PROTO: 5 items críticos OWASP en code-reviewer]
+  - evidence-checker       # [PROTO: reemplazado por OUTPUT_EXISTS gate]
+  - test-engineer          # [PROTO: 1 test happy path en code-reviewer]
+
+phases:
+  - phase: 0
+    name: "Enrich User Story"
+    worker: us-enricher
+    tier: T2
+    gate_out: ENRICH_APPROVED
+    status: COMPLETED
+    input: docs/specs/coala-forja-intermediate/idea-brief.md
+    output: docs/specs/coala-forja-intermediate/user-stories.md
+    notes: |
+      8 historias de usuario enriquecidas con EARS, edge cases, BDD scenarios y DoD.
+      Anti-duplicado verificado. No se tocan archivos del nivel Aprendiz.
+
+  - phase: 0.5
+    name: "Profile Stack"
+    worker: project-profiler
+    tier: T0.5
+    gate_out: PROFILE_VALID
+    status: COMPLETED
+    input: docs/project-profile.md
+    output: docs/project-profile.md (validado)
+    notes: |
+      Stack detectado: HTML/CSS/JS vanilla, cero dependencias, single-file HUB.
+      Modo PROTOTIPO confirmado.
+
+  - phase: 1
+    name: "Setup Branch"
+    worker: senior
+    tier: T1
+    gate_out: BRANCH_CREATED
+    status: PENDING
+    input: main branch
+    output: feature branch (ej. feat/coala-forja-intermediate)
+    notes: |
+      Crear rama Git desde main. No modificar index.html raíz ni game_beginner/.
+      Usar Conventional Commits: feat:, fix:, docs:, refactor:, test:, chore:.
+
+  - phase: 2
+    name: "Artifact Folder (Mini)"
+    worker: fastforward-writer
+    tier: T3
+    gate_out: SPEC_VALID_MINI
+    status: PENDING
+    input: docs/specs/coala-forja-intermediate/user-stories.md
+    output:
+      - docs/specs/coala-forja-intermediate/requirements.md
+      - docs/specs/coala-forja-intermediate/design.md
+      - docs/specs/coala-forja-intermediate/tasks.md
+    notes: |
+      Mínimo 20 tareas. Diagrama simple de flujo HUB → Robots → Artefacto.
+      Incluir definición de custom modes para 4 robots (constructor, probador, tabla, forja).
+      Budget objetivo: ≤$1.00 en esta fase.
+
+  - phase: 3
+    name: "Implementación Rápida"
+    worker: flash-fast-coder
+    tier: T0.5
+    gate_out: OUTPUT_EXISTS
+    status: PENDING
+    input: docs/specs/coala-forja-intermediate/tasks.md
+    pre_tasks:
+      - name: "Explorar codebase existente"
+        worker: flash-code-scout
+        tier: T0.5
+        purpose: "Analizar index.html raíz para evitar duplicados y mantener coherencia visual"
+    output:
+      - game_intermediate/index.html (HUB single-file autocontenido)
+      - game_intermediate/seed/index.html (Artefacto Roto — juego incompleto)
+      - game_intermediate/assets/ (sprites, sonidos, CSS inline o en <style>)
+      - custom_modes_v6.0_edu.yaml (robots con explicaciones interactivas)
+    notes: |
+      Single-file HTML autocontenido por nivel. CSS animations + JS DOM.
+      Mobile-first, touch-first. Web Audio API con fallback silencioso.
+      localStorage para progreso. <noscript> obligatorio.
+      8 HU mapeadas a funcionalidades concretas en el HUB.
+      Budget objetivo: ≤$1.00 en esta fase.
+
+  - phase: 4
+    name: "Review Básica"
+    worker: code-reviewer
+    tier: T2
+    gate_out: REVIEW_DONE
+    status: PENDING
+    input: game_intermediate/index.html
+    checklist:
+      - "[PROTO] Sin errores de consola en flujo feliz"
+      - "[PROTO] Responsive en 320px+"
+      - "[PROTO] Touch funcional sin depender de hover"
+      - "[PROTO] localStorage guarda/restaura progreso"
+      - "[PROTO] OWASP Top 5 críticos: no XSS, no eval, no innerHTML sin escape, no credenciales, no injections"
+      - "[PROTO] 1 test happy path: flujo completo Constructor → Probador → Tabla → Forja"
+    output: docs/specs/coala-forja-intermediate/review.md
+    notes: |
+      Revisión ligera orientada a seguridad crítica y flujo feliz.
+      No bloquear por estilos menores. Si falla happy path, se itera en fase 3.
+
+  - phase: 5
+    name: "Commit Prototipo"
+    worker: senior
+    tier: T1
+    gate_out: COMMIT_DONE
+    status: PENDING
+    input: game_intermediate/ + docs/specs/coala-forja-intermediate/
+    output: Git commit + push a feature branch
+    commit_scope: "feat(forge): nivel intermedio La Forja de la Tabla Esmeralda"
+    notes: |
+      Conventional Commit. Mensaje descriptivo con scope forge.
+      Incluir BREAKING CHANGE: ninguno (backward compatible).
+
+  - phase: 6
+    name: "Update Memory"
+    worker: context-guardian
+    tier: T3
+    gate_out: MEMORY_UPDATED
+    status: PENDING
+    input: docs/specs/coala-forja-intermediate/
+    output: docs/swarm-context.md
+    notes: |
+      Registrar feature completada, errores aprendidos, patrones nuevos,
+      stack_learnings (HTML vanilla HUB patterns), session_context.
+      Si docs/swarm-context.md no existe, crearlo.
+
+specialists_invoked:
+  - flash-fast-coder     # T0.5 — Implementación HTML/CSS/JS
+  - flash-code-scout     # T0.5 — Exploración codebase raíz
+  - senior               # T1 — Git branch + commit
+  - us-enricher          # T2 — Ya completado (user-stories)
+  - code-reviewer        # T2 — Revisión básica prototipo
+  - project-profiler     # T0.5 — Ya completado (stack detectado)
+  - fastforward-writer   # T3 — Artifact folder mini
+  - context-guardian     # T3 — Update memory
+
+cost_estimate:
+  phase_0: 0.00   # ya pagado
+  phase_0_5: 0.00 # ya pagado
+  phase_1: 0.50
+  phase_2: 1.00
+  phase_3: 1.00
+  phase_4: 0.50
+  phase_5: 0.50
+  phase_6: 0.50
+  total_estimated: 4.00
+  budget_note: "Prototipo con 8 HU; budget guía $2/feature. Se busca máxima eficiencia con T0.5."
+
+continuity_checkpoints:
+  automaticos: false
+  reason: "Continuity engine no disponible en este proyecto."
+
+nexus_predictive:
+  enabled: false
+  reason: "GitNexus MCP no disponible. Sin análisis de impacto predictivo."
+
+user_stories_covered:
+  - id: HU-1
+    name: "HUB de Misión — La Forja"
+    fases: [3]
+  - id: HU-2
+    name: "Robot Constructor — Despierta y Repara"
+    fases: [3]
+  - id: HU-3
+    name: "Robot Probador — Verifica la Reparación"
+    fases: [3]
+  - id: HU-4
+    name: "Robot Tabla Esmeralda — Configura los Agentes"
+    fases: [3]
+  - id: HU-5
+    name: "Artefacto Roto — El Juego Incompleto"
+    fases: [3]
+  - id: HU-6
+    name: "Progreso Visual y Persistencia"
+    fases: [3, 4]
+  - id: HU-7
+    name: "Robot Forja — Coordinador Final"
+    fases: [3]
+  - id: HU-8
+    name: "Custom Modes Educativos Interactivos (Tabla Esmeralda v7.0)"
+    fases: [2, 3]

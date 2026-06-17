@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="La Forja de la Tabla Esmeralda — Nivel Intermedio COALA-SwarmOps">
+<title>🔧 La Forja de la Tabla Esmeralda | COALA-SwarmOps</title>
+<style>
+:root{--gold:#D4A843;--gold-bright:#F4C542;--sand:#E8D5A3;--sand-dark:#C2A870;--nile:#1A3A5C;--night:#1A1A2E;--night-light:#252545;--success:#2ECC71;--error:#E74C3C;--text-light:#F5E6C8;--font-title:Georgia,'Times New Roman',serif;--font-body:'Segoe UI','Helvetica Neue',Arial,sans-serif;--font-mono:'Consolas','Courier New',monospace;--radius:12px;--radius-sm:8px;--transition:0.3s ease}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--night);color:var(--text-light);min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;background-image:radial-gradient(ellipse at 50% 0%,rgba(212,168,67,0.08) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(26,58,92,0.15) 0%,transparent 50%)}
+
+.bg-glyphs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.glyph{position:absolute;font-size:2rem;opacity:0.05;animation:floatGlyph 12s infinite ease-in-out;color:var(--gold)}
+.glyph:nth-child(1){top:8%;left:5%;font-size:2.8rem}.glyph:nth-child(2){top:15%;right:8%;animation-delay:-3s;font-size:2.2rem}.glyph:nth-child(3){top:35%;left:12%;animation-delay:-6s;font-size:3rem}.glyph:nth-child(4){top:55%;right:5%;animation-delay:-2s}.glyph:nth-child(5){top:72%;left:8%;animation-delay:-8s}.glyph:nth-child(6){top:85%;right:15%;animation-delay:-5s;font-size:2.7rem}.glyph:nth-child(7){top:22%;left:50%;animation-delay:-1s;font-size:1.8rem}.glyph:nth-child(8){top:65%;left:70%;animation-delay:-7s;font-size:2.4rem}.glyph:nth-child(9){top:90%;left:35%;animation-delay:-4s}.glyph:nth-child(10){top:45%;left:90%;animation-delay:-9s;font-size:1.6rem}
+@keyframes floatGlyph{0%,100%{transform:translateY(0)rotate(0deg)}25%{transform:translateY(-15px)rotate(3deg)}50%{transform:translateY(-8px)rotate(-2deg)}75%{transform:translateY(-20px)rotate(1deg)}}
+
+.app-container{position:relative;z-index:1;width:100%;max-width:720px;min-height:100vh;display:flex;flex-direction:column;padding:1rem;gap:0.5rem}
+.game-header{text-align:center;padding:0.3rem 0 0}.game-header .logo-icon{font-size:2.5rem;display:block;animation:bounceLogo 2s infinite}@keyframes bounceLogo{50%{transform:translateY(-6px)}}
+.game-header h1{font-family:var(--font-title);font-size:clamp(1.1rem,4vw,1.5rem);color:var(--gold-bright);text-shadow:0 0 18px rgba(244,197,66,0.35)}
+.game-header .subtitle{font-size:0.75rem;color:var(--sand);opacity:0.7;font-style:italic}
+
+.screen{display:none;flex-direction:column;flex:1;animation:fadeSlideIn 0.4s ease}
+.screen.active{display:flex}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card{background:rgba(255,255,255,0.035);border:1px solid rgba(212,168,67,0.12);border-radius:var(--radius);padding:1.2rem 1rem;backdrop-filter:blur(6px);margin-bottom:0.4rem}
+.card-glow{border-color:rgba(244,197,66,0.35);box-shadow:0 0 20px rgba(244,197,66,0.12)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:0.35rem;padding:0.65rem 1.4rem;font-family:var(--font-title);font-size:0.9rem;font-weight:bold;border:2px solid var(--gold);border-radius:50px;cursor:pointer;transition:var(--transition);text-decoration:none;letter-spacing:0.5px}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:var(--night);border-color:transparent;box-shadow:0 4px 16px rgba(212,168,67,0.25)}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(244,197,66,0.4)}.btn-primary:active{transform:translateY(0)}
+.btn-secondary{background:transparent;color:var(--gold)}.btn-secondary:hover{background:rgba(212,168,67,0.07)}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none!important}
+
+.welcome-content{text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center;gap:0.8rem}
+.thot-icon{font-size:4rem;animation:thotGlow 2.5s infinite}@keyframes thotGlow{50%{filter:drop-shadow(0 0 20px rgba(244,197,66,0.55))}}
+.welcome-title{font-family:var(--font-title);font-size:clamp(1.2rem,5vw,1.6rem);color:var(--gold-bright)}
+.welcome-text{color:var(--sand);font-size:0.85rem;line-height:1.45;max-width:460px;margin:0 auto}
+
+/* Dashboard */
+.dashboard-grid{display:grid;grid-template-columns:1fr;gap:0.6rem}
+@media(min-width:600px){.dashboard-grid{grid-template-columns:1fr 1fr}}
+
+.progress-bar-wrap{display:flex;align-items:center;gap:0.3rem;margin:0.4rem 0 0.5rem;padding:0 0.3rem}
+.progress-step{flex:1;height:8px;border-radius:4px;background:rgba(255,255,255,0.08);transition:var(--transition);position:relative}
+.progress-step.done{background:var(--gold);box-shadow:0 0 6px rgba(212,168,67,0.35)}
+.progress-step.active{background:var(--gold-bright);animation:pulseStep 1.5s infinite}
+@keyframes pulseStep{50%{box-shadow:0 0 12px rgba(244,197,66,0.7)}}
+
+/* Artifact preview */
+.artifact-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0.4rem}
+.artifact-cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.2rem;border-radius:var(--radius-sm);border:2px solid rgba(212,168,67,0.18);font-size:0.65rem;text-align:center;transition:var(--transition);cursor:pointer;position:relative;overflow:hidden}
+.artifact-cell.ok{background:rgba(46,204,113,0.08);border-color:rgba(46,204,113,0.4);color:var(--success)}
+.artifact-cell.broken{background:rgba(100,100,100,0.15);border-color:rgba(100,100,100,0.3);color:var(--sand-dark);filter:grayscale(0.7)}
+.artifact-cell.repairing{animation:repairGlow 1s ease}@keyframes repairGlow{0%{filter:brightness(1.5)}100%{filter:brightness(1)}}
+.artifact-cell .cell-icon{font-size:1.4rem}
+.artifact-cell .cell-label{font-size:0.55rem;text-transform:uppercase;letter-spacing:0.5px}
+
+/* Robot cards */
+.robot-list{display:flex;flex-direction:column;gap:0.5rem}
+.robot-card{display:flex;align-items:center;gap:0.7rem;padding:0.7rem 1rem;background:rgba(255,255,255,0.03);border:2px solid rgba(212,168,67,0.15);border-radius:var(--radius);cursor:pointer;transition:var(--transition)}
+.robot-card:hover:not(.locked){border-color:var(--gold);background:rgba(212,168,67,0.05)}
+.robot-card.locked{opacity:0.4;cursor:not-allowed;border-color:rgba(100,100,100,0.2)}
+.robot-card.completed{border-color:rgba(46,204,113,0.35);background:rgba(46,204,113,0.04)}
+.robot-emoji{font-size:2rem;min-width:40px;text-align:center}
+.robot-info{flex:1}.robot-name{font-family:var(--font-title);font-size:0.85rem;color:var(--gold-bright)}.robot-status{font-size:0.7rem;color:var(--sand);opacity:0.7}
+.robot-arrow{font-size:1.2rem;color:var(--gold);opacity:0.5}
+
+/* Robot detail screens */
+.instruction-panel{background:rgba(26,58,92,0.12);border:1px dashed rgba(212,168,67,0.25);border-radius:var(--radius);padding:1rem;font-size:0.8rem;line-height:1.6}
+.instruction-panel ol{padding-left:1.2rem}.instruction-panel li{margin-bottom:0.3rem}
+.code-inline{background:rgba(0,0,0,0.3);padding:0.15rem 0.4rem;border-radius:4px;font-family:var(--font-mono);font-size:0.75rem;color:var(--gold-bright)}
+
+/* YAML editor */
+.yaml-editor{background:#0A0A0D;border:1px solid rgba(212,168,67,0.2);border-radius:var(--radius);padding:0.8rem;font-family:var(--font-mono);font-size:0.72rem;line-height:1.5;color:var(--text-light);width:100%;min-height:200px;resize:vertical;white-space:pre}
+.yaml-editor:focus{outline:none;border-color:var(--gold)}
+.yaml-preview{background:#0A0A0D;border:1px solid rgba(212,168,67,0.15);border-radius:var(--radius);padding:0.8rem;font-family:var(--font-mono);font-size:0.7rem;line-height:1.5;overflow-x:auto}
+.yaml-key{color:var(--gold-bright)}.yaml-string{color:var(--success)}.yaml-comment{color:var(--sand-dark);opacity:0.6}
+
+/* Checklist */
+.checklist{display:flex;flex-direction:column;gap:0.5rem}
+.checklist-item{display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.8rem;background:rgba(255,255,255,0.03);border-radius:var(--radius-sm);font-size:0.85rem}
+.checklist-item.done{color:var(--success);border:1px solid rgba(46,204,113,0.2)}
+.checklist-item.pending{color:var(--sand);border:1px solid rgba(212,168,67,0.15)}
+.checklist-item.missing{color:var(--error);border:1px solid rgba(231,76,60,0.3);animation:blinkMissing 1.2s infinite}
+@keyframes blinkMissing{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* Victory */
+.confetti-container{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
+.confetti{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall 3s linear forwards}
+@keyframes confettiFall{0%{transform:translateY(-10vh)rotate(0deg);opacity:1}100%{transform:translateY(110vh)rotate(720deg);opacity:0}}
+.certificate{border:3px double var(--gold);border-radius:var(--radius);padding:2rem 1.5rem;background:linear-gradient(135deg,rgba(212,168,67,0.05),transparent);text-align:center;max-width:400px;margin:0 auto}
+
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%)translateY(100px);background:var(--night-light);border:1px solid var(--gold);border-radius:50px;padding:0.6rem 1.2rem;color:var(--gold-bright);font-size:0.8rem;z-index:100;opacity:0;transition:var(--transition);pointer-events:none;text-align:center;max-width:90vw}.toast.show{opacity:1;transform:translateX(-50%)translateY(0)}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
+@media(max-width:480px){.app-container{padding:0.5rem;gap:0.3rem}.card{padding:0.9rem 0.7rem}.robot-card{padding:0.5rem 0.7rem}}
+</style>
+</head>
+<body>
+
+<noscript>
+  <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#1A1A2E;color:#E8D5A3;font-family:Georgia,serif;text-align:center;padding:2rem">
+    <div>
+      <div style="font-size:4rem">🔧</div>
+      <h1 style="color:#F4C542;margin:1rem 0">La Forja necesita JavaScript</h1>
+      <p style="font-size:1.1rem;line-height:1.6;max-width:400px;margin:0 auto">La Forja de Thot es un taller interactivo que usa JavaScript para darle vida a los robots y al Artefacto.</p>
+      <p style="margin-top:1rem;opacity:0.7">🐨 Pídele ayuda a un adulto para habilitar JavaScript en el navegador.</p>
+    </div>
+  </div>
+</noscript>
+
+<div class="bg-glyphs" aria-hidden="true">
+<span class="glyph">☥</span><span class="glyph">𓂀</span><span class="glyph">◈</span><span class="glyph">☥</span><span class="glyph">𓂀</span><span class="glyph">◈</span><span class="glyph">⚙️</span><span class="glyph">🔧</span><span class="glyph">☥</span><span class="glyph">𓂀</span>
+</div>
+
+<div class="app-container">
+
+<!-- HEADER -->
+<header class="game-header">
+  <span class="logo-icon">🔧</span>
+  <h1>La Forja de la Tabla Esmeralda</h1>
+  <p class="subtitle">Un juego que tú construyes mientras juegas</p>
+</header>
+
+<!-- SCREEN: WELCOME -->
+<div class="screen active" id="screenWelcome">
+  <div class="card welcome-content">
+    <div class="thot-icon">🦉</div>
+    <h2 class="welcome-title">Bienvenido, aprendiz</h2>
+    <p class="welcome-text" id="welcomeText">
+      Este juego fue <strong>construido por robots</strong>, pero algo salió mal.
+      Solo <strong>2 de 5 pantallas</strong> funcionan. Necesito tu ayuda para repararlo.
+    </p>
+    <div id="welcomeActions">
+      <button class="btn btn-primary" onclick="goToDashboard()">🔧 Entrar a la Forja</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: DASHBOARD -->
+<div class="screen" id="screenDashboard">
+  <div class="card">
+    <h3 style="font-family:var(--font-title);color:var(--gold-bright);font-size:1rem;margin-bottom:0.4rem">📊 Dashboard de la Forja</h3>
+    <div class="progress-bar-wrap" id="progressBar">
+      <div class="progress-step active" data-step="0"><span style="position:absolute;top:12px;left:50%;transform:translateX(-50%);font-size:0.55rem;color:var(--sand);opacity:0.6">0%</span></div>
+      <div class="progress-step" data-step="25"></div>
+      <div class="progress-step" data-step="50"></div>
+      <div class="progress-step" data-step="75"></div>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <!-- Artifact preview -->
+    <div class="card">
+      <h4 style="font-family:var(--font-title);color:var(--gold-bright);font-size:0.9rem;margin-bottom:0.5rem">🏺 Artefacto Roto</h4>
+      <div class="artifact-grid" id="artifactGrid"></div>
+      <p style="font-size:0.7rem;color:var(--sand);opacity:0.6;margin-top:0.4rem;text-align:center">Haz clic en una pantalla para ver su estado</p>
+    </div>
+
+    <!-- Robot list -->
+    <div class="card">
+      <h4 style="font-family:var(--font-title);color:var(--gold-bright);font-size:0.9rem;margin-bottom:0.5rem">🤖 Robots Disponibles</h4>
+      <div class="robot-list" id="robotList"></div>
+    </div>
+  </div>
+
+  <div class="card" id="missionCard">
+    <h4 style="font-family:var(--font-title);color:var(--gold-bright);font-size:0.9rem;margin-bottom:0.3rem">📜 Misión Actual</h4>
+    <p id="missionText" style="font-size:0.8rem;color:var(--sand)">Misión 1: Despierta al Robot Constructor</p>
+  </div>
+</div>
+
+<!-- SCREEN: ROBOT CONSTRUCTOR -->
+<div class="screen" id="screenRobotConstructor">
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem">
+      <span style="font-size:2.5rem">🤖</span>
+      <div><h3 style="font-family:var(--font-title);color:var(--gold-bright)">Robot Constructor</h3><p style="font-size:0.7rem;color:var(--sand);opacity:0.7" id="constructorStatus">Estado: 💤 Dormido</p></div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--sand);margin-bottom:0.8rem">El Constructor puede reparar las partes rotas del Artefacto. Sigue estos pasos:</p>
+    <div class="instruction-panel">
+      <ol>
+        <li>Abre <strong>VS Code</strong></li>
+        <li>Carga la carpeta <span class="code-inline">game_intermediate/seed/</span></li>
+        <li>Abre <strong>Zoo Code</strong> (Ctrl+Shift+P → Zoo Code)</li>
+        <li>Escribe: <span class="code-inline">/constructor "repara el botón de inicio del juego"</span></li>
+      </ol>
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="simulateConstructor()">✅ Ya ejecuté /constructor</button>
+      <button class="btn btn-secondary" onclick="switchScreen('screenDashboard')">⬅️ Volver al Dashboard</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: ROBOT TESTER -->
+<div class="screen" id="screenRobotTester">
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem">
+      <span style="font-size:2.5rem">🧪</span>
+      <div><h3 style="font-family:var(--font-title);color:var(--gold-bright)">Robot Probador</h3><p style="font-size:0.7rem;color:var(--sand);opacity:0.7" id="testerStatus">Estado: 💤 Dormido</p></div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--sand);margin-bottom:0.8rem">El Probador verifica que el código reparado funcione correctamente.</p>
+    <div class="instruction-panel">
+      <ol>
+        <li>En <strong>Zoo Code</strong>, escribe: <span class="code-inline">/probador</span></li>
+        <li>El agente revisará el código del Artefacto</li>
+        <li>Si encuentra errores, te mostrará cómo corregirlos</li>
+      </ol>
+    </div>
+    <div id="testerMock" style="display:none;margin-top:0.8rem;padding:0.8rem;background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.25);border-radius:var(--radius);font-size:0.75rem">
+      <p style="color:var(--error);font-weight:bold;margin-bottom:0.3rem">🧪 Bug encontrado</p>
+      <p>Línea 295: <span class="code-inline">playTone()</span> no recibe frecuencia</p>
+      <p style="margin-top:0.3rem">💡 Sugerencia: Agrega <span class="code-inline">playTone(440)</span></p>
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="simulateTester()" id="btnSimulateTester">🧪 Simular /probador</button>
+      <button class="btn btn-primary" onclick="completeTester()" id="btnCompleteTester" style="display:none">✅ Ya corregí el bug</button>
+      <button class="btn btn-secondary" onclick="switchScreen('screenDashboard')">⬅️ Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: ROBOT TABLET -->
+<div class="screen" id="screenRobotTablet">
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem">
+      <span style="font-size:2.5rem">📜</span>
+      <div><h3 style="font-family:var(--font-title);color:var(--gold-bright)">Robot Tabla Esmeralda</h3><p style="font-size:0.7rem;color:var(--sand);opacity:0.7" id="tabletStatus">Estado: 💤 Dormido</p></div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--sand);margin-bottom:0.6rem">Edita la Tabla Esmeralda para configurar los robots:</p>
+
+    <div class="yaml-preview" id="yamlPreview" style="margin-bottom:0.6rem"></div>
+
+    <textarea class="yaml-editor" id="yamlEditor" placeholder="customModes:
+  - slug: robot-constructor
+    name: \"🤖 Robot Constructor\"
+    roleDefinition: \"Arreglas código HTML/CSS/JS...\""></textarea>
+
+    <div id="yamlError" style="display:none;color:var(--error);font-size:0.75rem;margin-top:0.4rem;padding:0.4rem;background:rgba(231,76,60,0.08);border-radius:var(--radius-sm)"></div>
+
+    <div style="display:flex;gap:0.5rem;margin-top:0.8rem;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="activateTablet()" id="btnActivateTablet" disabled>🔮 Activar Tabla</button>
+      <button class="btn btn-secondary" onclick="switchScreen('screenDashboard')">⬅️ Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: ROBOT FORGE -->
+<div class="screen" id="screenRobotForge">
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem">
+      <span style="font-size:2.5rem">🔮</span>
+      <div><h3 style="font-family:var(--font-title);color:var(--gold-bright)">Robot Forja</h3><p style="font-size:0.7rem;color:var(--sand);opacity:0.7" id="forgeStatus">Estado: 👁️ Te observa...</p></div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--sand);margin-bottom:0.8rem">Verifica que todo esté listo para finalizar la misión:</p>
+
+    <div class="checklist" id="finalChecklist">
+      <div class="checklist-item" id="chkConstructor"><span>⬜</span> Robot Constructor completado</div>
+      <div class="checklist-item" id="chkTester"><span>⬜</span> Robot Probador completado</div>
+      <div class="checklist-item" id="chkTablet"><span>⬜</span> Tabla Esmeralda activada</div>
+    </div>
+
+    <div style="display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="finalizeMission()">🔮 Finalizar Misión</button>
+      <button class="btn btn-secondary" onclick="switchScreen('screenDashboard')">⬅️ Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: VICTORY -->
+<div class="screen" id="screenVictory">
+  <div class="card welcome-content">
+    <div id="confettiZone" class="confetti-container"></div>
+    <div style="font-size:4.5rem;animation:victoryBounce 0.8s">🏆</div>
+    <h2 style="font-family:var(--font-title);font-size:clamp(1.3rem,5vw,1.8rem);color:var(--gold-bright);text-shadow:0 0 22px rgba(244,197,66,0.4)">¡La Forja está completa!</h2>
+    <p style="color:var(--sand);font-size:0.9rem;max-width:440px;text-align:center">Construiste el juego que estás jugando. Los robots están orgullosos.</p>
+
+    <div class="certificate" id="certificateView" style="display:none">
+      <h3 style="font-family:var(--font-title);color:var(--gold-bright);margin-bottom:0.5rem">🎓 Certificado de Aprendiz</h3>
+      <p style="font-size:0.8rem;color:var(--sand);margin-bottom:0.3rem">Se otorga a:</p>
+      <p style="font-family:var(--font-title);font-size:1.1rem;color:var(--gold-bright);margin-bottom:0.5rem">Aprendiz de la Forja</p>
+      <p style="font-size:0.7rem;color:var(--sand);opacity:0.7">Fecha: <span id="certDate"></span></p>
+      <p style="font-size:0.7rem;color:var(--sand);opacity:0.7;margin-top:0.3rem;font-style:italic">— Thot, Dios de la Sabiduría Digital</p>
+    </div>
+
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-top:0.5rem">
+      <button class="btn btn-primary" onclick="showCertificate()">🎓 Ver Certificado</button>
+      <button class="btn btn-secondary" onclick="shareVictory()">📤 Compartir</button>
+      <button class="btn btn-secondary" onclick="resetGame()">🔄 Jugar de Nuevo</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ========== STATE MACHINE ==========
+const STORAGE_KEY = 'coala_forge_progress';
+
+let FORGE_STATE = {
+  screen: 'welcome',
+  progress: 0,
+  robots: { constructor:'locked', tester:'locked', tablet:'locked', forge:'locked' },
+  artifact: { screen1:true, screen2:true, screen3:false, screen4:false, screen5:false },
+  templeLevel5Complete: false,
+  sessionStart: Date.now(),
+  completionTime: null,
+  score: 0
+};
+
+// ========== AUDIO WRAPPER ==========
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+function getAudio(){if(!audioCtx)audioCtx=new AudioCtx();return audioCtx}
+function playTone(freq=440,type='sine',duration=0.15){
+  try{const ctx=getAudio();const o=ctx.createOscillator();const g=ctx.createGain();o.type=type;o.frequency.value=freq;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(0.08,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+duration);o.start();o.stop(ctx.currentTime+duration)}catch(e){}
+}
+function playCorrect(){playTone(523,'sine',0.12);setTimeout(()=>playTone(659,'sine',0.12),120)}
+function playVictory(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',0.2),i*150))}
+function playClick(){playTone(330,'triangle',0.06)}
+
+// ========== STORAGE ADAPTER ==========
+function simpleChecksum(obj){return JSON.stringify(obj).split('').reduce((a,c)=>a+c.charCodeAt(0),0)}
+function saveState(){
+  try{
+    const data={v:1,progress:FORGE_STATE.progress,robots:FORGE_STATE.robots,artifact:FORGE_STATE.artifact,score:FORGE_STATE.score,checksum:simpleChecksum({progress:FORGE_STATE.progress,robots:FORGE_STATE.robots,artifact:FORGE_STATE.artifact,score:FORGE_STATE.score}),savedAt:Date.now()};
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+    return true;
+  }catch(e){showToast('⚠️ Tu progreso no se guardará entre sesiones.');return false}
+}
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return false;
+    const data=JSON.parse(raw);
+    if(data.v!==1)return false;
+    FORGE_STATE.progress=data.progress||0;
+    FORGE_STATE.roots=data.robots||{constructor:'locked',tester:'locked',tablet:'locked',forge:'locked'};
+    FORGE_STATE.artifact=data.artifact||{screen1:true,screen2:true,screen3:false,screen4:false,screen5:false};
+    FORGE_STATE.score=data.score||0;
+    return true;
+  }catch(e){localStorage.removeItem(STORAGE_KEY);showToast('Thot olvidó tu progreso. ¿Empezamos de nuevo?');return false}
+}
+
+// ========== TEMPLE LEVEL 5 CHECK ==========
+function checkTempleLevel5(){
+  try{
+    const raw=localStorage.getItem('coala_v3_progress');
+    if(!raw)return false;
+    const data=JSON.parse(raw);
+    return data.unlocked&&Array.isArray(data.unlocked)&&data.unlocked.includes(5);
+  }catch(e){return false}
+}
+
+// ========== SCREEN MANAGER ==========
+function switchScreen(id){
+  playClick();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const t=document.getElementById(id);
+  if(t){t.classList.add('active');FORGE_STATE.screen=id.replace('screen','').toLowerCase()}
+  if(id==='screenDashboard')renderDashboard();
+  if(id==='screenRobotTablet')renderYamlPreview();
+  if(id==='screenRobotForge')renderChecklist();
+}
+
+// ========== TOAST ==========
+function showToast(msg,dur=2500){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._to);t._to=setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+// ========== WELCOME ==========
+function goToDashboard(){
+  if(!FORGE_STATE.templeLevel5Complete){
+    showToast('🌳 Primero debes dominar el Templo de Thot');
+    return;
+  }
+  switchScreen('screenDashboard');
+}
+
+// ========== DASHBOARD RENDER ==========
+function renderDashboard(){
+  // Progress bar
+  document.querySelectorAll('.progress-step').forEach((step,idx)=>{
+    const pct=[0,25,50,75][idx];
+    step.className='progress-step';
+    if(pct<FORGE_STATE.progress)step.classList.add('done');
+    else if(pct===FORGE_STATE.progress)step.classList.add('active');
+  });
+
+  // Artifact grid
+  const grid=document.getElementById('artifactGrid');
+  const screens=['Bienvenida','Nivel 1','Nivel 2','Nivel 3','Victoria'];
+  const icons=['🏺','🧩','🔧','🧪','🏆'];
+  grid.innerHTML='';
+  screens.forEach((label,idx)=>{
+    const key='screen'+(idx+1);
+    const ok=FORGE_STATE.artifact[key];
+    const cell=document.createElement('div');
+    cell.className='artifact-cell '+(ok?'ok':'broken');
+    cell.innerHTML='<span class="cell-icon">'+icons[idx]+'</span><span class="cell-label">'+(ok?'✅':'🔧')+'</span>';
+    cell.onclick=()=>showToast(ok?label+' funciona correctamente':label+' está en reparación. Completa la misión para desbloquear.');
+    grid.appendChild(cell);
+  });
+
+  // Robot list
+  const list=document.getElementById('robotList');
+  list.innerHTML='';
+  const robots=[
+    {id:'constructor',emoji:'🤖',name:'Robot Constructor',screen:'screenRobotConstructor'},
+    {id:'tester',emoji:'🧪',name:'Robot Probador',screen:'screenRobotTester'},
+    {id:'tablet',emoji:'📜',name:'Robot Tabla Esmeralda',screen:'screenRobotTablet'},
+    {id:'forge',emoji:'🔮',name:'Robot Forja',screen:'screenRobotForge'}
+  ];
+  robots.forEach(r=>{
+    const st=FORGE_STATE.robots[r.id];
+    const div=document.createElement('div');
+    div.className='robot-card'+(st==='locked'?' locked':'')+(st==='completed'?' completed':'');
+    div.innerHTML='<span class="robot-emoji">'+r.emoji+'</span><div class="robot-info"><div class="robot-name">'+r.name+'</div><div class="robot-status">'+(st==='locked'?'🔒 Bloqueado':st==='dormant'?'💤 Dormido':st==='active'?'👁️ Observando...':'✅ Completado')+'</div></div><span class="robot-arrow">›</span>';
+    if(st!=='locked')div.onclick=()=>switchScreen(r.screen);
+    list.appendChild(div);
+  });
+
+  // Mission text
+  const missions={
+    0:'Misión 1: Despierta al Robot Constructor',
+    25:'Misión 2: Despierta al Robot Probador',
+    50:'Misión 3: Activa la Tabla Esmeralda',
+    75:'Misión 4: Completa la Forja',
+    100:'🏆 ¡Misión completada!'
+  };
+  document.getElementById('missionText').textContent=missions[FORGE_STATE.progress]||'Continúa tu misión...';
+}
+
+// ========== CONSTRUCTOR ==========
+function simulateConstructor(){
+  playCorrect();
+  document.getElementById('constructorStatus').textContent='Estado: ✅ Completado';
+  FORGE_STATE.robots.constructor='completed';
+  FORGE_STATE.robots.tester='dormant';
+  FORGE_STATE.artifact.screen3=true;
+  FORGE_STATE.progress=25;
+  FORGE_STATE.score+=250;
+  showToast('🔧 ¡Excelente! El Constructor reparó el primer engranaje.');
+  saveState();
+  setTimeout(()=>{switchScreen('screenDashboard');showToast('📜 Sabio consejo: "El que no prueba, no aprende." — Thot')},1800);
+}
+
+// ========== TESTER ==========
+function simulateTester(){
+  playClick();
+  document.getElementById('testerMock').style.display='block';
+  document.getElementById('btnSimulateTester').style.display='none';
+  document.getElementById('btnCompleteTester').style.display='inline-flex';
+}
+function completeTester(){
+  playCorrect();
+  document.getElementById('testerStatus').textContent='Estado: ✅ Completado';
+  FORGE_STATE.robots.tester='completed';
+  FORGE_STATE.robots.tablet='dormant';
+  FORGE_STATE.artifact.screen4=true;
+  FORGE_STATE.progress=50;
+  FORGE_STATE.score+=250;
+  showToast('🧪 ¡Todos los tests pasaron!');
+  saveState();
+  setTimeout(()=>{switchScreen('screenDashboard');showToast('📜 Sabio consejo: "Un bug descubierto es una lección aprendida." — Thot')},1800);
+}
+
+// ========== TABLET / YAML ==========
+const DEFAULT_YAML = `customModes:
+  - slug: robot-constructor
+    name: "🤖 Robot Constructor"
+    roleDefinition: "Arreglas código HTML/CSS/JS para niños"
+    explicacion: |
+      🔧 Estoy aquí porque en la Forja de Thot, cada pieza
+      rota necesita un artesano. Yo soy ese artesano.
+    groups: [read, edit]
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  - slug: robot-probador
+    name: "🧪 Robot Probador"
+    roleDefinition: "Verificas que el código funcione correctamente"
+    explicacion: |
+      🧪 Estoy aquí para asegurarme de que nada se rompa.
+      Un constructor sin probador es como un reloj sin segundero.
+    groups: [read, edit]
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  - slug: robot-tabla-esmeralda
+    name: "📜 Robot Tabla Esmeralda"
+    roleDefinition: "Configuras los agentes del enjambre"
+    explicacion: |
+      📜 La Tabla Esmeralda es el corazón de la Forja.
+      Sin ella, los robots no saben quiénes son ni qué deben hacer.
+    groups: [read, edit]
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  - slug: robot-forja
+    name: "🔮 Robot Forja"
+    roleDefinition: "Coordinas la misión final"
+    explicacion: |
+      🔮 Soy el último eslabón. Cuando todos han trabajado,
+      yo verifico que el Artefacto esté completo y digno.
+    groups: [read, edit]
+    model: openrouter/deepseek/deepseek-v4-flash`;
+
+function renderYamlPreview(){
+  const preview=document.getElementById('yamlPreview');
+  preview.innerHTML=DEFAULT_YAML.replace(/(customModes|slug|name|roleDefinition|explicacion|groups|model):/g,'<span class="yaml-key">$1:</span>')
+    .replace(/"([^"]*)"/g,'<span class="yaml-string">"$1"</span>')
+    .replace(/#.*/g,'<span class="yaml-comment">$&</span>');
+  const editor=document.getElementById('yamlEditor');
+  if(!editor.value)editor.value=DEFAULT_YAML;
+  validateYaml();
+}
+
+function validateYaml(){
+  const val=document.getElementById('yamlEditor').value;
+  const err=document.getElementById('yamlError');
+  const btn=document.getElementById('btnActivateTablet');
+  let errors=[];
+  if(!val.includes('customModes'))errors.push('Falta la clave "customModes"');
+  if(!val.includes('slug:'))errors.push('Falta al menos un "slug"');
+  if(!val.includes('name:'))errors.push('Falta al menos un "name"');
+  if(!val.includes('roleDefinition'))errors.push('Falta "roleDefinition"');
+  // Check indentation consistency (basic)
+  const lines=val.split('\n');
+  lines.forEach((line,idx)=>{
+    if(line.trim()&&!line.includes(':')&&!line.startsWith('#')&&line.trim()!=='-'){
+      errors.push('Línea '+(idx+1)+': posible error de sintaxis (falta ":")');
+    }
+  });
+  if(errors.length>0){err.style.display='block';err.textContent='⚠️ '+errors.join(' | ');btn.disabled=true}
+  else{err.style.display='none';btn.disabled=false}
+}
+
+document.getElementById('yamlEditor').addEventListener('input',validateYaml);
+
+function activateTablet(){
+  playCorrect();
+  document.getElementById('tabletStatus').textContent='Estado: ✅ Activada';
+  FORGE_STATE.robots.tablet='completed';
+  FORGE_STATE.robots.forge='dormant';
+  FORGE_STATE.progress=75;
+  FORGE_STATE.score+=250;
+  showToast('🟢 ¡La Tabla Esmeralda está activa!');
+  saveState();
+  setTimeout(()=>{switchScreen('screenDashboard');showToast('📜 Sabio consejo: "La configuración correcta vale más que el esfuerzo desordenado." — Thot')},1800);
+}
+
+// ========== FORGE / CHECKLIST ==========
+function renderChecklist(){
+  const items=[
+    {id:'chkConstructor',key:'constructor',label:'Robot Constructor completado'},
+    {id:'chkTester',key:'tester',label:'Robot Probador completado'},
+    {id:'chkTablet',key:'tablet',label:'Tabla Esmeralda activada'}
+  ];
+  items.forEach(it=>{
+    const el=document.getElementById(it.id);
+    const done=FORGE_STATE.robots[it.key]==='completed';
+    el.className='checklist-item '+(done?'done':'missing');
+    el.innerHTML='<span>'+(done?'✅':'⬜')+'</span> '+it.label;
+  });
+}
+
+function finalizeMission(){
+  const allDone=FORGE_STATE.robots.constructor==='completed'&&FORGE_STATE.robots.tester==='completed'&&FORGE_STATE.robots.tablet==='completed';
+  if(!allDone){
+    showToast('⏳ Aún faltan tareas. Revisa el checklist antes de terminar.');
+    return;
+  }
+  playVictory();
+  FORGE_STATE.robots.forge='completed';
+  FORGE_STATE.artifact.screen5=true;
+  FORGE_STATE.progress=100;
+  FORGE_STATE.score+=250;
+  FORGE_STATE.completionTime=Date.now();
+  saveState();
+  switchScreen('screenVictory');
+  startConfetti();
+}
+
+// ========== VICTORY ==========
+function startConfetti(){
+  const zone=document.getElementById('confettiZone');
+  zone.innerHTML='';
+  const colors=['#D4A843','#F4C542','#2ECC71','#E74C3C','#E8D5A3'];
+  for(let i=0;i<40;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDuration=(2+Math.random()*2)+'s';
+    c.style.animationDelay=(Math.random()*1.5)+'s';
+    zone.appendChild(c);
+  }
+  setTimeout(()=>zone.innerHTML='',5000);
+}
+
+function showCertificate(){
+  document.getElementById('certificateView').style.display='block';
+  document.getElementById('certDate').textContent=new Date().toLocaleDateString('es-CL');
+}
+
+function shareVictory(){
+  const msg='🏆 ¡Completé La Forja de la Tabla Esmeralda en COALA-SwarmOps! Construí el juego mientras jugaba. ¿Te atreves a intentarlo?';
+  navigator.clipboard.writeText(msg).then(()=>showToast('📤 Mensaje copiado al portapapeles')).catch(()=>showToast('📤 '+msg));
+}
+
+function resetGame(){
+  if(!confirm('¿Quieres reiniciar todo el progreso?'))return;
+  FORGE_STATE={screen:'welcome',progress:0,robots:{constructor:'locked',tester:'locked',tablet:'locked',forge:'locked'},artifact:{screen1:true,screen2:true,screen3:false,screen4:false,screen5:false},templeLevel5Complete:FORGE_STATE.templeLevel5Complete,sessionStart:Date.now(),completionTime:null,score:0};
+  localStorage.removeItem(STORAGE_KEY);
+  switchScreen('screenWelcome');
+  showToast('🔄 Progreso reiniciado. ¡Buena suerte!');
+}
+
+// ========== INIT ==========
+function init(){
+  FORGE_STATE.templeLevel5Complete=checkTempleLevel5();
+  const saved=loadState();
+  if(saved){
+    showToast('¡Bienvenido de vuelta! Continuamos donde quedaste.');
+    renderDashboard();
+  }
+  // Update welcome text based on temple level
+  if(!FORGE_STATE.templeLevel5Complete){
+    document.getElementById('welcomeText').innerHTML='Primero debes dominar el <strong>Templo de Thot</strong>. Completa el Nivel 5 para desbloquear la Forja.';
+    document.getElementById('welcomeActions').innerHTML='<a href="../index.html" class="btn btn-primary">🏛️ Ir al Templo de Thot</a>';
+  }
+}
+
+init();
+</script>
+</body>
+</html>

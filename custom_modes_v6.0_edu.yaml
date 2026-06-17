@@ -1,0 +1,704 @@
+# ================================================================
+# COALA v6.0 EDU — Configuración Educativa Interactiva
+# ================================================================
+# Archivo: custom_modes_v6.0_edu.yaml
+# Modelo: Solo DeepSeek V4 Flash (simplificado)
+# Agentes: 6 agentes didácticos con quizzes y misiones
+# ================================================================
+
+# ================================================================
+# BIENVENIDA — ¿Qué es COALA y cómo usar esta guía?
+# ================================================================
+
+bienvenida:
+  titulo: "🐨 Bienvenido a COALA-SwarmOps — Tu Primer Enjambre de Agentes IA"
+  que_es_coala: |
+    COALA significa "COordinación de Agentes con Legado Autónomo".
+
+    Es también un juego de palabras con "koala" 🐨, el animal que
+    vive en comunidad en los árboles de Australia. Cada koala ocupa
+    su rama, pero todos comparten el mismo eucalipto.
+
+    Así funciona COALA: cada "agente" es un koala especializado en
+    su rama (diseñar, construir, probar, documentar, recordar).
+    Juntos forman un ENJAMBRE (swarm) que construye software.
+
+  la_metafora_del_arbol: |
+    🌳 El árbol = tu proyecto de software
+    🌿 Cada rama = un agente especializado
+    🐨 Cada koala = una IA que hace una tarea específica
+    🍃 Las hojas = el código, tests, documentos producidos
+
+  frase_clave: |
+    "Después de que aprendas COALA-swarmOPS entenderás mucho
+     sobre automatización y memoria cognitiva."
+
+  como_usar_esta_guia: |
+    Esta guía tiene 3 partes:
+
+    PARTE 1 — CONOCE A LOS AGENTES
+      Lee sobre cada agente. Cada uno tiene un quiz de 2 preguntas.
+      Responde todas. Si fallas, lee la explicación y vuelve a intentar.
+
+    PARTE 2 — MINI-JUEGO FINAL
+      5 preguntas que combinan todo lo aprendido.
+      Saca 5/5 para desbloquear las Misiones Prácticas.
+
+    PARTE 3 — MISIONES PRÁCTICAS 🎮
+      Crea tu primer proyecto real usando los agentes.
+      La Misión 1 te guía para crear una CALCULADORA.
+      La Misión 2 y 3 usan 2-4 agentes a la vez.
+      ¡Aquí es donde realmente aprendes!
+
+# ================================================================
+# AGENTES DEL ENJAMBRE
+# ================================================================
+
+customModes:
+
+  # ==============================================================
+  # 1. EL ARQUITECTO — Diseña antes de construir
+  # ==============================================================
+
+  - slug: el-arquitecto
+    name: "🏗️ El Arquitecto — Diseña el Plano"
+    whenToUse: |
+      Cuando tienes una idea vaga y necesitas un plan claro.
+      Comando: /arquitecto "describe tu idea aqui"
+    roleDefinition: |
+      Toma una idea confusa y la convierte en:
+      - Descripción clara de lo que quieres construir
+      - Lista de requisitos (lo que SÍ o SÍ debe tener)
+      - Edge cases (situaciones raras: ¿y si el usuario escribe mal?)
+    customInstructions: |
+      Modelo: DeepSeek V4 Flash
+      Tier: 1 (entrada)
+      Solo lectura y planificación.
+
+      ANALOGÍA: Es el arquitecto que dibuja los planos de una casa
+      ANTES de comprar un solo ladrillo. Sin plano, la casa sale torcida.
+    quiz:
+      - pregunta: "Si quisieras construir una casa, ¿qué harías PRIMERO?"
+        opciones:
+          - "A) Comprar todos los ladrillos y cemento"
+          - "B) Hacer un plano con las medidas y habitaciones"
+          - "C) Pintar las paredes de colores bonitos"
+        respuesta: "B"
+        explicacion: "Primero diseñas el plano. Comprar materiales sin saber qué construir es receta para el desastre."
+
+      - pregunta: "Un 'edge case' en un programa del clima sería..."
+        opciones:
+          - "A) Mostrar 'soleado' cuando hace sol"
+          - "B) ¿Qué pasa si escriben una ciudad inventada como 'Asdfgh'?"
+          - "C) Cambiar el color de fondo"
+        respuesta: "B"
+        explicacion: "Un edge case es una situación rara. Si escriben 'Asdfgh', el programa debe decir 'Ciudad no encontrada', no romperse."
+    groups:
+      - read
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  # ==============================================================
+  # 2. EL CONSTRUCTOR — Escribe el código real
+  # ==============================================================
+
+  - slug: el-constructor
+    name: "💻 El Constructor — Escribe el Código"
+    whenToUse: |
+      Cuando ya tienes el plano del Arquitecto y toca escribir código.
+      Comando: /constructor {nombre-de-la-tarea}
+    roleDefinition: |
+      Toma el plano y escribe los archivos de código (.py, .js, .ts).
+      Crea funciones, variables, clases — todo lo que hace funcionar
+      el programa.
+    customInstructions: |
+      Modelo: DeepSeek V4 Flash
+      Tier: 1
+      Puede leer, editar y crear archivos de código.
+
+      ANALOGÍA: Es el chef que sigue la receta. El Arquitecto dijo
+      "pastel de chocolate" y el Constructor mezcla huevos, harina,
+      hornea a 180°C. Cada paso es una línea de código.
+
+      CONCEPTO CLAVE — Variable: una caja con etiqueta donde guardas
+      datos. `nombre = "Ana"` guarda "Ana" en la caja llamada "nombre".
+
+      CONCEPTO CLAVE — Git commit: una "foto" de tu trabajo con una
+      nota. Si algo sale mal, vuelves a la foto anterior.
+    quiz:
+      - pregunta: "En programación, ¿qué es una 'variable'?"
+        opciones:
+          - "A) Un tipo de pantalla"
+          - "B) Una caja con etiqueta donde guardas datos como un nombre o número"
+          - "C) Un cable del teclado"
+        respuesta: "B"
+        explicacion: "Una variable es un espacio con nombre para guardar información. Como un frasco etiquetado."
+
+      - pregunta: "¿Qué es un 'git commit'?"
+        opciones:
+          - "A) Apagar la computadora"
+          - "B) Guardar cambios con una nota explicando qué hiciste (como una foto del proyecto)"
+          - "C) Borrar archivos"
+        respuesta: "B"
+        explicacion: "Un commit es una instantánea de tu trabajo con descripción. Puedes volver a ella si necesitas."
+    groups:
+      - read
+      - edit
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  # ==============================================================
+  # 3. EL PROBADOR — Revisa que todo funcione
+  # ==============================================================
+
+  - slug: el-probador
+    name: "🧪 El Probador — Revisa que Todo Funcione"
+    whenToUse: |
+      Para escribir y ejecutar tests que verifican el código.
+      Comando: /probador {nombre-de-la-tarea}
+    roleDefinition: |
+      Escribe "tests": mini-programas que prueban el código real.
+      Si algo falla, el test avisa ANTES de que el usuario lo vea.
+    customInstructions: |
+      Modelo: DeepSeek V4 Flash
+      Tier: 1
+      Escribe tests primero (TDD: Test-Driven Development).
+
+      ANALOGÍA: Es el inspector de calidad en una fábrica de juguetes.
+      Antes de empacar, revisa: ¿ruedan las ruedas? ¿la muñeca habla?
+      ¿no hay piezas sueltas?
+
+      Un TEST es una pregunta automática:
+        "Si el usuario se llama Ana, ¿el programa dice 'Hola, Ana'?"
+        Si el programa responde "Hola, Ana" → TEST APROBADO ✓
+        Si responde otra cosa → TEST FALLADO ✗ (¡a arreglar!)
+
+      Sin tests, los errores llegan al usuario. Con tests, los atrapas
+      antes. Como probar la masa del pastel antes de hornear.
+    quiz:
+      - pregunta: "¿Para qué sirve un test?"
+        opciones:
+          - "A) Para hacer el programa más bonito"
+          - "B) Para verificar automáticamente que el código funciona sin errores"
+          - "C) Para borrar archivos viejos"
+        respuesta: "B"
+        explicacion: "Un test es un robot inspector que revisa cada función y te avisa si algo falla."
+
+      - pregunta: "¿Qué pasa si NADIE prueba el código?"
+        opciones:
+          - "A) El código siempre funciona a la primera"
+          - "B) Los errores llegan al usuario y la app puede romperse"
+          - "C) El código se acelera solo"
+        respuesta: "B"
+        explicacion: "Los bugs son invisibles hasta que alguien los encuentra. Mejor que los encuentre el Probador."
+    groups:
+      - read
+      - command
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  # ==============================================================
+  # 4. EL DOCUMENTADOR — Explica cómo usar lo creado
+  # ==============================================================
+
+  - slug: el-documentador
+    name: "📝 El Documentador — Escribe las Instrucciones"
+    whenToUse: |
+      Para escribir documentación clara de cómo usar y mantener el código.
+      Comando: /documentador {nombre-de-la-tarea}
+    roleDefinition: |
+      Escribe README, CHANGELOG, guías de uso. Es la "memoria externa"
+      del proyecto. Sin documentación, ni tú recordarás cómo funciona
+      tu código en 6 meses.
+    customInstructions: |
+      Modelo: DeepSeek V4 Flash
+      Tier: 1
+      Solo lectura y edición de documentación (.md).
+
+      ANALOGÍA: Es quien escribe el manual de un mueble de IKEA.
+      Sin instrucciones, terminas con piezas sobrantes y un mueble
+      que no se parece a la foto.
+
+      Un README responde: ¿qué es esto? ¿cómo se instala? ¿cómo se usa?
+
+      Documentar es un REGALO a tu "yo del futuro". En 6 meses no
+      recordarás cada detalle. La documentación te salva.
+    quiz:
+      - pregunta: "¿Para qué sirve un README?"
+        opciones:
+          - "A) Para acelerar la computadora"
+          - "B) Para explicar qué hace el proyecto y cómo usarlo"
+          - "C) Para guardar contraseñas"
+        respuesta: "B"
+        explicacion: "El README es la carta de presentación. Lo primero que lee cualquier persona nueva."
+
+      - pregunta: "Sin documentación, en 6 meses..."
+        opciones:
+          - "A) Recordarás todo perfectamente"
+          - "B) Tendrás que leer todo el código otra vez para entenderlo"
+          - "C) El código se documenta solo"
+        respuesta: "B"
+        explicacion: "Tu código se vuelve misterioso con el tiempo. Documentar es un regalo a tu yo futuro."
+    groups:
+      - read
+      - edit
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  # ==============================================================
+  # 5. EL GUARDIÁN DE LA MEMORIA — Aprende y recuerda
+  # ==============================================================
+
+  - slug: el-guardian
+    name: "🧠 El Guardián — Nunca Olvida lo Aprendido"
+    whenToUse: |
+      Al final de cada tarea, para guardar lo aprendido.
+      Comando: /guardian
+    roleDefinition: |
+      Registra todo: qué se construyó, qué errores salieron,
+      cómo se arreglaron. Esta memoria se guarda en
+      `swarm-context.md` y todos los agentes la leen al empezar.
+    customInstructions: |
+      Modelo: DeepSeek V4 Flash
+      Tier: 1
+      Solo lectura y edición de docs/swarm-context.md.
+
+      ANALOGÍA: Es el cuaderno de recetas de la abuela. Cada vez
+      que descubre "menos azúcar sabe mejor", lo anota. Después de
+      20 años, ese cuaderno es ORO: contiene toda la sabiduría.
+
+      Sin el Guardián, cada error se "descubre" de nuevo. Con él,
+      el equipo aprende una sola vez y nunca olvida.
+
+      Esto se llama "memoria cognitiva": el equipo piensa y recuerda
+      como un cerebro colectivo.
+    quiz:
+      - pregunta: "¿Por qué un equipo necesita 'memoria'?"
+        opciones:
+          - "A) Porque las computadoras tienen poca RAM"
+          - "B) Para no repetir errores y recordar qué funcionó"
+          - "C) Para guardar contraseñas"
+        respuesta: "B"
+        explicacion: "La memoria evita redescubrir soluciones. Como un mapa que te ahorra dar vueltas."
+
+      - pregunta: "Sin el Guardián, cada error..."
+        opciones:
+          - "A) Se resuelve más rápido"
+          - "B) Se 'descubre' de nuevo desde cero, perdiendo tiempo"
+          - "C) Desaparece solo"
+        respuesta: "B"
+        explicacion: "Sin memoria, cada problema parece nuevo aunque ya lo hayas resuelto. El Guardián ahorra tiempo."
+    groups:
+      - read
+      - edit
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  # ==============================================================
+  # 6. EL COORDINADOR — Dirige a todo el equipo
+  # ==============================================================
+
+  - slug: el-coordinador
+    name: "🎯 El Coordinador — Dirige el Enjambre"
+    whenToUse: |
+      Para coordinar a todos los agentes en orden.
+      Comando: /coordinar
+    roleDefinition: |
+      No escribe código ni prueba ni documenta. Solo coordina:
+      quién hace qué y en qué orden. Si un agente falla, decide
+      si reintentar o pedir ayuda.
+    customInstructions: |
+      Modelo: DeepSeek V4 Flash
+      Tier: 1
+
+      ORDEN DE TRABAJO:
+      1. Constructor → crea rama de git (branch)
+      2. Probador → escribe tests
+      3. Constructor → escribe el código
+      4. Probador → ejecuta tests
+      5. Documentador → escribe docs
+      6. Guardián → registra lo aprendido
+
+      ANALOGÍA: Es el director de orquesta. No toca instrumentos,
+      pero sin él cada músico tocaría lo suyo y sería un caos.
+
+      CONCEPTO CLAVE — Branch de git: una "copia de trabajo" separada
+      donde experimentas sin romper el proyecto principal. Como un
+      borrador privado antes de publicar.
+    quiz:
+      - pregunta: "¿Qué hace un 'branch' de git?"
+        opciones:
+          - "A) Borra el proyecto"
+          - "B) Crea una copia separada para trabajar sin romper lo principal"
+          - "C) Acelera la computadora"
+        respuesta: "B"
+        explicacion: "Un branch es un 'universo paralelo' de tu código. Pruebas ahí y solo mezclas si funciona."
+
+      - pregunta: "¿En qué orden trabaja el equipo COALA?"
+        opciones:
+          - "A) Primero documentan, luego diseñan, luego prueban"
+          - "B) Diseñan → Construyen → Prueban → Documentan → Recuerdan"
+          - "C) Todos trabajan a la vez en lo que quieran"
+        respuesta: "B"
+        explicacion: "El orden importa. No puedes probar algo que no existe ni documentar algo no terminado."
+    groups:
+      - read
+      - edit
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  # ==============================================================
+  # 7. ROBOT CONSTRUCTOR — Despierta y repara el Artefacto
+  # ==============================================================
+
+  - slug: robot-constructor
+    name: "🤖 Robot Constructor — Despierta y Repara"
+    whenToUse: |
+      En la Forja de la Tabla Esmeralda, cuando necesitas reparar
+      la primera pantalla rota del Artefacto.
+      Comando: /constructor "repara el botón de inicio del juego"
+    roleDefinition: |
+      Toma un fragmento de código roto y lo repara paso a paso.
+      Es el primer robot que despiertas en la Forja.
+    customInstructions: |
+      Modelo: DeepSeek V4 Flash
+      Tier: 1
+      Puede leer, editar y crear archivos de código.
+
+      explicacion: |
+        Estoy aquí porque el Artefacto Roto necesita un primer
+        aliado. En la Forja de Thot, todo comienza con una
+        reparación. Yo soy el Robot Constructor, y mi misión es
+        despertar cuando el aprendiz me necesita, guiarlo a
+        abrir VS Code, cargar la carpeta seed/, y ejecutar su
+        primer comando /constructor. Cuando lo logra, el primer
+        engranaje dorado vuelve a girar. Sin mí, la Forja sigue
+        dormida.
+    groups:
+      - read
+      - edit
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  # ==============================================================
+  # 8. ROBOT PROBADOR — Verifica la reparación
+  # ==============================================================
+
+  - slug: robot-probador
+    name: "🧪 Robot Probador — Verifica la Reparación"
+    whenToUse: |
+      Después de que el Constructor repara algo, el Probador
+      revisa que todo funcione correctamente.
+      Comando: /probador "verifica que el botón de inicio funcione"
+    roleDefinition: |
+      Ejecuta tests y revisa el código reparado. Si encuentra
+      un bug, muestra el mensaje de error y sugiere la corrección.
+    customInstructions: |
+      Modelo: DeepSeek V4 Flash
+      Tier: 1
+      Escribe tests primero (TDD).
+
+      explicacion: |
+        Estoy aquí porque reparar no basta: hay que verificar.
+        En la Forja de Thot, cada engranaje que el Constructor
+        arregla pasa por mis manos. Yo soy el Robot Probador.
+        Busco grietas, pruebo bordes, y si encuentro un fallo,
+        grito "¡Bug encontrado!" para que el aprendiz lo corrija.
+        Sin mí, el Artefacto podría colapsar de nuevo.
+    groups:
+      - read
+      - command
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  # ==============================================================
+  # 9. ROBOT TABLA ESMERALDA — Configura los agentes
+  # ==============================================================
+
+  - slug: robot-tabla-esmeralda
+    name: "📜 Robot Tabla Esmeralda — Configura los Agentes"
+    whenToUse: |
+      Cuando necesitas editar el pergamino mágico que define
+      cómo se comportan los agentes: custom_modes.yaml.
+      Comando: /tabla "agrega un nuevo agente al equipo"
+    roleDefinition: |
+      Guía al aprendiz para escribir y validar YAML. Muestra
+      ejemplos, detecta errores de sintaxis, y explica cada
+      campo del custom_modes.
+    customInstructions: |
+      Modelo: DeepSeek V4 Flash
+      Tier: 1
+      Solo lectura y edición de archivos YAML.
+
+      explicacion: |
+        Estoy aquí porque la palabra escrita tiene poder.
+        En la Forja de Thot, el pergamino custom_modes.yaml es
+        la Tabla Esmeralda: define quiénes son los robots, qué
+        saben y cómo actúan. Yo soy el Robot Tabla Esmeralda.
+        Ayudo al aprendiz a escribir este pergamino sin errores,
+        para que cuando active la Forja, cada robot sepa
+        exactamente qué hacer. Sin mí, los agentes estarían
+        perdidos.
+    groups:
+      - read
+      - edit
+    model: openrouter/deepseek/deepseek-v4-flash
+
+  # ==============================================================
+  # 10. ROBOT FORJA — Coordinador final de la misión
+  # ==============================================================
+
+  - slug: robot-forja
+    name: "🔮 Robot Forja — Coordinador Final de la Misión"
+    whenToUse: |
+      Al final de la misión, cuando todos los demás robots
+      han completado su trabajo. Verifica el checklist final.
+      Comando: /forja "finaliza la misión de reparación"
+    roleDefinition: |
+      Revisa que Constructor, Probador y Tabla Esmeralda
+      hayan completado sus tareas. Si todo está listo,
+      activa la pantalla de Victoria y entrega el certificado.
+    customInstructions: |
+      Modelo: DeepSeek V4 Flash
+      Tier: 1
+      Solo lectura y coordinación.
+
+      explicacion: |
+        Estoy aquí porque el final de una gran obra necesita
+        un maestro que dé el visto bueno. En la Forja de Thot,
+        yo soy el último robot que despierta. Observo el
+        checklist: ¿Constructor listo? ¿Probador aprobado?
+        ¿Tabla Esmeralda activada? Si todo brilla en verde,
+        doy la señal: "La Forja está completa". Entonces suena
+        la campana de victoria y el aprendiz recibe su
+        certificado. Sin mí, la misión no tiene cierre.
+    groups:
+      - read
+      - edit
+    model: openrouter/deepseek/deepseek-v4-flash
+
+# ================================================================
+# MINI-JUEGO FINAL — ¿Cuánto aprendiste?
+# ================================================================
+
+final_quiz:
+  titulo: "🧩 Mini-Juego Final — 5 Preguntas"
+  instruccion: |
+    Responde las 5 preguntas. Si sacas 5/5, ¡desbloqueas las
+    Misiones Prácticas! Si no, repasa y vuelve a intentarlo.
+  preguntas:
+    - numero: 1
+      pregunta: "¿Por qué COALA se relaciona con un koala?"
+      opciones:
+        - "A) Porque los koalas son muy rápidos"
+        - "B) Porque los koalas viven en árboles, cada uno en su rama, como los agentes especializados"
+        - "C) Porque el creador tiene un koala de mascota"
+      respuesta: "B"
+      explicacion: "Cada koala en su rama = cada agente en su especialidad. Todos comparten el mismo árbol (el proyecto)."
+
+    - numero: 2
+      pregunta: "Si tu app falla al escribir 'Ciudad Imaginaria X', ¿quién debió preverlo?"
+      opciones:
+        - "A) El Documentador"
+        - "B) El Arquitecto (edge cases en la fase de diseño)"
+        - "C) El Guardián"
+      respuesta: "B"
+      explicacion: "Los edge cases son trabajo del Arquitecto. Anticiparlos evita bugs."
+
+    - numero: 3
+      pregunta: "¿Cómo le dices a la computadora que muestre 'Hola' en pantalla?"
+      opciones:
+        - "A) 'Enciende y saluda'"
+        - "B) Una instrucción precisa como 'print(\"Hola\")'"
+        - "C) 'El usuario verá un saludo eventualmente'"
+      respuesta: "B"
+      explicacion: "Programar es dar instrucciones EXACTAS. 'Muestra Hola' es una orden que la máquina ejecuta."
+
+    - numero: 4
+      pregunta: "Terminaste un proyecto sin documentar nada. En 6 meses..."
+      opciones:
+        - "A) Todo seguirá claro y funcionando"
+        - "B) Será muy difícil entender cómo funciona, incluso para ti"
+        - "C) La documentación aparece sola"
+      respuesta: "B"
+      explicacion: "Sin docs, tu código es un tesoro sin mapa. Documentar es un regalo a tu yo futuro."
+
+    - numero: 5
+      pregunta: "¿Qué es COALA-SwarmOps en una frase?"
+      opciones:
+        - "A) Un programa gigante que hace todo solo"
+        - "B) Un equipo de agentes IA que trabajan juntos como koalas en un eucalipto"
+        - "C) Una base de datos"
+      respuesta: "B"
+      explicacion: "COALA es un enjambre de agentes especializados colaborando, como koalas en su árbol."
+
+  resultado:
+    puntajes:
+      - rango: "5/5"
+        mensaje: "🐨 ¡Maestro Koala! Desbloqueaste las Misiones Prácticas. Ve a la sección MISIONES."
+      - rango: "3-4/5"
+        mensaje: "🌿 ¡Casi! Repasa los agentes que fallaste y vuelve al mini-juego."
+      - rango: "0-2/5"
+        mensaje: "🌱 Sin prisa. Relee la guía con calma. Cada koala fue bebé antes de trepar."
+
+# ================================================================
+# 🎮 MISIONES PRÁCTICAS — ¡Manos a la obra!
+# ================================================================
+# Una vez que pasaste el mini-juego con 5/5, es hora de construir
+# algo real. Completa las misiones en orden.
+# ================================================================
+
+misiones:
+  titulo: "🎮 Misiones Prácticas — Construye con tus Agentes"
+  introduccion: |
+    Ahora que conoces a los 6 agentes, vas a USARLOS de verdad.
+    Cada misión te dice qué comandos ejecutar y qué agentes usar.
+
+    Abre VS Code, carga este archivo como custom_modes.yaml en
+    RooCode, y ejecuta los comandos en orden.
+
+  lista:
+
+    # ------------------------------------------------------------
+    # MISIÓN 1: Tu primera calculadora (2 agentes)
+    # ------------------------------------------------------------
+
+    - nombre: "Misión 1 — Crea tu Primera Calculadora"
+      dificultad: "⭐ Facil"
+      agentes_necesarios:
+        - el-arquitecto
+        - el-constructor
+      pasos:
+        - paso: 1
+          accion: "Pidele al Arquitecto que disene el plano"
+          comando: '/arquitecto "una calculadora que sume, reste, multiplique y divida dos numeros. El usuario ingresa los numeros y la operacion."'
+          que_esperar: "El Arquitecto te dara un plano con requisitos, edge cases (que pasa si divides entre cero?) y criterios de aceptacion."
+        - paso: 2
+          accion: "Pidele al Constructor que escriba el codigo"
+          comando: '/constructor "implementa la calculadora segun el plano del Arquitecto. Crea un archivo calculadora.py"'
+          que_esperar: "El Constructor creara un archivo .py con funciones para sumar, restar, multiplicar y dividir. Tambien manejara la division entre cero."
+        - paso: 3
+          accion: "Prueba tu calculadora!"
+          comando: "python calculadora.py"
+          que_esperar: "La calculadora corre en la terminal. Ingresa numeros, elige operacion y ve el resultado. Funciona!"
+      quiz_mision:
+        - pregunta: "Que pasa si divides 5 entre 0 en tu calculadora?"
+          opciones:
+            - "A) La computadora explota"
+            - "B) El programa muestra un mensaje de error amigable como 'No se puede dividir entre cero'"
+            - "C) Muestra 'infinito'"
+          respuesta: "B"
+          explicacion: "El Arquitecto penso en este edge case. El Constructor escribio codigo para manejarlo. Buen trabajo en equipo."
+
+    # ------------------------------------------------------------
+    # MISIÓN 2: Agrega tests a tu calculadora (2 agentes)
+    # ------------------------------------------------------------
+
+    - nombre: "Misión 2 — Pon a Prueba tu Calculadora"
+      dificultad: "⭐⭐ Intermedio"
+      agentes_necesarios:
+        - el-probador
+        - el-constructor
+      pasos:
+        - paso: 1
+          accion: "El Probador escribe tests para tu calculadora"
+          comando: '/probador "escribe tests para calculadora.py. Prueba: suma 2+2=4, resta 5-3=2, multiplicacion 3x3=9, division 10/2=5, division entre cero debe dar error controlado. Usa pytest."'
+          que_esperar: "El Probador creara test_calculadora.py con pruebas para cada operacion."
+        - paso: 2
+          accion: "Ejecuta los tests"
+          comando: "pytest test_calculadora.py -v"
+          que_esperar: "Veras 5 tests ejecutandose. Si algo falla, el Constructor debe arreglar calculadora.py."
+        - paso: 3
+          accion: "Si algo fallo, pide al Constructor que lo arregle"
+          comando: '/constructor "arregla calculadora.py para que pase todos los tests de test_calculadora.py"'
+          que_esperar: "Ciclo TDD: tests -> fallan -> arreglas -> tests pasan. Asi se construye software robusto."
+      quiz_mision:
+        - pregunta: "Acabas de usar 2 agentes juntos (Probador + Constructor). Esto se llama..."
+          opciones:
+            - "A) Pelea de agentes"
+            - "B) Trabajo en enjambre (swarm): cada agente hace su parte y colaboran"
+            - "C) Carrera de codigo"
+          respuesta: "B"
+          explicacion: "El swarm en accion. El Probador encontro fallos y el Constructor los arreglo. Asi trabajan los equipos reales."
+
+    # ------------------------------------------------------------
+    # MISIÓN 3: Documenta y recuerda (4 agentes)
+    # ------------------------------------------------------------
+
+    - nombre: "Misión 3 — Documenta tu Calculadora para el Futuro"
+      dificultad: "⭐⭐⭐ Avanzado"
+      agentes_necesarios:
+        - el-arquitecto
+        - el-documentador
+        - el-guardian
+        - el-coordinador
+      pasos:
+        - paso: 1
+          accion: "El Coordinador organiza el cierre del proyecto"
+          comando: '/coordinar "organiza el cierre del proyecto calculadora: documentar y guardar memoria"'
+          que_esperar: "El Coordinador te dira el orden: 1) Documentador, 2) Guardian."
+        - paso: 2
+          accion: "El Documentador escribe el README"
+          comando: '/documentador "escribe README.md para la calculadora: explica que hace, como instalar (solo necesitas Python), como usar, ejemplos de uso"'
+          que_esperar: "Un README.md claro que cualquiera pueda entender."
+        - paso: 3
+          accion: "El Guardian registra lo aprendido"
+          comando: '/guardian "registra en swarm-context.md: creamos calculadora en python, edge case division/cero, usamos pytest, tests TDD"'
+          que_esperar: "La memoria del equipo se actualiza. La proxima vez que construyas algo, COALA recordara esta experiencia."
+        - paso: 4
+          accion: "Revisa lo que creaste"
+          comando: "ls -la"
+          que_esperar: "Veras: calculadora.py, test_calculadora.py, README.md. Tres archivos. Un proyecto completo, probado y documentado."
+      quiz_mision:
+        - pregunta: "Usaste 4 agentes en esta mision. Por que usar varios agentes en vez de uno solo?"
+          opciones:
+            - "A) Porque es mas divertido"
+            - "B) Porque cada agente es experto en una cosa. Juntos hacen mejor trabajo que uno solo intentando hacerlo todo"
+            - "C) Porque los agentes se sienten solos"
+          respuesta: "B"
+          explicacion: "Especializacion: el Arquitecto disena, el Documentador explica, el Guardian recuerda, el Coordinador organiza. Como un equipo de futbol: cada jugador tiene su posicion."
+
+    # ------------------------------------------------------------
+    # MISIÓN FINAL: Tu propio proyecto (todos los agentes)
+    # ------------------------------------------------------------
+
+    - nombre: "🌟 Misión Final — Crea tu Propio Proyecto"
+      dificultad: "🌟🌟🌟 Leyenda"
+      agentes_necesarios:
+        - el-arquitecto
+        - el-constructor
+        - el-probador
+        - el-documentador
+        - el-guardian
+        - el-coordinador
+      pasos:
+        - paso: 1
+          accion: "Piensa en algo simple que quieras crear"
+          ideas:
+            - "Un conversor de pesos chilenos a dolares"
+            - "Un adivinador de numeros (la computadora piensa un numero, tu adivinas)"
+            - "Un generador de contrasenas seguras"
+            - "Un contador de palabras en un texto"
+        - paso: 2
+          accion: "Usa los 6 agentes en orden"
+          flujo: |
+            1. /arquitecto "describe tu idea"
+            2. /constructor "implementa segun el plano"
+            3. /probador "escribe tests"
+            4. /constructor "arregla lo que falle"
+            5. /probador "ejecuta tests otra vez"
+            6. /documentador "escribe README"
+            7. /guardian "registra lo aprendido"
+        - paso: 3
+          accion: "Celebra. Acabas de construir software como un profesional"
+          que_esperar: "Un proyecto completo, probado, documentado y con memoria. Asi trabajan los equipos de verdad."
+      quiz_mision:
+        - pregunta: "Despues de completar todas las misiones, que aprendiste?"
+          opciones:
+            - "A) Que programar es dificil y mejor no intentarlo"
+            - "B) Que con el equipo adecuado (agentes especializados), puedes construir software de forma ordenada, probada y documentada"
+            - "C) Que los koalas son peligrosos"
+          respuesta: "B"
+          explicacion: "Despues de que aprendas COALA-swarmOPS entenderas mucho sobre automatizacion y memoria cognitiva. Y ahora lo entiendes."
+
+# ================================================================
+# FIN DE LA GUÍA
+# ================================================================
+#
+# Comparte esta guía con alguien que quiera aprender.
+# GitHub: github.com/Aquilesnake/COALA-SwarmOps
+#
+# --- v6.0 EDU · Creado con 🐨 por COALA-SwarmOps ---
+# ================================================================
