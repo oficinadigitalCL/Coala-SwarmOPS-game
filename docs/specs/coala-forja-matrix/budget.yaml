@@ -1,0 +1,95 @@
+# Budget — COALA: El Portal del Código
+
+feature_id: FEAT-003
+slug: coala-forja-matrix
+pipeline_mode: prototype
+stack: html-vanilla-static
+fecha: 2026-06-17
+
+# ─── Estimado por Fase de Pipeline ───
+
+estimado_total_usd: 2.14
+
+por_fase:
+  fase_0_idea:
+    worker: idea-clarifier
+    tier: T0.5
+    costo_usd: 0.14
+    status: COMPLETED
+    notas: "Idea brief clarificada: escena Matrix de transición, dorado a verde, 8-10s"
+
+  fase_0_enrich:
+    worker: us-enricher
+    tier: T2
+    costo_usd: 0.44
+    status: COMPLETED
+    notas: "8 US enriquecidas con EARS, 35 ACs, 12 edge cases, 12 BDD scenarios, DoD"
+
+  fase_2_fastforward:
+    worker: fastforward-writer
+    tier: T3
+    costo_usd: 0.88
+    status: IN_PROGRESS
+    notas: "4 artifacts generados — requirements.md, design.md, tasks.md (24 tareas), testing.md"
+
+  fase_3_implementation:
+    worker: flash-fast-coder
+    tier: T0.5
+    costo_usd: 0.14
+    status: PENDING
+    notas: "Implementación de game_intermediate/matrix.html (single-file ~300 líneas estimado)"
+
+  fase_4_review:
+    worker: code-reviewer
+    tier: T2
+    costo_usd: 0.44
+    status: PENDING
+    notas: "Revisión de código del archivo matrix.html"
+
+  fase_5_commit:
+    worker: senior
+    tier: T1
+    costo_usd: 0.44
+    status: PENDING
+    notas: "Git branch feat/coala-forja-matrix + conventional commit"
+
+# ─── Subtotal por Tier ───
+
+por_tier:
+  t0_5_flash:
+    workers: [idea-clarifier, flash-fast-coder]
+    costo_usd: 0.28
+    porcentaje: 13.1%
+  t1_pro:
+    workers: [senior]
+    costo_usd: 0.44
+    porcentaje: 20.6%
+  t2_kimi:
+    workers: [us-enricher, code-reviewer]
+    costo_usd: 0.88
+    porcentaje: 41.1%
+  t3_kimi26:
+    workers: [fastforward-writer]
+    costo_usd: 0.88
+    porcentaje: 41.1%
+    nota: "T3 usado solo para planificación (fastforward-writer). Implementación usa T0.5 para minimizar costo."
+
+# ─── Budget Acumulado ───
+
+acumulado:
+  ya_gastado_usd: 0.58   # fases 0 (idea-clarifier) + 0 (us-enricher)
+  esta_fase_usd: 0.88     # fase 2 (fastforward-writer)
+  restante_estimado_usd: 0.68
+  total_proyectado_usd: 2.14
+
+# ─── Notas ───
+
+budget_notes:
+  - "Prototipo con 8 US. Budget guía $2/feature = $2.14 está en rango objetivo."
+  - "Sin costos de mutation-engineer, dependency-guardian, security-auditor (omitidos en prototipo)."
+  - "Sin costo de nexus-predictive (GitNexus no disponible)."
+  - "Sin costo de continuity-engine (no disponible)."
+  - "Sin costo de context-guardian (memoria se actualiza manualmente)."
+  - "Sin costo de evidence-checker ni spec-validator (gates livianos en prototipo)."
+  - "T0.5 maximizado para implementación; T3 solo para planificación."
+  - "Archivo único estimado ~300 líneas — implementación ligera y rápida."

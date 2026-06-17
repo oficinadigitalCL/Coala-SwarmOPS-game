@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Portal del Código — COALA</title>
+  <style>
+    /* ============================================================
+       FASE 1 — Setup: CSS custom properties, reset, base
+       ============================================================ */
+    :root {
+      --night: #0a0a0f;
+      --gold: #d4a843;
+      --matrix-green: #00ff41;
+      --gold-glow: rgba(212, 168, 67, 0.6);
+      --green-glow: rgba(0, 255, 65, 0.5);
+      --overlay-bg: rgba(10, 10, 15, 0.92);
+      --font-matrix: 'Courier New', 'Consolas', monospace;
+      --font-message: Georgia, 'Times New Roman', serif;
+      --font-ui: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--night);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      font-family: var(--font-ui);
+    }
+
+    /* ============================================================
+       Canvas — fullscreen, z-index 0
+       ============================================================ */
+    #matrixCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      display: block;
+    }
+
+    /* ============================================================
+       FASE 3 — UI Overlay: mensaje central glow
+       ============================================================ */
+    .message-overlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      text-align: center;
+      pointer-events: none;
+      max-width: 90vw;
+    }
+
+    .matrix-message {
+      font-family: var(--font-message);
+      color: var(--gold);
+      font-size: clamp(1.2rem, 4vw, 2.5rem);
+      text-shadow:
+        0 0 20px var(--gold-glow),
+        0 0 40px var(--gold-glow);
+      opacity: 0;
+      transition: opacity 1s ease;
+      line-height: 1.4;
+    }
+
+    .matrix-message.visible {
+      opacity: 1;
+    }
+
+    /* ============================================================
+       FASE 4 — Botón Portal
+       ============================================================ */
+    .btn-portal {
+      position: fixed;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      min-width: min(280px, 80vw);
+      min-height: 48px;
+      padding: 0.8rem 2rem;
+      background: transparent;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      font-family: var(--font-matrix);
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        opacity 0.5s ease,
+        transform 0.5s ease,
+        border-color 0.3s,
+        color 0.3s,
+        text-shadow 0.3s;
+      border-radius: 4px;
+    }
+
+    .btn-portal.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .btn-portal:hover,
+    .btn-portal:focus-visible {
+      border-color: var(--matrix-green);
+      color: var(--matrix-green);
+      text-shadow: 0 0 15px var(--green-glow);
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    /* ============================================================
+       FASE 5 — Fallback Grid (prefers-reduced-motion / no Canvas)
+       ============================================================ */
+    .fallback-grid {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+      gap: 2px;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      padding: 4px;
+    }
+
+    .fallback-grid.active {
+      display: grid;
+    }
+
+    .fallback-grid span {
+      font-family: var(--font-matrix);
+      font-size: clamp(10px, 1.5vw, 16px);
+      text-align: center;
+      line-height: 1.2;
+      user-select: none;
+    }
+
+    /* ============================================================
+       FASE 6 — Fallback Overlay (portal no disponible)
+       ============================================================ */
+    .fallback-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: var(--overlay-bg);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fallback-overlay.active {
+      display: flex;
+    }
+
+    .fallback-card {
+      text-align: center;
+      color: var(--gold);
+      max-width: 400px;
+      padding: 2rem;
+    }
+
+    .fallback-icon {
+      font-size: 4rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .fallback-card h2 {
+      font-family: var(--font-message);
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      margin-bottom: 1rem;
+    }
+
+    .fallback-card p {
+      font-family: var(--font-ui);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #e8d5a3;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-fallback {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      background: transparent;
+      font-family: var(--font-matrix);
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .btn-fallback:hover {
+      border-color: var(--matrix-green);
+      color: var(--matrix-green);
+    }
+
+    /* ============================================================
+       FASE 5 — prefers-reduced-motion
+       ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      #matrixCanvas {
+        display: none;
+      }
+
+      .fallback-grid.active {
+        display: grid;
+      }
+
+      .matrix-message {
+        opacity: 1;
+      }
+
+      .btn-portal {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Canvas: lluvia de caracteres -->
+  <canvas id="matrixCanvas"></canvas>
+
+  <!-- Fallback grid (prefers-reduced-motion o Canvas no soportado) -->
+  <div id="fallbackGrid" class="fallback-grid" aria-hidden="true"></div>
+
+  <!-- Overlay del mensaje central -->
+  <div id="messageOverlay" class="message-overlay">
+    <h1 class="matrix-message" id="matrixMessage">
+      El código verdadero te espera...
+    </h1>
+  </div>
+
+  <!-- Botón del portal -->
+  <button id="btnPortal" class="btn-portal">
+    Cruzar el portal →
+  </button>
+
+  <!-- Overlay de fallback (portal no disponible) -->
+  <div id="fallbackOverlay" class="fallback-overlay">
+    <div class="fallback-card">
+      <span class="fallback-icon">🏗️</span>
+      <h2>El portal se está construyendo...</h2>
+      <p>El nivel Avanzado aún no está listo. Vuelve pronto, aprendiz.</p>
+      <button class="btn-fallback" id="btnFallback">
+        ⬅️ Volver a La Forja
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FASE 1 — <noscript> obligatorio
+       ============================================================ -->
+  <noscript>
+    <div style="
+      display:flex; align-items:center; justify-content:center;
+      min-height:100vh; background:#0a0a0f; color:#d4a843;
+      font-family:Georgia,'Times New Roman',serif; text-align:center; padding:2rem;
+    ">
+      <div>
+        <div style="font-size:4rem">🌌</div>
+        <h1 style="margin:1rem 0; font-size:clamp(1.2rem,5vw,2rem)">
+          El Portal del Código
+        </h1>
+        <p style="font-size:1.1rem; line-height:1.6; max-width:400px; margin:0 auto; color:#e8d5a3">
+          Esta escena usa JavaScript para crear el efecto de lluvia de código
+          y abrir el portal hacia el nivel Avanzado.
+        </p>
+        <p style="margin-top:1.5rem">
+          <a href="../game_advanced/index.html" style="
+            display:inline-block; padding:0.8rem 2rem;
+            border:2px solid #d4a843; color:#d4a843;
+            text-decoration:none; font-size:1.1rem; border-radius:4px;
+          ">
+            🚀 Ir al nivel Avanzado directamente
+          </a>
+        </p>
+        <p style="margin-top:1rem; opacity:0.6; font-size:0.9rem">
+          🐨 Pídele ayuda a un adulto para habilitar JavaScript si quieres ver la animación.
+        </p>
+      </div>
+    </div>
+  </noscript>
+
+  <script>
+    /* ============================================================
+       FASE 1 — Configuración global y state machine
+       ============================================================ */
+    'use strict';
+
+    // --- State machine ---
+    const SCENE_STATE = {
+      phase: 'idle',           // idle | raining | message | portal | skipped | done
+      animStartTime: 0,
+      messageShown: false,
+      portalShown: false,
+      skipped: false,
+      redirectDebounce: false,
+    };
+
+    // --- Timeout IDs (para cancelar con skip) ---
+    let messageTimeoutId = null;
+    let portalTimeoutId = null;
+    let autoRedirectTimeoutId = null;
+
+    // --- Referencias DOM ---
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    const messageEl = document.getElementById('matrixMessage');
+    const btnPortal = document.getElementById('btnPortal');
+    const fallbackOverlay = document.getElementById('fallbackOverlay');
+    const btnFallback = document.getElementById('btnFallback');
+    const fallbackGrid = document.getElementById('fallbackGrid');
+
+    // --- Audio context (estructura preparatoria) ---
+    let audioCtx = null;
+
+    /* ============================================================
+       FASE 2 — Matrix Rain: configuración, drops, charset, loop
+       ============================================================ */
+
+    // --- Config ---
+    const MATRIX_CONFIG = {
+      fontSize: 14,
+      columns: 0,
+      drops: [],
+      fallSpeedMin: 0.8,
+      fallSpeedMax: 2.5,
+      transitionDuration: 5000, // ms: dorado → verde
+    };
+
+    // --- Charset: jeroglíficos + katakana + símbolos ---
+    const MATRIX_CHARS = [
+      '☥', '𓂀', '◈', '⬡', '◆', '◇', '◎', '◉',
+      'Φ', 'Ω', 'Ψ', 'Σ', 'Δ', 'Λ', 'Ξ', 'Θ',
+      'ｱ', 'ｲ', 'ｳ', 'ｴ', 'ｵ', 'ｶ', 'ｷ', 'ｸ', 'ｹ', 'ｺ',
+      '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+      'A', 'B', 'C', 'D', 'E', 'F',
+      '!', '@', '#', '$', '%', '^', '&', '*', '(', ')',
+    ];
+
+    // --- Colores para interpolación ---
+    const COLOR_GOLD = { r: 0xd4, g: 0xa8, b: 0x43 };
+    const COLOR_GREEN = { r: 0x00, g: 0xff, b: 0x41 };
+
+    // --- Funciones de interpolación ---
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
+
+    function lerpColor(colorA, colorB, ratio) {
+      const t = easeInOutQuad(Math.min(Math.max(ratio, 0), 1));
+      const r = Math.round(lerp(colorA.r, colorB.r, t));
+      const g = Math.round(lerp(colorA.g, colorB.g, t));
+      const b = Math.round(lerp(colorA.b, colorB.b, t));
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    // --- Inicializar Canvas ---
+    function initCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      MATRIX_CONFIG.fontSize = Math.max(12, Math.min(18, Math.round(window.innerWidth / 40)));
+      MATRIX_CONFIG.columns = Math.floor(canvas.width / MATRIX_CONFIG.fontSize);
+      ctx.font = `${MATRIX_CONFIG.fontSize}px ${getComputedStyle(document.body).fontFamily || "'Courier New', monospace"}`;
+    }
+
+    // --- Inicializar drops ---
+    function initDrops() {
+      const cols = MATRIX_CONFIG.columns;
+      MATRIX_CONFIG.drops = [];
+      for (let i = 0; i < cols; i++) {
+        MATRIX_CONFIG.drops.push({
+          y: Math.random() * (canvas.height / MATRIX_CONFIG.fontSize),
+          speed: MATRIX_CONFIG.fallSpeedMin + Math.random() * (MATRIX_CONFIG.fallSpeedMax - MATRIX_CONFIG.fallSpeedMin),
+        });
+      }
+    }
+
+    // --- Obtener carácter aleatorio ---
+    function randomChar() {
+      return MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+    }
+
+    // --- Loop de animación ---
+    let animFrameId = null;
+
+    function draw(timestamp) {
+      if (!animFrameId) return; // detenido
+
+      const elapsed = timestamp - SCENE_STATE.animStartTime;
+      const colorRatio = Math.min(elapsed / MATRIX_CONFIG.transitionDuration, 1.0);
+
+      // Trail effect: fondo semitransparente
+      ctx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const fontSize = MATRIX_CONFIG.fontSize;
+      const drops = MATRIX_CONFIG.drops;
+      const columns = MATRIX_CONFIG.columns;
+
+      for (let i = 0; i < columns; i++) {
+        const drop = drops[i];
+        const char = randomChar();
+        const x = i * fontSize;
+        const y = drop.y * fontSize;
+
+        // Color interpolado
+        const color = lerpColor(COLOR_GOLD, COLOR_GREEN, colorRatio);
+
+        // Primer carácter de la columna: más brillante (blanco)
+        if (drop.y < 1) {
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowBlur = fontSize * 0.5;
+          ctx.shadowColor = color;
+        } else {
+          ctx.fillStyle = color;
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.fillText(char, x, y);
+
+        // Reset shadow
+        ctx.shadowBlur = 0;
+
+        // Avanzar
+        drop.y += drop.speed;
+
+        // Reset cuando sale de pantalla (97.5% de probabilidad de continuar)
+        if (drop.y * fontSize > canvas.height && Math.random() < 0.975) {
+          drop.y = 0;
+          drop.speed = MATRIX_CONFIG.fallSpeedMin + Math.random() * (MATRIX_CONFIG.fallSpeedMax - MATRIX_CONFIG.fallSpeedMin);
+        }
+      }
+
+      animFrameId = requestAnimationFrame(draw);
+    }
+
+    // --- Iniciar lluvia ---
+    function startMatrixRain() {
+      SCENE_STATE.animStartTime = performance.now();
+      SCENE_STATE.phase = 'raining';
+      animFrameId = requestAnimationFrame(draw);
+    }
+
+    // --- Detener lluvia ---
+    function stopMatrixRain() {
+      if (animFrameId) {
+        cancelAnimationFrame(animFrameId);
+        animFrameId = null;
+      }
+    }
+
+    /* ============================================================
+       FASE 5 — Fallback Grid (estático, para reduced-motion)
+       ============================================================ */
+    function buildFallbackGrid() {
+      fallbackGrid.innerHTML = '';
+      const totalCells = Math.max(60, Math.min(100, Math.floor((window.innerWidth * window.innerHeight) / 600)));
+      for (let i = 0; i < totalCells; i++) {
+        const span = document.createElement('span');
+        span.textContent = randomChar();
+        // 60% dorados, 40% verdes
+        span.style.color = Math.random() < 0.6 ? '#d4a843' : '#00ff41';
+        fallbackGrid.appendChild(span);
+      }
+      fallbackGrid.classList.add('active');
+    }
+
+    /* ============================================================
+       FASE 5 — Modo estático (prefers-reduced-motion)
+       ============================================================ */
+    function staticMode() {
+      SCENE_STATE.phase = 'static';
+      canvas.style.display = 'none';
+      buildFallbackGrid();
+      // Mensaje y botón visibles inmediatamente
+      messageEl.classList.add('visible');
+      btnPortal.classList.add('visible');
+      SCENE_STATE.messageShown = true;
+      SCENE_STATE.portalShown = true;
+      SCENE_STATE.phase = 'done';
+    }
+
+    /* ============================================================
+       FASE 6 — AudioWrapper (estructura preparatoria)
+       ============================================================ */
+    function initAudio() {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+          console.log('🎵 Audio listo (sin sonido en prototipo)');
+          // TODO: Implementar playPortalAmbient(), playTransitionChime()
+        }
+      } catch (e) {
+        audioCtx = null;
+        console.log('🔇 Audio no disponible, continuando sin sonido');
+      }
+    }
+
+    /* ============================================================
+       FASE 6 — Responsive Adapter (resize handler)
+       ============================================================ */
+    let resizeTimeoutId = null;
+
+    function handleResize() {
+      if (resizeTimeoutId) {
+        cancelAnimationFrame(resizeTimeoutId);
+      }
+      resizeTimeoutId = requestAnimationFrame(function () {
+        const wasRunning = !!animFrameId;
+        if (wasRunning) {
+          stopMatrixRain();
+        }
+        initCanvas();
+        initDrops();
+        if (wasRunning && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          startMatrixRain();
+        }
+        resizeTimeoutId = null;
+      });
+    }
+
+    /* ============================================================
+       FASE 4 — Redirección con fetch HEAD
+       ============================================================ */
+    function redirectToPortal() {
+      const portalUrl = '../game_advanced/index.html';
+      fetch(portalUrl, { method: 'HEAD' })
+        .then(function (response) {
+          if (response.ok) {
+            window.location.href = portalUrl;
+          } else {
+            showFallbackOverlay();
+          }
+        })
+        .catch(function () {
+          showFallbackOverlay();
+        });
+    }
+
+    function showFallbackOverlay() {
+      fallbackOverlay.classList.add('active');
+    }
+
+    /* ============================================================
+       FASE 5 — Skip: Escape y tap/click
+       ============================================================ */
+    function skipToPortal() {
+      if (SCENE_STATE.portalShown) return;
+      SCENE_STATE.skipped = true;
+      SCENE_STATE.phase = 'skipped';
+
+      // Cancelar timeouts pendientes
+      if (messageTimeoutId) {
+        clearTimeout(messageTimeoutId);
+        messageTimeoutId = null;
+      }
+      if (portalTimeoutId) {
+        clearTimeout(portalTimeoutId);
+        portalTimeoutId = null;
+      }
+      if (autoRedirectTimeoutId) {
+        clearTimeout(autoRedirectTimeoutId);
+        autoRedirectTimeoutId = null;
+      }
+
+      // Mostrar mensaje inmediatamente
+      if (!SCENE_STATE.messageShown) {
+        messageEl.classList.add('visible');
+        SCENE_STATE.messageShown = true;
+      }
+
+      // Mostrar botón con fade-in rápido (200ms)
+      btnPortal.classList.add('visible');
+      btnPortal.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      SCENE_STATE.portalShown = true;
+      SCENE_STATE.phase = 'done';
+    }
+
+    /* ============================================================
+       FASE 4 + 5 — Event listeners
+       ============================================================ */
+
+    // --- Botón portal: click con debounce ---
+    btnPortal.addEventListener('click', function () {
+      if (SCENE_STATE.redirectDebounce) return;
+      SCENE_STATE.redirectDebounce = true;
+      setTimeout(function () {
+        SCENE_STATE.redirectDebounce = false;
+      }, 500);
+      redirectToPortal();
+    });
+
+    // --- Botón fallback: volver a La Forja ---
+    btnFallback.addEventListener('click', function () {
+      window.location.href = 'index.html';
+    });
+
+    // --- Skip con tecla Escape ---
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !SCENE_STATE.portalShown) {
+        skipToPortal();
+      }
+    });
+
+    // --- Skip con tap/click en canvas (no en botón) ---
+    canvas.addEventListener('click', function (e) {
+      if (!SCENE_STATE.portalShown) {
+        skipToPortal();
+      }
+    });
+
+    // --- Resize handler ---
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', function () {
+      setTimeout(handleResize, 300);
+    });
+
+    /* ============================================================
+       FASE 1 + 6 — Inicialización
+       ============================================================ */
+    function initScene() {
+      // Detectar prefers-reduced-motion
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        staticMode();
+        initAudio();
+        return;
+      }
+
+      // Verificar soporte de Canvas
+      if (!canvas.getContext || !canvas.getContext('2d')) {
+        staticMode();
+        initAudio();
+        return;
+      }
+
+      // --- Inicializar Canvas ---
+      initCanvas();
+      initDrops();
+
+      // --- Inicializar Audio (estructura preparatoria) ---
+      initAudio();
+
+      // --- Iniciar lluvia ---
+      startMatrixRain();
+
+      // --- Programar aparición del mensaje (t=1s) ---
+      messageTimeoutId = setTimeout(function () {
+        messageEl.classList.add('visible');
+        SCENE_STATE.messageShown = true;
+        SCENE_STATE.phase = 'message';
+        messageTimeoutId = null;
+      }, 1000);
+
+      // --- Programar aparición del botón (t=3s) ---
+      portalTimeoutId = setTimeout(function () {
+        btnPortal.classList.add('visible');
+        SCENE_STATE.portalShown = true;
+        SCENE_STATE.phase = 'portal';
+        portalTimeoutId = null;
+      }, 3000);
+
+      // --- Auto-redirect (t=8s) ---
+      autoRedirectTimeoutId = setTimeout(function () {
+        if (!SCENE_STATE.redirectDebounce && SCENE_STATE.portalShown) {
+          redirectToPortal();
+        }
+        autoRedirectTimeoutId = null;
+      }, 8000);
+    }
+
+    // --- Arrancar ---
+    initScene();
+  </script>
+</body>
+</html>
